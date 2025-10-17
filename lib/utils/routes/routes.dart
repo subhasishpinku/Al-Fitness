@@ -1,7 +1,7 @@
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/get_start_screen.dart';
+import 'package:aifitness/view/signin_screen.dart';
 import 'package:flutter/material.dart';
-
 
 class Routes {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
@@ -9,8 +9,10 @@ class Routes {
       case (RouteNames.getStartScreen):
         return MaterialPageRoute(
             builder: (BuildContext context) => const GetStartScreen());
+            case (RouteNames.signinScreen):
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const SigninScreen());
      
-      
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(
