@@ -1,6 +1,16 @@
 import 'package:aifitness/utils/routes/routes.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/get_start_screen.dart';
+import 'package:aifitness/viewModel/login_viewModel.dart';
+import 'package:aifitness/viewModel/signin_eight_viewModel.dart';
+import 'package:aifitness/viewModel/signin_fifth_viewModel.dart';
+import 'package:aifitness/viewModel/signin_fourth_viewModel.dart';
+import 'package:aifitness/viewModel/signin_ninth_viewModel.dart';
+import 'package:aifitness/viewModel/signin_second_viewModel.dart';
+import 'package:aifitness/viewModel/signin_seventh_viewModel.dart';
+import 'package:aifitness/viewModel/signin_sixth_viewModel.dart';
+import 'package:aifitness/viewModel/signin_tenth_viewModel.dart';
+import 'package:aifitness/viewModel/signin_third_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +20,16 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SigninViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninSecondViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninThirdViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninFourthViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninFifthViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninSixthViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninSeventhViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninEightViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninNinthViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninTenthViewModel()),
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
       ],
       child: const MyApp(),
     ),

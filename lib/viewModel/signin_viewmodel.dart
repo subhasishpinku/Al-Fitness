@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class SigninViewModel extends ChangeNotifier {
@@ -8,10 +9,8 @@ class SigninViewModel extends ChangeNotifier {
     "High-Protein Diet & Exercise Plan",
     "Muscle Gain Diet & Exercise Plan",
   ];
-
   final List<bool> _isVisible = [false, false, false, false, false];
   List<bool> get isVisible => _isVisible;
-
   SigninViewModel() {
     _animateButtonsSequentially();
   }
@@ -26,8 +25,8 @@ class SigninViewModel extends ChangeNotifier {
   }
 
   /// Handle button click
-  void onTopicSelected(String topic) {
+  void onTopicSelected(BuildContext context, String topic) {
     debugPrint("Selected topic: $topic");
-    // Add navigation or logic here
+    Navigator.pushNamed(context, RouteNames.signinScreenSecond);
   }
 }
