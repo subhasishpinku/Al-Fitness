@@ -30,6 +30,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => SigninNinthViewModel()),
         ChangeNotifierProvider(create: (_) => SigninTenthViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninEightViewModel()),
+
       ],
       child: const MyApp(),
     ),

@@ -3,6 +3,7 @@ import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/login_screen.dart';
 import 'package:aifitness/view/signin_screen.dart';
 import 'package:aifitness/view/signin_screen_eight.dart';
+import 'package:aifitness/view/signin_screen_eleventh.dart';
 import 'package:aifitness/view/signin_screen_fifth.dart';
 import 'package:aifitness/view/signin_screen_fourth.dart';
 import 'package:aifitness/view/signin_screen_ninth.dart';
@@ -48,21 +49,25 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenSeventh(),
         );
-        case (RouteNames.signinScreenEight):
+      case (RouteNames.signinScreenEight):
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenEight(),
         );
-         case (RouteNames.signinScreenNinth):
+      case (RouteNames.signinScreenNinth):
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenNinth(),
         );
-        case (RouteNames.signinScreenTenth):
+      case (RouteNames.signinScreenTenth):
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenTenth(),
         );
-        case (RouteNames.loginScreen):
+      case (RouteNames.loginScreen):
         return MaterialPageRoute(
           builder: (BuildContext context) => const LoginScreen(),
+        );
+      case (RouteNames.signinScreenEleventh):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenEleventh(),
         );
       default:
         return MaterialPageRoute(

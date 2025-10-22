@@ -200,10 +200,10 @@ class _SigninScreenTenthBody extends StatelessWidget {
                       ),
                       onPressed: () {
                         debugPrint("Selected Waist: $selectedWaist cm");
-                        // Navigator.pushNamed(
-                        //   context,
-                        //   RouteNames.signinScreenEleventh,
-                        // );
+                        Navigator.pushNamed(
+                          context,
+                          RouteNames.signinScreenEleventh,
+                        );
                       },
                       child: const Text(
                         "NEXT",
