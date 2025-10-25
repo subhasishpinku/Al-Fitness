@@ -116,38 +116,41 @@ class _SigninScreenThirteenState extends State<SigninScreenThirteen> {
                 const SizedBox(height: 10),
 
                 // --- Milestone card ---
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  child: _isLoading
-                      ? const Center(
-                          child: SizedBox(
-                            height: 40,
-                            width: 40,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("Target Weight:"),
-                            SizedBox(height: 4),
-                            Text("Current Intake:"),
-                            SizedBox(height: 4),
-                            Text("New Intake:"),
-                          ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
+                      ),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: AppColors.primaryColor),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text("Target Weight:"),
                         ),
+                        SizedBox(height: 4),
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text("Current Weight:"),
+                        ),
+                        SizedBox(height: 4),
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text("New Intake:"),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 const SizedBox(height: 20),
@@ -158,18 +161,31 @@ class _SigninScreenThirteenState extends State<SigninScreenThirteen> {
                 ),
 
                 const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
+                Align(
+                  alignment: Alignment.topRight,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
+                      ),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: AppColors.primaryColor),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text("gdf:"),
+                        ),
+                      ],
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  child: const Text("gdf"),
                 ),
 
                 const SizedBox(height: 20),
@@ -182,31 +198,36 @@ class _SigninScreenThirteenState extends State<SigninScreenThirteen> {
                 const SizedBox(height: 20),
 
                 // --- CTA button ---
-                Center(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
                       ),
-                      onPressed: () {
-                        // TODO: Navigate or generate plan
-                      },
-                      child: const Text(
-                        "Create My Nutrition & Exercise Plan",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: AppColors.primaryColor),
                       ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                            "Create My Nutrition & Exercise Plan",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
