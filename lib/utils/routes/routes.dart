@@ -12,6 +12,8 @@ import 'package:aifitness/view/signin_screen_seventh.dart';
 import 'package:aifitness/view/signin_screen_sixth.dart';
 import 'package:aifitness/view/signin_screen_tenth.dart';
 import 'package:aifitness/view/signin_screen_third.dart';
+import 'package:aifitness/view/signin_screen_thirteen.dart';
+import 'package:aifitness/view/signin_screen_twelve.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -68,6 +70,14 @@ class Routes {
       case (RouteNames.signinScreenEleventh):
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenEleventh(),
+        );
+      case (RouteNames.signinScreenTwelve):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenTwelve(),
+        );
+      case (RouteNames.signinScreenThirteen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenThirteen(),
         );
       default:
         return MaterialPageRoute(

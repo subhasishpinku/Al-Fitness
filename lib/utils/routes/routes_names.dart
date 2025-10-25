@@ -12,5 +12,8 @@ class RouteNames {
   static const String signinScreenNinth = "signin_screen_ninth";
   static const String signinScreenTenth = "signin_screen_tenth";
   static const String signinScreenEleventh = "signin_screen_eleventh";
+  static const String signinScreenTwelve = "signin_screen_twelve";
+  static const String signinScreenThirteen = "signin_screen_thirteen";
+
 
 }

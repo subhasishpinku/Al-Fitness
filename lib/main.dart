@@ -11,6 +11,7 @@ import 'package:aifitness/viewModel/signin_seventh_viewModel.dart';
 import 'package:aifitness/viewModel/signin_sixth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_tenth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_third_viewModel.dart';
+import 'package:aifitness/viewModel/signin_twelve_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => SigninTenthViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) => SigninEightViewModel()),
-
+        ChangeNotifierProvider(create: (_) => SigninTwelveViewModel()),
       ],
       child: const MyApp(),
     ),

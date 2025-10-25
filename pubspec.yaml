@@ -68,8 +68,11 @@ flutter:
     - assets/images/body_shape_5.png
     - assets/images/body_shape_6.png
     - assets/images/body_21.png
+    - assets/images/body_21.jpeg
+    - assets/images/body_18.jpeg
     - assets/images/body_18.png
     - assets/images/body_15.png
+    - assets/images/body_15.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

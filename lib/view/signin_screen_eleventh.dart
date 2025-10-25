@@ -1,5 +1,6 @@
 import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/signin_eleventh_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,15 +22,13 @@ class _SigninScreenEleventhBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SigninEleventhViewModel>(context);
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: const SigninSecondAppBar(),
         body: SafeArea(
-          child: SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +70,9 @@ class _SigninScreenEleventhBody extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: OutlinedButton(
                     onPressed: () {
-                      provider.enterManually(context);
+                      context.read<SigninEleventhViewModel>().enterManually(
+                        context,
+                      );
                     },
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -116,7 +117,7 @@ class _SigninScreenEleventhBody extends StatelessWidget {
 
                 // --- Instruction ---
                 const Text(
-                  "Select your body fat percentage from the \n reference images to support your fitness \n .goals",
+                  "Select your body fat percentage from the \n reference images to support your fitness goals.",
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     fontSize: 16,
@@ -127,104 +128,76 @@ class _SigninScreenEleventhBody extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // --- Grid of images ---
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                          childAspectRatio: 0.7,
-                        ),
-                    itemCount: provider.bodyFatImages.length,
-                    itemBuilder: (context, index) {
-                      final item = provider.bodyFatImages[index];
-                      final isSelected =
-                          item['percentage'] == provider.selectedFat;
+                // --- Grid of images with border selection ---
+                Expanded(
+                  child: Consumer<SigninEleventhViewModel>(
+                    builder: (context, viewModel, _) {
+                      return Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 12,
+                              ),
+                          itemCount: viewModel.bodyFatImages.length,
+                          itemBuilder: (context, index) {
+                            final item = viewModel.bodyFatImages[index];
+                            final isSelected = viewModel.selectedIndex == index;
 
-                      return GestureDetector(
-                        onTap: () {
-                          provider.selectFat(item['percentage']);
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: isSelected
-                                      ? AppColors.primaryColor
-                                      : Colors.transparent,
-                                  width: 2,
+                            return GestureDetector(
+                              onTap: () {
+                                viewModel.selectIndex(index);
+                                Navigator.pushNamed(
+                                  context,
+                                  RouteNames.signinScreenTwelve,
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? AppColors.primaryColor
+                                        : Colors.white,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  item['image'],
-                                  height: 100,
-                                  fit: BoxFit.cover,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.asset(
+                                          item['image'],
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      "${item['percentage']}%", // Fixed here
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: isSelected
+                                            ? AppColors.primaryColor
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                  ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              "${item['percentage']}%",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: isSelected
-                                    ? AppColors.primaryColor
-                                    : AppColors.primaryColor.withOpacity(0.5),
-                              ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                       );
                     },
                   ),
                 ),
-
-                const SizedBox(height: 30),
-
-                // --- Next Button ---
-                Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: 120,
-                    height: 45,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: AppColors.primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: AppColors.primaryColor),
-                        ),
-                        elevation: 0,
-                      ),
-                      onPressed: provider.selectedFat == null
-                          ? null
-                          : () {
-                              // Navigator.pushNamed(
-                              //     context, RouteNames.signinScreenThirteen);
-                            },
-                      child: const Text(
-                        "NEXT",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
               ],
             ),
           ),
