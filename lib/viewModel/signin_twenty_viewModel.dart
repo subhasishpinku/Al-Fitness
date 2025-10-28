@@ -1,26 +1,25 @@
-import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
-class SigninEighteenViewModel extends ChangeNotifier {
+class SigninTwentyViewModel extends ChangeNotifier {
   final List<String> options = [
-    "Oats",
-    "Sweet Potatoes",
-    "Brown Rice",
-    "Whole Wheat Bread",
-    "Quinoa",
-    "Whole grain Pasta",
-    "Whole lentils",
-    "Rye Bread",
-    "Potatoes",
-    "Millets",
-    "Soba Noodles\n(Buckwheat)",
+    "Pear",
+    "Brussels Sprouts",
+    "Spinach/ Kale",
+    "Seaweed",
+    "Chia Seeds",
+    "Berries",
+    "Figs",
+    "Apple",
+    "Carrots",
+    "Leafy Greens",
+    "Daikon Radish",
+    "Beets",
   ];
 
   final List<String> _selectedItems = [];
   List<String> get selectedItems => _selectedItems;
 
-  bool get canProceed =>
-      _selectedItems.length >= 2 && _selectedItems.length <= 5;
+  bool get canProceed => _selectedItems.length >= 2 && _selectedItems.length <= 5;
 
   void toggleSelection(String item) {
     if (_selectedItems.contains(item)) {
@@ -41,8 +40,7 @@ class SigninEighteenViewModel extends ChangeNotifier {
           duration: Duration(seconds: 1),
         ),
       );
-      // TODO: Navigate to the next screen here
-      Navigator.pushNamed(context, RouteNames.signinScreenNineteen);
+      // TODO: Add your navigation logic here
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

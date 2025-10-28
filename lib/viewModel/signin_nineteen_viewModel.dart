@@ -1,19 +1,20 @@
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
-class SigninEighteenViewModel extends ChangeNotifier {
+class SigninNineteenViewModel extends ChangeNotifier {
   final List<String> options = [
-    "Oats",
-    "Sweet Potatoes",
-    "Brown Rice",
-    "Whole Wheat Bread",
-    "Quinoa",
-    "Whole grain Pasta",
-    "Whole lentils",
-    "Rye Bread",
-    "Potatoes",
-    "Millets",
-    "Soba Noodles\n(Buckwheat)",
+    "Greek Yogurt",
+    "Beef",
+    "Tofu",
+    "Pork",
+    "Turkey",
+    "Eggs",
+    "Chicken Breast",
+    "Lentils",
+    "Paneer",
+    "Cottage Cheese",
+    "Fresh salmon fillet",
+    "Tempeh",
   ];
 
   final List<String> _selectedItems = [];
@@ -42,7 +43,7 @@ class SigninEighteenViewModel extends ChangeNotifier {
         ),
       );
       // TODO: Navigate to the next screen here
-      Navigator.pushNamed(context, RouteNames.signinScreenNineteen);
+      Navigator.pushNamed(context, RouteNames.signinScreenTwenty);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

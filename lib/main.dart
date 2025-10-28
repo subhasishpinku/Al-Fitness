@@ -10,6 +10,7 @@ import 'package:aifitness/viewModel/sigin_sixteen_viewModel.dart';
 import 'package:aifitness/viewModel/signin_eight_viewModel.dart';
 import 'package:aifitness/viewModel/signin_fifth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_fourth_viewModel.dart';
+import 'package:aifitness/viewModel/signin_nineteen_viewModel.dart';
 import 'package:aifitness/viewModel/signin_ninth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_second_viewModel.dart';
 import 'package:aifitness/viewModel/signin_seventh_viewModel.dart';
@@ -18,6 +19,7 @@ import 'package:aifitness/viewModel/signin_tenth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_third_viewModel.dart';
 import 'package:aifitness/viewModel/signin_thirteen_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twelve_viewModel.dart';
+import 'package:aifitness/viewModel/signin_twenty_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +47,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => SigninSixteenViewModel()),
         ChangeNotifierProvider(create: (_) => SigninSeventeenViewModel()),
         ChangeNotifierProvider(create: (_) => SigninEighteenViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninNineteenViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninTwentyViewModel()),
 
       ],
       child: const MyApp(),
