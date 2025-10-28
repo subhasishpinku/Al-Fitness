@@ -1,6 +1,9 @@
 import 'package:aifitness/utils/routes/routes.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/get_start_screen.dart';
+import 'package:aifitness/view/signin_screen_twenty_five.dart';
+import 'package:aifitness/view/signin_screen_twenty_one.dart';
+import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_eighteen_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_fifteen_viewModel.dart';
@@ -19,7 +22,12 @@ import 'package:aifitness/viewModel/signin_tenth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_third_viewModel.dart';
 import 'package:aifitness/viewModel/signin_thirteen_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twelve_viewModel.dart';
+import 'package:aifitness/viewModel/signin_twentyTwo_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twenty_viewModel.dart';
+import 'package:aifitness/viewModel/signin_twentyfive_viewModel.dart';
+import 'package:aifitness/viewModel/signin_twentyfour_viewModel.dart';
+import 'package:aifitness/viewModel/signin_twentyone_viewModel.dart';
+import 'package:aifitness/viewModel/signin_twentythree_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +57,13 @@ void main() {
         ChangeNotifierProvider(create: (_) => SigninEighteenViewModel()),
         ChangeNotifierProvider(create: (_) => SigninNineteenViewModel()),
         ChangeNotifierProvider(create: (_) => SigninTwentyViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninTwentyOneViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninTwentyTwoViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninTwentyThreeViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninTwentyFourViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninTwentyFiveViewModel()),
+        ChangeNotifierProvider(create: (_) => DashboardBodyViewModel()),
+
 
       ],
       child: const MyApp(),

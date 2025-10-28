@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class SigninTwentyViewModel extends ChangeNotifier {
@@ -19,7 +20,8 @@ class SigninTwentyViewModel extends ChangeNotifier {
   final List<String> _selectedItems = [];
   List<String> get selectedItems => _selectedItems;
 
-  bool get canProceed => _selectedItems.length >= 2 && _selectedItems.length <= 5;
+  bool get canProceed =>
+      _selectedItems.length >= 2 && _selectedItems.length <= 5;
 
   void toggleSelection(String item) {
     if (_selectedItems.contains(item)) {
@@ -41,6 +43,7 @@ class SigninTwentyViewModel extends ChangeNotifier {
         ),
       );
       // TODO: Add your navigation logic here
+      Navigator.pushNamed(context, RouteNames.signinScreenTwentyOne);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

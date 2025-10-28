@@ -1,3 +1,4 @@
+import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/login_screen.dart';
@@ -21,6 +22,11 @@ import 'package:aifitness/view/signin_screen_third.dart';
 import 'package:aifitness/view/signin_screen_thirteen.dart';
 import 'package:aifitness/view/signin_screen_twelve.dart';
 import 'package:aifitness/view/signin_screen_twenty.dart';
+import 'package:aifitness/view/signin_screen_twenty_five.dart';
+import 'package:aifitness/view/signin_screen_twenty_four.dart';
+import 'package:aifitness/view/signin_screen_twenty_one.dart';
+import 'package:aifitness/view/signin_screen_twenty_three.dart';
+import 'package:aifitness/view/signin_screen_twenty_two.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -110,9 +116,33 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenNineteen(),
         );
-        case (RouteNames.signinScreenTwenty):
+      case (RouteNames.signinScreenTwenty):
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenTwenty(),
+        );
+      case (RouteNames.signinScreenTwentyOne):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenTwentyOne(),
+        );
+      case (RouteNames.signinScreenTwentyTwo):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenTwentyTwo(),
+        );
+      case (RouteNames.signinScreenTwentyThree):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenTwentyThree(),
+        );
+      case (RouteNames.signinScreenTwentyFour):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenTwentyFour(),
+        );
+        case (RouteNames.signinScreenTwentyFive):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenTwentyFive(),
+        );
+        case (RouteNames.dashboard):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const Dashboard(),
         );
       default:
         return MaterialPageRoute(
