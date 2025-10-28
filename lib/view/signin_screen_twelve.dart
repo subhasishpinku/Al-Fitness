@@ -97,7 +97,7 @@ class SigninScreenTwelve extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black,
+                                      color: AppColors.primaryColor,
                                     ),
                                   ),
                                   const SizedBox(height: 4),

@@ -2,6 +2,11 @@ import 'package:aifitness/utils/routes/routes.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
+import 'package:aifitness/viewModel/sigin_eighteen_viewModel.dart';
+import 'package:aifitness/viewModel/sigin_fifteen_viewModel.dart';
+import 'package:aifitness/viewModel/sigin_foutreen_viewModel.dart';
+import 'package:aifitness/viewModel/sigin_seventeen_viewModel.dart';
+import 'package:aifitness/viewModel/sigin_sixteen_viewModel.dart';
 import 'package:aifitness/viewModel/signin_eight_viewModel.dart';
 import 'package:aifitness/viewModel/signin_fifth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_fourth_viewModel.dart';
@@ -11,6 +16,7 @@ import 'package:aifitness/viewModel/signin_seventh_viewModel.dart';
 import 'package:aifitness/viewModel/signin_sixth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_tenth_viewModel.dart';
 import 'package:aifitness/viewModel/signin_third_viewModel.dart';
+import 'package:aifitness/viewModel/signin_thirteen_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twelve_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +39,13 @@ void main() {
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) => SigninEightViewModel()),
         ChangeNotifierProvider(create: (_) => SigninTwelveViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninThirteenViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninFourteenViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninFifteenViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninSixteenViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninSeventeenViewModel()),
+        ChangeNotifierProvider(create: (_) => SigninEighteenViewModel()),
+
       ],
       child: const MyApp(),
     ),

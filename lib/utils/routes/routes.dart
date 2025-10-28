@@ -3,12 +3,17 @@ import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/login_screen.dart';
 import 'package:aifitness/view/signin_screen.dart';
 import 'package:aifitness/view/signin_screen_eight.dart';
+import 'package:aifitness/view/signin_screen_eighteen.dart';
 import 'package:aifitness/view/signin_screen_eleventh.dart';
+import 'package:aifitness/view/signin_screen_fifteen.dart';
 import 'package:aifitness/view/signin_screen_fifth.dart';
+import 'package:aifitness/view/signin_screen_fourteen.dart';
 import 'package:aifitness/view/signin_screen_fourth.dart';
 import 'package:aifitness/view/signin_screen_ninth.dart';
 import 'package:aifitness/view/signin_screen_second.dart';
+import 'package:aifitness/view/signin_screen_seventeen.dart';
 import 'package:aifitness/view/signin_screen_seventh.dart';
+import 'package:aifitness/view/signin_screen_sixteen.dart';
 import 'package:aifitness/view/signin_screen_sixth.dart';
 import 'package:aifitness/view/signin_screen_tenth.dart';
 import 'package:aifitness/view/signin_screen_third.dart';
@@ -78,6 +83,26 @@ class Routes {
       case (RouteNames.signinScreenThirteen):
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenThirteen(),
+        );
+      case (RouteNames.signinScreenFourteen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenFourteen(),
+        );
+      case (RouteNames.signinScreenFifteen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenFifteen(),
+        );
+      case (RouteNames.signinScreenSixteen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenSixteen(),
+        );
+      case (RouteNames.signinScreenSeventeen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenSeventeen(),
+        );
+      case (RouteNames.signinScreenEighteen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SigninScreenEighteen(),
         );
       default:
         return MaterialPageRoute(
