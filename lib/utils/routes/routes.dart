@@ -1,5 +1,6 @@
 import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/view/extra_food_intake_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/login_screen.dart';
 import 'package:aifitness/view/signin_screen.dart';
@@ -27,6 +28,8 @@ import 'package:aifitness/view/signin_screen_twenty_four.dart';
 import 'package:aifitness/view/signin_screen_twenty_one.dart';
 import 'package:aifitness/view/signin_screen_twenty_three.dart';
 import 'package:aifitness/view/signin_screen_twenty_two.dart';
+import 'package:aifitness/view/weight_today_screen.dart';
+import 'package:aifitness/viewModel/weight_today_viewModel.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -136,13 +139,21 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenTwentyFour(),
         );
-        case (RouteNames.signinScreenTwentyFive):
+      case (RouteNames.signinScreenTwentyFive):
         return MaterialPageRoute(
           builder: (BuildContext context) => const SigninScreenTwentyFive(),
         );
-        case (RouteNames.dashboard):
+      case (RouteNames.dashboard):
         return MaterialPageRoute(
           builder: (BuildContext context) => const Dashboard(),
+        );
+      case (RouteNames.extraFoodIntakeScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ExtraFoodIntakeScreen(),
+        );
+         case (RouteNames.weightTodayScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const WeightTodayScreen(),
         );
       default:
         return MaterialPageRoute(

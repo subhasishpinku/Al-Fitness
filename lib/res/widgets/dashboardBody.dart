@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -98,7 +99,15 @@ class DashboardBody extends StatelessWidget {
               const SizedBox(height: 16),
 
               /// Log button + Action buttons remain same
-              _logButton(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteNames.extraFoodIntakeScreen,
+                  );
+                },
+                child: _logButton(),
+              ),
               const SizedBox(height: 24),
               _infoText(),
               const SizedBox(height: 20),
@@ -198,90 +207,95 @@ class _DataCard extends StatelessWidget {
       (index) => _ChartData(index, data[index]),
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(1, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, RouteNames.weightTodayScreen);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade300),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 4,
+              offset: const Offset(1, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.black87,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: SfCartesianChart(
-                plotAreaBorderWidth: 0,
-                margin: EdgeInsets.zero,
-                primaryXAxis: NumericAxis(isVisible: false),
-                primaryYAxis: NumericAxis(isVisible: false),
-                series: <CartesianSeries<_ChartData, int>>[
-                  SplineSeries<_ChartData, int>(
-                    dataSource: chartData,
-                    xValueMapper: (_ChartData d, _) => d.x,
-                    yValueMapper: (_ChartData d, _) => d.y,
-                    dashArray: const [6, 4],
-                    color: Colors.black,
-                    width: 2,
-                    markerSettings: const MarkerSettings(
-                      isVisible: true,
-                      width: 10,
-                      height: 10,
-                      shape: DataMarkerType.circle,
-                      color: Colors.black,
-                    ),
-                    dataLabelSettings: const DataLabelSettings(
-                      isVisible: true,
-                      textStyle: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
                       ),
                     ),
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                    color: Colors.black87,
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: SfCartesianChart(
+                  plotAreaBorderWidth: 0,
+                  margin: EdgeInsets.zero,
+                  primaryXAxis: NumericAxis(isVisible: false),
+                  primaryYAxis: NumericAxis(isVisible: false),
+                  series: <CartesianSeries<_ChartData, int>>[
+                    SplineSeries<_ChartData, int>(
+                      dataSource: chartData,
+                      xValueMapper: (_ChartData d, _) => d.x,
+                      yValueMapper: (_ChartData d, _) => d.y,
+                      dashArray: const [6, 4],
+                      color: Colors.black,
+                      width: 2,
+                      markerSettings: const MarkerSettings(
+                        isVisible: true,
+                        width: 10,
+                        height: 10,
+                        shape: DataMarkerType.circle,
+                        color: Colors.black,
+                      ),
+                      dataLabelSettings: const DataLabelSettings(
+                        isVisible: true,
+                        textStyle: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -38,6 +38,7 @@ dependencies:
   get: ^4.7.2
   fl_chart: ^1.1.0
   syncfusion_flutter_charts: ^31.1.19
+  timeago: ^3.7.1
 
 
 

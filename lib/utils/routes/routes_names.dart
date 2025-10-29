@@ -27,5 +27,7 @@ class RouteNames {
   static const String signinScreenTwentyFour = "signin_screen_twenty_four";
   static const String signinScreenTwentyFive = "signin_screen_twenty_five";
   static const String dashboard = "dashboard";
+  static const String extraFoodIntakeScreen = "extra_food_intake_screen";
+  static const String weightTodayScreen = "weight_today_screen";
 
 }

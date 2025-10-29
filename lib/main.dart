@@ -1,9 +1,11 @@
 import 'package:aifitness/utils/routes/routes.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/view/extra_food_intake_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/signin_screen_twenty_five.dart';
 import 'package:aifitness/view/signin_screen_twenty_one.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
+import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_eighteen_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_fifteen_viewModel.dart';
@@ -29,6 +31,7 @@ import 'package:aifitness/viewModel/signin_twentyfour_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twentyone_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twentythree_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
+import 'package:aifitness/viewModel/weight_today_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -63,7 +66,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => SigninTwentyFourViewModel()),
         ChangeNotifierProvider(create: (_) => SigninTwentyFiveViewModel()),
         ChangeNotifierProvider(create: (_) => DashboardBodyViewModel()),
-
+        ChangeNotifierProvider(create: (_) => ExtraFoodIntakeViewModel()),
+        ChangeNotifierProvider(create: (_) => WeightTodayViewModel()),
 
       ],
       child: const MyApp(),
