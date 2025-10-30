@@ -14,6 +14,7 @@ import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
 import 'package:aifitness/viewModel/nutration_screen_viewModel.dart';
+import 'package:aifitness/viewModel/nutrition_plan_viewmodel.dart';
 import 'package:aifitness/viewModel/sigin_eighteen_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_fifteen_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_foutreen_viewModel.dart';
@@ -83,6 +84,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => AccountSettingViewModel()),
         ChangeNotifierProvider(create: (_) => NutritionScreenViewModel()),
         ChangeNotifierProvider(create: (_) => ViewPlanViewModel()),
+        ChangeNotifierProvider(create: (_) => NutritionPlanViewModel()),
 
 
       ],

@@ -1,5 +1,5 @@
 import 'package:aifitness/res/widgets/coloors.dart';
-import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
 import 'package:aifitness/viewModel/view_plan_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class ViewPlanScreen extends StatelessWidget {
             textDirection: TextDirection.ltr, //  All text right-aligned
             child: Scaffold(
               backgroundColor: AppColors.backgroundColor,
-              appBar: const SigninSecondAppBar(),
+              appBar: const SigninFourthAppBar(),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
@@ -75,53 +75,73 @@ class ViewPlanScreen extends StatelessWidget {
     required List<int> days,
     required Function(int) onDayPressed,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          title,
-          textAlign: TextAlign.right,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-        ),
-        const SizedBox(height: 10),
+    return Consumer<ViewPlanViewModel>(
+      builder: (context, vm, _) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+            const SizedBox(height: 10),
 
-        /// 👇 Vertical list of Day buttons aligned to right
-        Align(
-          alignment: Alignment.topRight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: days.map((day) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: SizedBox(
-                  width: 90,
-                  height: 38,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      side: const BorderSide(color: Colors.black),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    onPressed: () => onDayPressed(day),
-                    child: Text(
-                      "Day $day",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+            /// Animated day buttons (fade + slide from right)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: List.generate(days.length, (index) {
+                // Get index offset for animation visibility
+                final globalIndex =
+                    index +
+                    (title.contains('Workout Days')
+                        ? 0
+                        : vm.workoutDays.length);
+
+                final visible = vm.dayVisible.length > globalIndex
+                    ? vm.dayVisible[globalIndex]
+                    : false;
+
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 400),
+                  opacity: visible ? 1 : 0,
+                  child: AnimatedSlide(
+                    duration: const Duration(milliseconds: 400),
+                    offset: visible ? Offset.zero : const Offset(0.3, 0),
+                    curve: Curves.easeOut,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: SizedBox(
+                        width: 90,
+                        height: 38,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            side: const BorderSide(color: Colors.black),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 0,
+                          ),
+                          onPressed: () => onDayPressed(days[index]),
+                          child: Text(
+                            "Day ${days[index]}",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
+                );
+              }),
+            ),
+          ],
+        );
+      },
     );
   }
 }

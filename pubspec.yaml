@@ -79,6 +79,12 @@ flutter:
     - assets/images/body_18.png
     - assets/images/body_15.png
     - assets/images/body_15.jpeg
+    - assets/images/quinoa.jpg
+    - assets/images/avocado.jpeg
+    - assets/images/sweet_potato.jpeg
+
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
