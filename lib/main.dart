@@ -1,9 +1,14 @@
 import 'package:aifitness/utils/routes/routes.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/view/Target_change_screen.dart';
+import 'package:aifitness/view/body_image_progress.dart';
 import 'package:aifitness/view/extra_food_intake_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/signin_screen_twenty_five.dart';
 import 'package:aifitness/view/signin_screen_twenty_one.dart';
+import 'package:aifitness/viewModel/account_setting_viewModel.dart';
+import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
+import 'package:aifitness/viewModel/change_details_viewModel.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
@@ -31,6 +36,7 @@ import 'package:aifitness/viewModel/signin_twentyfour_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twentyone_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twentythree_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
+import 'package:aifitness/viewModel/targetChangeScreen_viewModel.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,6 +74,10 @@ void main() {
         ChangeNotifierProvider(create: (_) => DashboardBodyViewModel()),
         ChangeNotifierProvider(create: (_) => ExtraFoodIntakeViewModel()),
         ChangeNotifierProvider(create: (_) => WeightTodayViewModel()),
+        ChangeNotifierProvider(create: (_) => TargetChangeScreenViewModel()),
+        ChangeNotifierProvider(create: (_) => ChangeDetailsViewModel()),
+        ChangeNotifierProvider(create: (_) => BodyImageProgressViewModel()),
+        ChangeNotifierProvider(create: (_) => AccountSettingViewModel()),
 
       ],
       child: const MyApp(),

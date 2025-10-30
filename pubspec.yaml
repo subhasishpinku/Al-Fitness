@@ -39,6 +39,7 @@ dependencies:
   fl_chart: ^1.1.0
   syncfusion_flutter_charts: ^31.1.19
   timeago: ^3.7.1
+  image_picker: ^1.2.0
 
 
 

@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -64,17 +65,28 @@ class CustomDrawer extends StatelessWidget {
                   _drawerItem(
                     icon: Icons.flag,
                     title: "Target & Change Details",
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => {
+                      Navigator.pushNamed(
+                        context,
+                        RouteNames.targetChangeScreen,
+                      ),
+                    },
                   ),
                   _drawerItem(
                     icon: Icons.image_outlined,
                     title: "Body Image Progress",
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteNames.bodyImageProgress,
+                    ),
                   ),
                   _drawerItem(
                     icon: Icons.settings_outlined,
                     title: "Account Setting",
-                    onTap: () => Navigator.pop(context),
+                    onTap: () =>  Navigator.pushNamed(
+                        context,
+                        RouteNames.accountSettingScreen,
+                      ),
                   ),
                   _drawerItem(
                     icon: Icons.logout_outlined,

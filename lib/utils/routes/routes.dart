@@ -1,5 +1,9 @@
 import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/view/Target_change_screen.dart';
+import 'package:aifitness/view/account_setting_screen.dart';
+import 'package:aifitness/view/body_image_progress.dart';
+import 'package:aifitness/view/change_details.dart';
 import 'package:aifitness/view/extra_food_intake_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/login_screen.dart';
@@ -151,9 +155,25 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const ExtraFoodIntakeScreen(),
         );
-         case (RouteNames.weightTodayScreen):
+      case (RouteNames.weightTodayScreen):
         return MaterialPageRoute(
           builder: (BuildContext context) => const WeightTodayScreen(),
+        );
+      case (RouteNames.targetChangeScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const TargetChangeScreen(),
+        );
+      case (RouteNames.changeDetails):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ChangeDetails(),
+        );
+      case (RouteNames.bodyImageProgress):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const BodyImageProgress(),
+        );
+      case (RouteNames.accountSettingScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const AccountSettingScreen(),
         );
       default:
         return MaterialPageRoute(
