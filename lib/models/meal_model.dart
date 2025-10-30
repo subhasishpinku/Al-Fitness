@@ -1,3 +1,17 @@
+class MealSection {
+  final String title;
+  final String? iconPath;
+  final List<MealItem> items;
+  final String totalKcal;
+
+  MealSection({
+    required this.title,
+    this.iconPath,
+    required this.items,
+    required this.totalKcal,
+  });
+}
+
 class MealItem {
   final String name;
   final String image;
@@ -11,17 +25,5 @@ class MealItem {
     required this.carbs,
     required this.protein,
     required this.fats,
-  });
-}
-
-class MealSection {
-  final String title;
-  final String totalKcal;
-  final List<MealItem> items;
-
-  MealSection({
-    required this.title,
-    required this.totalKcal,
-    required this.items,
   });
 }

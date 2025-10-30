@@ -1,11 +1,12 @@
 import 'package:aifitness/models/meal_model.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class NutritionPlanViewModel extends ChangeNotifier {
-  final List<MealSection> _mealSections = [
+  List<MealSection> get mealSections => [
     MealSection(
       title: "Pre-Workout Meal (Eat 60–90 mins before workout)",
-      totalKcal: "351 Kcal",
+      iconPath: "assets/images/preworkout.png",
+      totalKcal: "420 kcal",
       items: [
         MealItem(
           name: "¾ Cup cooked quinoa (90 g)",
@@ -24,26 +25,18 @@ class NutritionPlanViewModel extends ChangeNotifier {
       ],
     ),
     MealSection(
-      title: "Post-Workout Meal",
-      totalKcal: "566 Kcal",
+      title: "Post-Workout Meal (Eat within 30 mins after workout)",
+      iconPath: "assets/images/sweet_potato.jpeg",
+      totalKcal: "350 kcal",
       items: [
         MealItem(
-          name: "⅓ Cup of Sweet Potatoes",
+          name: "1 Banana + 1 Scoop Whey Protein",
           image: "assets/images/sweet_potato.jpeg",
-          carbs: "23g",
-          protein: "2g",
-          fats: "0g",
-        ),
-        MealItem(
-          name: "2 Pieces of Avocado",
-          image: "assets/images/avocado.jpeg",
-          carbs: "4g",
-          protein: "1g",
-          fats: "22g",
+          carbs: "25g",
+          protein: "24g",
+          fats: "2g",
         ),
       ],
     ),
   ];
-
-  List<MealSection> get mealSections => _mealSections;
 }
