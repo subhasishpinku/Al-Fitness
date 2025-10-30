@@ -7,6 +7,7 @@ import 'package:aifitness/view/change_details.dart';
 import 'package:aifitness/view/extra_food_intake_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
 import 'package:aifitness/view/login_screen.dart';
+import 'package:aifitness/view/nutrition_screen.dart';
 import 'package:aifitness/view/signin_screen.dart';
 import 'package:aifitness/view/signin_screen_eight.dart';
 import 'package:aifitness/view/signin_screen_eighteen.dart';
@@ -32,6 +33,7 @@ import 'package:aifitness/view/signin_screen_twenty_four.dart';
 import 'package:aifitness/view/signin_screen_twenty_one.dart';
 import 'package:aifitness/view/signin_screen_twenty_three.dart';
 import 'package:aifitness/view/signin_screen_twenty_two.dart';
+import 'package:aifitness/view/view_plan_screen.dart';
 import 'package:aifitness/view/weight_today_screen.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
 import 'package:flutter/material.dart';
@@ -174,6 +176,14 @@ class Routes {
       case (RouteNames.accountSettingScreen):
         return MaterialPageRoute(
           builder: (BuildContext context) => const AccountSettingScreen(),
+        );
+      case (RouteNames.nutritionScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const NutritionScreen(),
+        );
+      case (RouteNames.viewPlanScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ViewPlanScreen(),
         );
       default:
         return MaterialPageRoute(

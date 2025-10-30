@@ -163,13 +163,13 @@
     static Widget _bottomButtons(BuildContext context) => Column(
       children: [
         const SizedBox(height: 10),
-        Center(child: _button("See Exercise List")),
+        Center(child: _button(context,"See Exercise List")),
         const SizedBox(height: 10),
-        Center(child: _button("See Your Nutrition")),
+        Center(child: _button(context,"See Your Nutrition")),
       ],
     );
 
-    static Widget _button(String text) => SizedBox(
+static Widget _button(BuildContext context, String text) => SizedBox(
       width: 250,
       height: 45,
       child: ElevatedButton(
@@ -184,7 +184,7 @@
         ),
         onPressed: () {
          if (text == "See Exercise List") {
-        // Navigator.pushNamed(context, RouteNames.exerciseListScreen);
+        Navigator.pushNamed(context, RouteNames.nutritionScreen);
       } else if (text == "See Your Nutrition") {
         // Navigator.pushNamed(context, RouteNames.nutritionPlanScreen);
       }

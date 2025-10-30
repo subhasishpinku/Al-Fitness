@@ -34,5 +34,6 @@ class RouteNames {
   static const String bodyImageProgress = "body_image_progress";
   static const String accountSettingScreen = "account_setting_screen";
   static const String nutritionScreen = "nutrition_screen";
+  static const String viewPlanScreen = "view_plan_screen";
 
 }
