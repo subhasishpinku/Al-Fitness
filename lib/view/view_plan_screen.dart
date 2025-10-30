@@ -14,7 +14,7 @@ class ViewPlanScreen extends StatelessWidget {
       child: Consumer<ViewPlanViewModel>(
         builder: (context, vm, _) {
           return Directionality(
-            textDirection: TextDirection.rtl, // 👈 Right aligned layout
+            textDirection: TextDirection.ltr, //  All text right-aligned
             child: Scaffold(
               backgroundColor: AppColors.backgroundColor,
               appBar: const SigninSecondAppBar(),
@@ -25,30 +25,39 @@ class ViewPlanScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const SizedBox(height: 10),
-                      const Text(
-                        "Tap on a day to view your\nnutrition plan",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black54,
+                      const Align(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          "Tap on a day to view your\nnutrition plan",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 25),
 
                       /// Workout Days Section
-                      _buildSection(
-                        title: "Nutrition Plan for Workout Days",
-                        days: vm.workoutDays,
-                        onDayPressed: (day) => vm.openDayPlan(context, day),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: _buildSection(
+                          title: "Nutrition Plan for Workout Days",
+                          days: vm.workoutDays,
+                          onDayPressed: (day) => vm.openDayPlan(context, day),
+                        ),
                       ),
                       const SizedBox(height: 20),
 
                       /// Non-Workout Days Section
-                      _buildSection(
-                        title: "Nutrition Plan for Non-Workout Days",
-                        days: vm.nonWorkoutDays,
-                        onDayPressed: (day) => vm.openDayPlan(context, day),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: _buildSection(
+                          title: "Nutrition Plan for Non-Workout Days",
+                          days: vm.nonWorkoutDays,
+                          onDayPressed: (day) => vm.openDayPlan(context, day),
+                        ),
                       ),
                     ],
                   ),
@@ -74,36 +83,43 @@ class ViewPlanScreen extends StatelessWidget {
           textAlign: TextAlign.right,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: days.map((day) {
-            return SizedBox(
-              width: 80,
-              height: 38,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  side: const BorderSide(color: Colors.black),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+        const SizedBox(height: 10),
+
+        /// 👇 Vertical list of Day buttons aligned to right
+        Align(
+          alignment: Alignment.topRight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: days.map((day) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: SizedBox(
+                  width: 90,
+                  height: 38,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      side: const BorderSide(color: Colors.black),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () => onDayPressed(day),
+                    child: Text(
+                      "Day $day",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
-                  elevation: 0,
                 ),
-                onPressed: () => onDayPressed(day),
-                child: Text(
-                  "Day $day",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
       ],
     );
