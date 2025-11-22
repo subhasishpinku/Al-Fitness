@@ -12,6 +12,7 @@ import 'package:aifitness/view/nutrition_screen.dart';
 import 'package:aifitness/view/signin_screen_twenty_five.dart';
 import 'package:aifitness/view/signin_screen_twenty_one.dart';
 import 'package:aifitness/view/subcutaneous_fat_screen.dart';
+import 'package:aifitness/viewModel/AddExerciseTrackerViewModel.dart';
 import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:aifitness/viewModel/body_fat_viewModel.dart';
@@ -21,6 +22,7 @@ import 'package:aifitness/viewModel/change_details_viewModel.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_details_viewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_viewModel.dart';
+import 'package:aifitness/viewModel/exercise_tracker_viewmodel.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_final_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_viewModel.dart';
@@ -127,6 +129,9 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => SubcutaneousFatViewModel()),
         ChangeNotifierProvider(create: (_) => VisceralFatViewModel()),
         ChangeNotifierProvider(create: (_) => BodyWaterViewModel()),
+        ChangeNotifierProvider(create: (_) => ExerciseTrackerViewModel()),
+        ChangeNotifierProvider(create: (_) => AddExerciseTrackerViewModel()),
+
 
       ],
       child: const MyApp(),

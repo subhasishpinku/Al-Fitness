@@ -81,7 +81,7 @@ class WorkoutExerciseModel {
     return double.tryParse(v.toString()) ?? 0.0;
   }
 
-  static List<T> _parseList<T>(
+  static List<T> _parseList1<T>(
     dynamic value,
     T Function(Map<String, dynamic>) mapper,
   ) {
@@ -121,6 +121,56 @@ class WorkoutExerciseModel {
     }
     return <T>[];
   }
+static List<T> _parseList<T>(
+  dynamic value,
+  T Function(Map<String, dynamic>) mapper,
+) {
+  final List<T> result = [];
+
+  if (value == null) return result;
+
+  List list;
+
+  // If backend sends list
+  if (value is List) {
+    list = value;
+  }
+  // If backend sends JSON string
+  else if (value is String) {
+    try {
+      final decoded = jsonDecode(value);
+      if (decoded is List) {
+        list = decoded;
+      } else {
+        return result;
+      }
+    } catch (_) {
+      return result;
+    }
+  } else {
+    return result;
+  }
+
+  for (var item in list) {
+    try {
+      if (item is Map<String, dynamic>) {
+        result.add(mapper(item));
+      } else if (item is Map) {
+        result.add(mapper(Map<String, dynamic>.from(item)));
+      } else if (item is String) {
+        final m = jsonDecode(item);
+        if (m is Map<String, dynamic>) {
+          result.add(mapper(m));
+        }
+      }
+    } catch (_) {
+      // instead of adding empty {}, SKIP the item
+      continue;
+    }
+  }
+
+  return result;
+}
 
   factory WorkoutExerciseModel.fromJson(Map<String, dynamic> json) {
     // media field sometimes is a JSON string (e.g. "[{...}]")

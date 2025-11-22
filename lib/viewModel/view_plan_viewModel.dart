@@ -1,35 +1,51 @@
-import 'package:aifitness/view/NutritionPlanScreen.dart';
+import 'package:aifitness/viewModel/days_model.dart';
 import 'package:flutter/material.dart';
+import '../repository/view_plan_repository.dart';
+import '../view/NutritionPlanScreen.dart';
 
 class ViewPlanViewModel extends ChangeNotifier {
-  final List<int> workoutDays = [1];
-  final List<int> nonWorkoutDays = [1, 2, 3, 4, 5, 6];
+  final ViewPlanRepository repo = ViewPlanRepository();
 
-  /// Animation visibility states
-  final List<bool> dayVisible = [];
+  List<int> workoutDays = [];
+  List<int> nonWorkoutDays = [];
+  List<bool> dayVisible = [];
+
+  bool loading = true;
 
   ViewPlanViewModel() {
-    _initAnimations();
+    fetchDays();
   }
 
-  void _initAnimations() async {
-    final allDays = [...workoutDays, ...nonWorkoutDays];
-    dayVisible.clear();
-    dayVisible.addAll(List.generate(allDays.length, (_) => false));
+  Future<void> fetchDays() async {
+    DaysModel? model = await repo.fetchDays(2858);
 
-    // Animate each day button one by one
-    for (int i = 0; i < allDays.length; i++) {
-      await Future.delayed(Duration(milliseconds: 150 * i));
+    if (model != null) {
+      workoutDays = model.workoutDays;
+      nonWorkoutDays = model.nonWorkoutDays;
+    }
+
+    loading = false;
+    notifyListeners();
+    _startAnimation();
+  }
+
+  void _startAnimation() async {
+    final total = workoutDays.length + nonWorkoutDays.length;
+    dayVisible = List.generate(total, (_) => false);
+
+    for (int i = 0; i < total; i++) {
+      await Future.delayed(Duration(milliseconds: 140));
       dayVisible[i] = true;
       notifyListeners();
     }
   }
 
-  /// Open specific day plan
-  void openDayPlan(BuildContext context, int day) {
+  void openDayPlan(BuildContext context, int day, String dayType) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NutritionPlanScreen(day: day)),
+      MaterialPageRoute(
+        builder: (_) => NutritionPlanScreen(day: day, dayType: dayType),
+      ),
     );
   }
 }

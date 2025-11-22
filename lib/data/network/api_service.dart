@@ -39,29 +39,38 @@ class ApiService {
     }
   }
 
-  Future<Response> postRequestFood(
-    String endpoint,
-    Map<String, dynamic> data,
-  ) async {
-    print("📤 POST => $endpoint");
-    print("📤 BODY => $data");
+  // Future<Response> postRequestFood(
+  //   String endpoint,
+  //   Map<String, dynamic> data,
+  // ) async {
+  //   print(" POST => $endpoint");
+  //   print(" BODY => $data");
 
+  //   try {
+  //     final response = await _dio.post(endpoint, data: data);
+  //     print(" RESPONSE => ${response.data}");
+  //     return response;
+  //   } catch (e) {
+  //     print(" API ERROR: $e");
+  //     rethrow;
+  //   }
+  // }
+
+  // Future<Response> register(String endpoint, Map<String, dynamic> data) async {
+  //   try {
+  //     Response response = await _dio.post(endpoint, data: data);
+  //     return response;
+  //   } on DioError catch (e) {
+  //     throw Exception(e.response?.data ?? e.message);
+  //   }
+  // }
+
+   Future<Response> post(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await _dio.post(endpoint, data: data);
-      print("📥 RESPONSE => ${response.data}");
       return response;
     } catch (e) {
-      print("❌ API ERROR: $e");
       rethrow;
-    }
-  }
-
-  Future<Response> register(String endpoint, Map<String, dynamic> data) async {
-    try {
-      Response response = await _dio.post(endpoint, data: data);
-      return response;
-    } on DioError catch (e) {
-      throw Exception(e.response?.data ?? e.message);
     }
   }
 }

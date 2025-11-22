@@ -74,10 +74,7 @@ class NutritionScreen extends StatelessWidget {
                       ),
                       onPressed: () {
                         vm.openWeeksPlan(context);
-                        Navigator.pushNamed(
-                          context,
-                          RouteNames.viewPlanScreen,
-                        );
+                        Navigator.pushNamed(context, RouteNames.viewPlanScreen);
                       },
                       child: const Text(
                         "View Week's Plan",

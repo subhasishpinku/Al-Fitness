@@ -1,9 +1,33 @@
+import 'package:aifitness/viewModel/AddExerciseTrackerViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ExerciseTrackerDialog extends StatelessWidget {
+class ExerciseTrackerDialog extends StatefulWidget {
   final String exerciseName;
+  final int exerciseID;
+  final int userId;
 
-  const ExerciseTrackerDialog({super.key, required this.exerciseName});
+  const ExerciseTrackerDialog({
+    super.key,
+    required this.exerciseName,
+    required this.exerciseID,
+    required this.userId,
+  });
+
+  @override
+  State<ExerciseTrackerDialog> createState() => _ExerciseTrackerDialogState();
+}
+
+class _ExerciseTrackerDialogState extends State<ExerciseTrackerDialog> {
+  // Controllers
+  final TextEditingController set1Weight = TextEditingController();
+  final TextEditingController set1Reps = TextEditingController();
+
+  final TextEditingController set2Weight = TextEditingController();
+  final TextEditingController set2Reps = TextEditingController();
+
+  final TextEditingController set3Weight = TextEditingController();
+  final TextEditingController set3Reps = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +37,7 @@ class ExerciseTrackerDialog extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Dialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Padding(
@@ -39,14 +64,15 @@ class ExerciseTrackerDialog extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+
                 Text(
                   formattedDate,
                   style: const TextStyle(fontSize: 13, color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
+
                 Text(
-                  exerciseName,
+                  widget.exerciseName,
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -54,35 +80,73 @@ class ExerciseTrackerDialog extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                _buildSetSection("Set 1 (Warm-Up Set)", "25", "8"),
+                _buildSetSection("Set 1 (Warm-Up Set)", set1Weight, set1Reps),
                 const SizedBox(height: 12),
-                _buildSetSection("Set 2 (Failure Set)", "20", "6"),
+
+                _buildSetSection("Set 2 (Failure Set)", set2Weight, set2Reps),
                 const SizedBox(height: 12),
-                _buildSetSection("Set 3 (Pump Set)", "30", "6"),
+
+                _buildSetSection("Set 3 (Pump Set)", set3Weight, set3Reps),
 
                 const SizedBox(height: 22),
 
                 // ---------- Save Button ----------
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      side: const BorderSide(color: Colors.blue),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text(
-                      "Save",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
+                  child: Consumer<AddExerciseTrackerViewModel>(
+                    builder: (context, vm, child) {
+                      return ElevatedButton(
+                        onPressed: vm.loading
+                            ? null
+                            : () async {
+                                final body = {
+                                  "set_1_weight": set1Weight.text,
+                                  "set_1_reps": set1Reps.text,
+                                  "set_2_weight": set2Weight.text,
+                                  "set_2_reps": set2Reps.text,
+                                  "set_3_weight": set3Weight.text,
+                                  "set_3_reps": set3Reps.text,
+                                  "user_id": widget.userId,
+                                  "exercise_id": widget.exerciseID,
+                                };
+
+                                bool success = await vm.saveTracker(body);
+
+                                if (!mounted) return;
+                                Navigator.pop(context);
+                                print("successView $success");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      success
+                                          ? "Workout entry saved successfully"
+                                          : "Failed to save entry",
+                                    ),
+                                  ),
+                                );
+                              },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.blue),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: vm.loading
+                            ? const CircularProgressIndicator(
+                                color: Colors.black,
+                              )
+                            : const Text(
+                                "Save",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -93,7 +157,11 @@ class ExerciseTrackerDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildSetSection(String title, String weight, String reps) {
+  Widget _buildSetSection(
+    String title,
+    TextEditingController weightCtrl,
+    TextEditingController repsCtrl,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -103,27 +171,56 @@ class ExerciseTrackerDialog extends StatelessWidget {
         ),
         const SizedBox(height: 8),
 
-        _valueBox("Weight:", weight),
+        _inputBox("Weight (KG)", weightCtrl),
         const SizedBox(height: 6),
-        _valueBox("REPS:", reps),
+        _inputBox("Reps", repsCtrl),
       ],
     );
   }
 
-  Widget _valueBox(String label, String value) {
-    return Container(
-      height: 42,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFCCEEFF),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        "$label  $value",
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-      ),
+  Widget _inputBox(String label, TextEditingController controller) {
+    return Row(
+      children: [
+        // LEFT LABEL BOX
+        Expanded(
+          flex: 2,
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFCCEEFF),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            child: Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
+        ),
+
+        const SizedBox(width: 2),
+
+        // RIGHT VALUE BOX
+        Expanded(
+          flex: 3,
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFCCEEFF),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            child: TextFormField(
+              controller: controller,
+              textAlign: TextAlign.left,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                isCollapsed: true,
+              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

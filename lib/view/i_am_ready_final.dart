@@ -17,7 +17,7 @@ class IamReadyFinal extends StatefulWidget {
 
 class _IamReadyFinalState extends State<IamReadyFinal> {
   late IamReadyFinalViewModel viewModel;
-
+  int userId = 0;
   @override
   void initState() {
     super.initState();
@@ -27,10 +27,14 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
 
   Future<void> load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int userId = prefs.getInt("user_id") ?? 0;
+    userId = prefs.getInt("user_id") ?? 0;
     String? deviceId = prefs.getString("device_id");
     if (deviceId == null) return;
     await viewModel.getExercises(deviceId: deviceId, userId: userId, day: "1");
+    Provider.of<IamReadyFinalViewModel>(
+      context,
+      listen: false,
+    ).fetchExerciseTracker(userId, 2365);
   }
 
   @override
@@ -175,7 +179,8 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => vm.onHistoryPressed(context, exercise),
+                  onPressed: () =>
+                      vm.onHistoryPressed(context, exercise, userId),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
@@ -186,7 +191,7 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => vm.onTrackPressed(context, exercise),
+                  onPressed: () => vm.onTrackPressed(context, exercise,userId),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,

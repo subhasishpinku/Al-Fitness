@@ -14,7 +14,7 @@ class ViewPlanScreen extends StatelessWidget {
       child: Consumer<ViewPlanViewModel>(
         builder: (context, vm, _) {
           return Directionality(
-            textDirection: TextDirection.ltr, //  All text right-aligned
+            textDirection: TextDirection.ltr,
             child: Scaffold(
               backgroundColor: AppColors.backgroundColor,
               appBar: const SigninFourthAppBar(),
@@ -45,9 +45,10 @@ class ViewPlanScreen extends StatelessWidget {
                         child: _buildSection(
                           title: "Nutrition Plan for Workout Days",
                           days: vm.workoutDays,
-                          onDayPressed: (day) => vm.openDayPlan(context, day),
+                          onDayPressed: (day) => vm.openDayPlan(context, day, "workout"),
                         ),
                       ),
+
                       const SizedBox(height: 20),
 
                       /// Non-Workout Days Section
@@ -56,7 +57,7 @@ class ViewPlanScreen extends StatelessWidget {
                         child: _buildSection(
                           title: "Nutrition Plan for Non-Workout Days",
                           days: vm.nonWorkoutDays,
-                          onDayPressed: (day) => vm.openDayPlan(context, day),
+                          onDayPressed: (day) => vm.openDayPlan(context, day, "non_workout"),
                         ),
                       ),
                     ],
@@ -87,11 +88,10 @@ class ViewPlanScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            /// Animated day buttons (fade + slide from right)
+            /// Animated buttons
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: List.generate(days.length, (index) {
-                // Get index offset for animation visibility
                 final globalIndex =
                     index +
                     (title.contains('Workout Days')
@@ -114,22 +114,25 @@ class ViewPlanScreen extends StatelessWidget {
                       child: SizedBox(
                         width: 90,
                         height: 38,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            side: const BorderSide(color: Colors.black),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            elevation: 0,
+                        child: Material(
+                          color: Colors.white,
+                          shape: BubbleBorder(
+                            color: const Color(0xFF4C6FFF),
+                            width: 1.4,
+                            radius: 16,
                           ),
-                          onPressed: () => onDayPressed(days[index]),
-                          child: Text(
-                            "Day ${days[index]}",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () => onDayPressed(days[index]),
+                            child: Center(
+                              child: Text(
+                                "Day ${days[index]}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -144,4 +147,53 @@ class ViewPlanScreen extends StatelessWidget {
       },
     );
   }
+}
+
+class BubbleBorder extends ShapeBorder {
+  final Color color;
+  final double width;
+  final double radius;
+
+  BubbleBorder({
+    this.color = const Color(0xFF4C6FFF),
+    this.width = 1.4,
+    this.radius = 16,
+  });
+
+  @override
+  EdgeInsetsGeometry get dimensions => EdgeInsets.all(width);
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    final r = Radius.circular(radius);
+
+    final bubbleRect = RRect.fromRectAndRadius(rect.deflate(width), r);
+
+    // OPTIONAL: You can add a bubble tail here
+    return Path()..addRRect(bubbleRect);
+  }
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
+    // If you don't need a special inner path, return the same shape
+    final r = Radius.circular(radius);
+    return Path()
+      ..addRRect(RRect.fromRectAndRadius(rect.deflate(width * 2), r));
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = width
+      ..style = PaintingStyle.stroke;
+
+    final r = Radius.circular(radius);
+    final bubbleRect = RRect.fromRectAndRadius(rect.deflate(width), r);
+
+    canvas.drawRRect(bubbleRect, paint);
+  }
+
+  @override
+  ShapeBorder scale(double t) => this;
 }
