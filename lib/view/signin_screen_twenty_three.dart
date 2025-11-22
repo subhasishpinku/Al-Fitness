@@ -4,13 +4,19 @@ import 'package:aifitness/viewModel/signin_twentythree_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SigninScreenTwentyThree extends StatelessWidget {
+class SigninScreenTwentyThree extends StatefulWidget {
   const SigninScreenTwentyThree({super.key});
 
   @override
+  State<SigninScreenTwentyThree> createState() =>
+      _SigninScreenTwentyThreeState();
+}
+
+class _SigninScreenTwentyThreeState extends State<SigninScreenTwentyThree> {
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SigninTwentyThreeViewModel(),
+      create: (_) => SigninTwentyThreeViewModel()..fetchFoods(), // IMPORTANT
       child: Consumer<SigninTwentyThreeViewModel>(
         builder: (context, viewModel, _) {
           return Scaffold(
@@ -32,75 +38,91 @@ class SigninScreenTwentyThree extends StatelessWidget {
                   const SizedBox(height: 8),
                   const Text(
                     "Please select a minimum of 2 items and a maximum of 5 items.",
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                   const SizedBox(height: 20),
-                  Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 14,
-                            mainAxisSpacing: 14,
-                          ),
-                      itemCount: viewModel.fatSources.length,
-                      itemBuilder: (context, index) {
-                        final item = viewModel.fatSources[index];
-                        final isSelected = viewModel.selectedSources.contains(
-                          item,
-                        );
 
-                        return GestureDetector(
-                          onTap: () => viewModel.toggleSelection(item),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? Colors.black
-                                        : Colors.grey.shade400,
-                                    width: 1.8,
+                  /// ---------------- LOADING STATE ----------------
+                  if (viewModel.isLoading)
+                    const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+
+                  /// ---------------- ERROR STATE ----------------
+                  if (!viewModel.isLoading && viewModel.errorMessage.isNotEmpty)
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          viewModel.errorMessage,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
+
+                  /// ---------------- SUCCESS STATE ----------------
+                  if (!viewModel.isLoading && viewModel.errorMessage.isEmpty)
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 14,
+                              mainAxisSpacing: 14,
+                            ),
+                        itemCount: viewModel.foods.length,
+                        itemBuilder: (context, index) {
+                          final item = viewModel.foods[index];
+                          final rawItem = item.rawItem ?? "";
+                          final bool isSelected = viewModel.selectedItems
+                              .contains(item.name);
+
+                          return GestureDetector(
+                            onTap: () => viewModel.toggleSelection(item),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? Colors.black
+                                          : Colors.grey.shade400,
+                                      width: 2,
+                                    ),
                                   ),
-                                ),
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  item,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              if (isSelected)
-                                Positioned(
-                                  bottom: 6,
-                                  right: 6,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(
+                                    rawItem,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
                                       color: Colors.black,
                                     ),
-                                    padding: const EdgeInsets.all(3),
-                                    child: const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 12,
-                                    ),
                                   ),
                                 ),
-                            ],
-                          ),
-                        );
-                      },
+
+                                if (isSelected)
+                                  const Positioned(
+                                    bottom: 6,
+                                    right: 6,
+                                    child: Icon(
+                                      Icons.check_circle,
+                                      color: Colors.black,
+                                      size: 18,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
+
+                  /// ---------------- NEXT BUTTON ----------------
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -126,6 +148,7 @@ class SigninScreenTwentyThree extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 10),
                 ],
               ),

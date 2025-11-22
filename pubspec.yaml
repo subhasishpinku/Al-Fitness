@@ -40,6 +40,12 @@ dependencies:
   syncfusion_flutter_charts: ^31.1.19
   timeago: ^3.7.1
   image_picker: ^1.2.0
+  dio: ^5.9.0
+  shared_preferences: ^2.5.3
+  mobile_device_identifier: ^0.0.3
+  chewie: ^1.13.0
+  vimeo_video_player: ^1.0.1
+  webview_flutter: ^4.13.0
 
 
 
@@ -82,6 +88,7 @@ flutter:
     - assets/images/quinoa.jpg
     - assets/images/avocado.jpeg
     - assets/images/sweet_potato.jpeg
+    - assets/images/sweet_potato1.png
     - assets/images/preworkout.png
 
 

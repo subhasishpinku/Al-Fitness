@@ -2,9 +2,32 @@ import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ExtraFoodIntakeScreen extends StatelessWidget {
+class ExtraFoodIntakeScreen extends StatefulWidget {
   const ExtraFoodIntakeScreen({super.key});
+
+  @override
+  State<ExtraFoodIntakeScreen> createState() => _ExtraFoodIntakeScreenState();
+}
+
+class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    int userId = prefs.getInt("user_id") ?? 0;
+    int week = prefs.getInt("week") ?? 0;
+
+    Provider.of<ExtraFoodIntakeViewModel>(
+      context,
+      listen: false,
+    ).fetchWrongDietHistory(week.toString(), userId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +67,23 @@ class ExtraFoodIntakeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              /// Input Box
+              /// ---------------- INPUT FIELD ----------------
               TextField(
                 controller: viewModel.intakeController,
                 maxLines: 6,
                 decoration: InputDecoration(
                   hintText: "Describe extra food or calories consumed...",
-                  contentPadding: const EdgeInsets.all(10),
+                  contentPadding: const EdgeInsets.all(12),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(color: Colors.grey),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
 
-              /// Submit Button
-              Align(
-                alignment: Alignment.center,
+              /// ---------------- SUBMIT BUTTON ----------------
+              Center(
                 child: SizedBox(
                   width: 250,
                   height: 45,
@@ -70,15 +92,25 @@ class ExtraFoodIntakeScreen extends StatelessWidget {
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         side: const BorderSide(color: Colors.black),
                       ),
                       elevation: 0,
                     ),
-                    onPressed: () {},
-                    child: Text(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      int userId = prefs.getInt("user_id") ?? 0;
+                      int week = prefs.getInt("week") ?? 0;
+
+                      viewModel.submitWrongDiet(
+                        userId: userId,
+                        week: week.toString(),
+                        day: "8",
+                      );
+                    },
+                    child: const Text(
                       "Submit",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 1.2,
@@ -88,68 +120,110 @@ class ExtraFoodIntakeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.center,
-                child: IntrinsicWidth(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 15,
-                      ),
-                      side: BorderSide(color: AppColors.backgroundColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      foregroundColor: AppColors.primaryColor,
-                      backgroundColor: AppColors.signInButtonColor,
+
+              /// ---------------- HISTORY TITLE BUTTON ----------------
+              Center(
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.primaryColor,
+                    backgroundColor: AppColors.signInButtonColor,
+                    side: BorderSide(color: AppColors.backgroundColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    onPressed: () {},
-                    child: const Text(
-                      "Week 3 Extra Food Intake History",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        height: 1.4,
-                      ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 15,
                     ),
+                  ),
+                  child: const Text(
+                    "Week 3 Extra Food Intake History",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
 
-              /// History Section
-              const SizedBox(height: 6),
+              const SizedBox(height: 12),
 
-              if (viewModel.intakeHistory.isEmpty)
-                Align(
-                  alignment: Alignment.center,
-                  child: const Text(
-                    "No track record found. You’ll see your track record here after adding one.",
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                )
-              else
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: viewModel.intakeHistory.length,
-                    separatorBuilder: (_, __) => const Divider(height: 8),
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(
-                          viewModel.intakeHistory[index],
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                        leading: const Icon(
-                          Icons.fastfood,
-                          color: Colors.black87,
-                          size: 20,
+              /// ---------------- HISTORY LIST ----------------
+              Expanded(
+                child: Consumer<ExtraFoodIntakeViewModel>(
+                  builder: (context, vm, _) {
+                    if (vm.loading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (vm.intakeHistory.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          "No track record found.\nYou’ll see your track record here after adding one.",
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                          textAlign: TextAlign.center,
                         ),
                       );
-                    },
-                  ),
+                    }
+
+                    return ListView.separated(
+                      itemCount: vm.intakeHistory.length,
+                      separatorBuilder: (_, __) => const Divider(
+                        height: 20,
+                        thickness: 1,
+                        color: Colors.black26, // light grey underline
+                      ),
+                      itemBuilder: (context, index) {
+                        final item = vm.intakeHistory[index];
+
+                        return Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Day: ${item.day}",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  Text(
+                                    item.createdAtHuman,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              const Divider(
+                                height: 20,
+                                thickness: 2,
+                                color: Colors.black12,
+                              ),
+                              Text(
+                                item.description,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
+              ),
             ],
           ),
         ),

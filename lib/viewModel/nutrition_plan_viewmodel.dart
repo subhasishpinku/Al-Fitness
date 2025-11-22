@@ -26,7 +26,7 @@ class NutritionPlanViewModel extends ChangeNotifier {
     ),
     MealSection(
       title: "Post-Workout Meal (Eat within 30 mins after workout)",
-      iconPath: "assets/images/sweet_potato.jpeg",
+      iconPath: "assets/images/sweet_potato1.png",
       totalKcal: "350 kcal",
       items: [
         MealItem(

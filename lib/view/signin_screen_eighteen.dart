@@ -9,14 +9,21 @@ class SigninScreenEighteen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SigninEighteenViewModel>(context);
-    final options = provider.options;
+   final provider = Provider.of<SigninEighteenViewModel>(context);
+
+    // LOAD API ONLY ONCE
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (provider.foods.isEmpty && provider.isLoading == false) {
+        provider.fetchFoods();
+      }
+    });
 
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: const SigninSecondAppBar(),
+
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Column(
@@ -24,7 +31,7 @@ class SigninScreenEighteen extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
 
-              // Title
+              /// TITLE
               const Text(
                 "Select the carb items you'd like to include in your meal plan",
                 textAlign: TextAlign.left,
@@ -49,78 +56,100 @@ class SigninScreenEighteen extends StatelessWidget {
 
               const SizedBox(height: 25),
 
-              // Grid of circular options
-              Expanded(
-                child: GridView.builder(
-                  itemCount: options.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 1,
-                  ),
-                  itemBuilder: (context, index) {
-                    final option = options[index];
-                    final isSelected = provider.selectedItems.contains(option);
+              /// LOADING
+              if (provider.isLoading)
+                const Expanded(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
 
-                    return GestureDetector(
-                      onTap: () => provider.toggleSelection(option),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: isSelected
-                                ? AppColors.primaryColor
-                                : Colors.grey.shade500,
-                            width: 2,
+              /// ERROR
+              if (!provider.isLoading && provider.errorMessage.isNotEmpty)
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      provider.errorMessage,
+                      style: const TextStyle(color: Colors.red, fontSize: 16),
+                    ),
+                  ),
+                ),
+
+              /// FOOD GRID
+              if (!provider.isLoading &&
+                  provider.errorMessage.isEmpty &&
+                  provider.foods.isNotEmpty)
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: provider.foods.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                        final item = provider.foods[index]; // FoodModel
+                      final String rawItem = item.rawItem;// display name
+
+                      // final bool isSelected =
+                      //     provider.selectedItems.contains(name);
+                  final bool isSelected = provider.selectedItems.contains(item.name);
+
+                      return GestureDetector(
+                        onTap: () => provider.toggleSelection(item),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppColors.primaryColor
+                                  : Colors.grey.shade500,
+                              width: 2,
+                            ),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  rawItem,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+
+                              if (isSelected)
+                                const Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.black,
+                                    child: Icon(
+                                      Icons.check,
+                                      size: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
-                              child: Text(
-                                option,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            if (isSelected)
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.black,
-                                  ),
-                                  padding: const EdgeInsets.all(3),
-                                  child: const Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 14,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
 
               const SizedBox(height: 10),
 
-              // Next button
+              /// NEXT BUTTON
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

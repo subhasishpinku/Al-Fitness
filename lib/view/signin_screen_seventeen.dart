@@ -10,7 +10,13 @@ class SigninScreenSeventeen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SigninSeventeenViewModel>(context);
-    final options = provider.options;
+
+    // LOAD API ONLY ONCE
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (provider.foods.isEmpty && provider.isLoading == false) {
+        provider.fetchFoods();
+      }
+    });
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -23,7 +29,8 @@ class SigninScreenSeventeen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              // Title
+
+              /// TITLE
               IntrinsicWidth(
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
@@ -61,78 +68,108 @@ class SigninScreenSeventeen extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+
               const SizedBox(height: 25),
 
-              // Grid of circular options
-              Expanded(
-                child: GridView.builder(
-                  itemCount: options.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 14,
-                    mainAxisSpacing: 14,
-                    childAspectRatio: 1,
-                  ),
-                  itemBuilder: (context, index) {
-                    final option = options[index];
-                    final isSelected = provider.selectedItems.contains(option);
+              /// LOADER
+              if (provider.isLoading)
+                const Expanded(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
 
-                    return GestureDetector(
-                      onTap: () => provider.toggleSelection(option),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: isSelected
-                                ? AppColors.primaryColor
-                                : Colors.black54,
-                            width: 2,
-                          ),
+              /// ERROR
+              if (!provider.isLoading && provider.errorMessage.isNotEmpty)
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      provider.errorMessage,
+                      style: const TextStyle(color: Colors.red, fontSize: 16),
+                    ),
+                  ),
+                ),
+
+              /// FOOD LIST GRID
+              if (!provider.isLoading &&
+                  provider.errorMessage.isEmpty &&
+                  provider.foods.isNotEmpty)
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: provider.foods.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 14,
+                          mainAxisSpacing: 14,
+                          childAspectRatio: 1,
                         ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Text(
-                              option,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                    itemBuilder: (context, index) {
+                      final item = provider.foods[index]; // FoodModel
+                      final String rawItem = item.rawItem;
+
+                      // final bool isSelected = provider.selectedItems.contains(
+                      //   rawItem,
+                      // );
+                  final bool isSelected = provider.selectedItems.contains(item.name);
+
+                      return GestureDetector(
+                        onTap: () => provider.toggleSelection(item),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppColors.primaryColor
+                                  : Colors.black54,
+                              width: 2,
                             ),
-                            if (isSelected)
-                              const Positioned(
-                                bottom: 8,
-                                right: 8,
-                                child: CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: Colors.black,
-                                  child: Icon(
-                                    Icons.check,
-                                    size: 14,
-                                    color: Colors.white,
-                                  ),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Text(
+                                rawItem,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                          ],
+
+                              if (isSelected)
+                                const Positioned(
+                                  bottom: 8,
+                                  right: 8,
+                                  child: CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.black,
+                                    child: Icon(
+                                      Icons.check,
+                                      size: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
 
               const SizedBox(height: 10),
 
-              // Next button
+              /// NEXT BUTTON
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 12),
+                      horizontal: 40,
+                      vertical: 12,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

@@ -13,9 +13,15 @@ class SigninScreenTwentyTwo extends StatefulWidget {
 
 class _SigninScreenTwentyTwoState extends State<SigninScreenTwentyTwo> {
   @override
+  void initState() {
+    super.initState();
+    // We will call fetchFoods AFTER provider is created in build()
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SigninTwentyTwoViewModel(),
+      create: (_) => SigninTwentyTwoViewModel()..fetchFoods(), // IMPORTANT
       child: Consumer<SigninTwentyTwoViewModel>(
         builder: (context, viewModel, _) {
           return Scaffold(
@@ -40,71 +46,91 @@ class _SigninScreenTwentyTwoState extends State<SigninScreenTwentyTwo> {
                     style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                   const SizedBox(height: 20),
-                  Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 1,
-                      ),
-                      itemCount: viewModel.nuts.length,
-                      itemBuilder: (context, index) {
-                        final nut = viewModel.nuts[index];
-                        final isSelected =
-                            viewModel.selectedNuts.contains(nut);
 
-                        return GestureDetector(
-                          onTap: () => viewModel.toggleSelection(nut),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: isSelected
-                                    ? Colors.black
-                                    : Colors.grey.shade500,
-                                width: 2,
-                              ),
+                  if (viewModel.isLoading)
+                    const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+
+                  if (!viewModel.isLoading && viewModel.errorMessage.isNotEmpty)
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          viewModel.errorMessage,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
+
+                  if (!viewModel.isLoading && viewModel.errorMessage.isEmpty)
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
                             ),
-                            alignment: Alignment.center,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Text(
-                                  nut,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
+                        itemCount: viewModel.foods.length,
+                        itemBuilder: (context, index) {
+                          final item = viewModel.foods[index]; // FoodModel
+                          final rawItem = item.rawItem ?? "";
+                          final bool isSelected = viewModel.selectedItems
+                              .contains(item.name);
+
+                          return GestureDetector(
+                            onTap: () => viewModel.toggleSelection(item),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? Colors.black
+                                      : Colors.grey.shade500,
+                                  width: 2,
                                 ),
-                                if (isSelected)
-                                  const Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding: EdgeInsets.all(6.0),
-                                      child: Icon(
-                                        Icons.check_circle,
-                                        color: Colors.black,
-                                        size: 18,
-                                      ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Text(
+                                    rawItem,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
                                     ),
                                   ),
-                              ],
+                                  if (isSelected)
+                                    const Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(6.0),
+                                        child: Icon(
+                                          Icons.check_circle,
+                                          color: Colors.black,
+                                          size: 18,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
+
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 12),
+                          horizontal: 40,
+                          vertical: 12,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),

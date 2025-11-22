@@ -1,54 +1,95 @@
+import 'dart:convert';
+import 'package:aifitness/models/food_model.dart';
+import 'package:aifitness/repository/food_repository.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninTwentyOneViewModel extends ChangeNotifier {
-  final List<String> fruits = [
-    'Banana',
-    'Pear',
-    'Guava',
-    'Papaya',
-    'Pineapple',
-    'Peach/Plum',
-    'Berries',
-    'Figs',
-    'Apple',
-    'Lychees',
-    'Watermelon',
-    'Avocados',
-  ];
+  final FoodRepository _repo = FoodRepository();
 
-  final List<String> selectedFruits = [];
+  List<FoodModel> foods = [];
+  bool isLoading = false;
+  String errorMessage = "";
+  String? mealType = "";
+
+  /// ==================== Fetch foods from API ======================
+  Future<void> fetchFoods() async {
+    isLoading = true;
+    notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    mealType = prefs.getString("meal_type");
+
+    try {
+      foods = await _repo.getFoods(
+        classification: "Fruit",
+        type: mealType!,
+        search: "",
+      );
+
+      if (foods.isEmpty) {
+        errorMessage = "No foods found.";
+      }
+    } catch (e) {
+      errorMessage = "Failed to load foods.";
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  /// ==================== Selection Logic ======================
+  final List<String> _selectedItems = [];
+
+  List<String> get selectedItems => _selectedItems;
 
   bool get canProceed =>
-      selectedFruits.length >= 2 && selectedFruits.length <= 5;
+      _selectedItems.length >= 2 && _selectedItems.length <= 5;
 
-  void toggleSelection(String fruit) {
-    if (selectedFruits.contains(fruit)) {
-      selectedFruits.remove(fruit);
+  // void toggleSelection(String fruit) {
+  //   if (_selectedItems.contains(fruit)) {
+  //     _selectedItems.remove(fruit);
+  //   } else {
+  //     if (_selectedItems.length < 5) {
+  //       _selectedItems.add(fruit);
+  //     }
+  //   }
+  //   notifyListeners();
+  // }
+  void toggleSelection(FoodModel item) {
+    final String value = item.name; // Save item.name
+
+    if (_selectedItems.contains(value)) {
+      _selectedItems.remove(value);
     } else {
-      if (selectedFruits.length >= 5) return;
-      selectedFruits.add(fruit);
+      if (_selectedItems.length < 5) {
+        _selectedItems.add(value);
+      }
     }
     notifyListeners();
   }
 
-  void onNextPressed(BuildContext context) {
-    if (canProceed) {
+  /// ==================== Save Selected Items ======================
+  Future<void> saveSelectedItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    String jsonString = jsonEncode(_selectedItems);
+    await prefs.setString("fruit", jsonString);
+
+    print("Saved fruit: $jsonString");
+  }
+
+  /// ==================== Next Button ======================
+  void onNextPressed(BuildContext context) async {
+    if (!canProceed) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Proceeding to next step..."),
-          duration: Duration(seconds: 1),
-        ),
+        const SnackBar(content: Text("Please select between 2 and 5 items.")),
       );
-      // TODO: Replace next screen route here
-      Navigator.pushNamed(context, RouteNames.signinScreenTwentyTwo);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please select between 2 and 5 items."),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      return;
     }
+
+    await saveSelectedItems();
+
+    Navigator.pushNamed(context, RouteNames.signinScreenTwentyTwo);
   }
 }

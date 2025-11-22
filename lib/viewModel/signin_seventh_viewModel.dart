@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninSeventhViewModel extends ChangeNotifier {
   int _selectedHeight = 150; // default height in cm
@@ -7,8 +8,13 @@ class SigninSeventhViewModel extends ChangeNotifier {
   int get selectedHeight => _selectedHeight;
   List<int> get heights => _heights;
 
-  void setSelectedHeight(int height) {
+  Future<void> setSelectedHeight(int height) async {
     _selectedHeight = height;
     notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('height_value', height.toString());
+
+    final savedYear = prefs.getString('height_value');
+    print('Saved height_value: $savedYear');
   }
 }

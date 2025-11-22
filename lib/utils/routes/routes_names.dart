@@ -35,5 +35,16 @@ class RouteNames {
   static const String accountSettingScreen = "account_setting_screen";
   static const String nutritionScreen = "nutrition_screen";
   static const String viewPlanScreen = "view_plan_screen";
+  static const String exerciseListScreen = "exercise_list_screen";
+  static const String exerciseListDetails = "exercise_list_details";
+  static const String videoScreen = "video_screen";
+  static const String iamReady = "i_am_ready";
+  static const String iamReadyFinal = "i_am_ready_final";
+  static const String muscleGain = "muscle_gain";
+  static const String bodyFatScreen = "body_fat_screen";
+  static const String skeletalMuscleScreen = "skeletal_muscle_screen";
+  static const String subcutaneousFatScreen = "subcutaneous_fat_screen";
+  static const String visceralFatScreen = "Visceral_fat_screen";
+  static const String bodyWaterScreen = "body_water_screen";
 
 }

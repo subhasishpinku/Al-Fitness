@@ -1,10 +1,35 @@
+import 'package:aifitness/viewModel/weight_today_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import '../viewModel/weight_today_viewModel.dart';
 
-class WeightTodayScreen extends StatelessWidget {
+class WeightTodayScreen extends StatefulWidget {
   const WeightTodayScreen({super.key});
+
+  @override
+  State<WeightTodayScreen> createState() => _WeightTodayScreenState();
+}
+
+class _WeightTodayScreenState extends State<WeightTodayScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final prefs = await SharedPreferences.getInstance();
+      int userId = prefs.getInt("user_id") ?? 0;
+      int week = prefs.getInt("week") ?? 0;
+      String day = prefs.getString("day") ?? "8";
+
+      Provider.of<WeightTodayViewModel>(context, listen: false).fetchWeightLogs(
+        userId: userId,
+        week: week.toString(),
+        day: "8",
+        logType: "weight",
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +55,7 @@ class WeightTodayScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Input Section
+              // ------------------ INPUT SECTION ------------------
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 14),
@@ -53,6 +78,8 @@ class WeightTodayScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
+
+                    // TextField
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -82,9 +109,10 @@ class WeightTodayScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 14),
 
-                    /// FIXED BUTTON
+                    // Submit Button
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -100,9 +128,23 @@ class WeightTodayScreen extends StatelessWidget {
                             ),
                             elevation: 0,
                           ),
-                          onPressed: () => viewModel.submitWeight(
-                            context,
-                          ), //  pass context here
+
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            int userId = prefs.getInt("user_id") ?? 0;
+                            int week = prefs.getInt("week") ?? 0;
+                            String day = prefs.getString("day") ?? "1";
+
+                            viewModel.submitWeight(
+                              context,
+                              userId: userId,
+                              logValue: viewModel.weightController.text.trim(),
+                              week: week.toString(),
+                              day: "8",
+                              logType: "weight",
+                            );
+                          },
+
                           child: const Text(
                             "Submit",
                             style: TextStyle(
@@ -120,6 +162,7 @@ class WeightTodayScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
+              // ------------------ HISTORY TITLE ------------------
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 14),
@@ -136,8 +179,10 @@ class WeightTodayScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
               const SizedBox(height: 12),
 
+              // ------------------ HISTORY LIST ------------------
               Expanded(
                 child: viewModel.history.isEmpty
                     ? const Center(
@@ -148,10 +193,11 @@ class WeightTodayScreen extends StatelessWidget {
                         ),
                       )
                     : ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 16),
                         itemCount: viewModel.history.length,
+                        padding: const EdgeInsets.only(bottom: 16),
                         itemBuilder: (context, index) {
                           final entry = viewModel.history[index];
+
                           return Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.symmetric(
@@ -161,18 +207,12 @@ class WeightTodayScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12.withOpacity(0.05),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                              border: Border.all(color: Colors.grey.shade200),
+                              border: Border.all(color: Colors.grey.shade300),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                /// HEADER ROW
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -182,24 +222,21 @@ class WeightTodayScreen extends StatelessWidget {
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
-                                        color: Colors.black,
                                       ),
                                     ),
                                     Text(
                                       timeago.format(entry.time),
                                       style: const TextStyle(
                                         color: Colors.grey,
-                                        fontSize: 12.5,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 2),
-                                Container(
-                                  height: 1,
-                                  color: Colors.grey.shade600,
-                                ),
+
                                 const SizedBox(height: 6),
+
+                                /// WEIGHT DETAILS
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -209,18 +246,16 @@ class WeightTodayScreen extends StatelessWidget {
                                       style: const TextStyle(
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black,
                                       ),
                                     ),
+
                                     IconButton(
                                       onPressed: () =>
                                           viewModel.deleteWeight(index),
                                       icon: const Icon(
                                         Icons.delete_outline,
                                         color: Colors.redAccent,
-                                        size: 20,
                                       ),
-                                      splashRadius: 20,
                                     ),
                                   ],
                                 ),

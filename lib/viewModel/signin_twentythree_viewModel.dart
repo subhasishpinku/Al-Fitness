@@ -1,53 +1,95 @@
+import 'dart:convert';
+import 'package:aifitness/models/food_model.dart';
+import 'package:aifitness/repository/food_repository.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninTwentyThreeViewModel extends ChangeNotifier {
-  final List<String> fatSources = [
-    "Olive Oil",
-    "Chia Seeds",
-    "Fresh salmon fillet",
-    "Avocados",
-    "Macadamia Nuts",
-    "Ghee (Clarified Butter)",
-    "Sesame Oil",
-    "Coconut Oil",
-    "Flaxseeds",
-    "Walnut Oil",
-  ];
+   final FoodRepository _repo = FoodRepository();
 
-  final List<String> selectedSources = [];
+  List<FoodModel> foods = [];
+  bool isLoading = false;
+  String errorMessage = "";
+  String? mealType = "";
 
-  bool get canProceed => selectedSources.length >= 2 && selectedSources.length <= 5;
+  /// ==================== Fetch foods from API ======================
+  Future<void> fetchFoods() async {
+    isLoading = true;
+    notifyListeners();
 
-  void toggleSelection(String item) {
-    if (selectedSources.contains(item)) {
-      selectedSources.remove(item);
+    final prefs = await SharedPreferences.getInstance();
+    mealType = prefs.getString("meal_type");
+
+    try {
+      foods = await _repo.getFoods(
+        classification: "Fat",
+        type: mealType!,
+        search: "",
+      );
+
+      if (foods.isEmpty) {
+        errorMessage = "No foods found.";
+      }
+    } catch (e) {
+      errorMessage = "Failed to load foods.";
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  /// ==================== Selection Logic ======================
+  final List<String> _selectedItems = [];
+
+  List<String> get selectedItems => _selectedItems;
+
+  bool get canProceed =>
+      _selectedItems.length >= 2 && _selectedItems.length <= 5;
+
+  void toggleSelection(FoodModel item) {
+    final String value = item.name; // Save item.name
+
+    if (_selectedItems.contains(value)) {
+      _selectedItems.remove(value);
     } else {
-      if (selectedSources.length >= 5) return;
-      selectedSources.add(item);
+      if (_selectedItems.length < 5) {
+        _selectedItems.add(value);
+      }
     }
     notifyListeners();
   }
 
+  /// ==================== Save Selected Items ======================
+  Future<void> saveSelectedItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    String jsonString = jsonEncode(_selectedItems);
+    await prefs.setString("fat", jsonString);
+    String? grainsString = prefs.getString("fat");
+
+    print("Saved Fat: $grainsString");
+  }
+
+  /// ==================== Navigation ======================
   void onNextPressed(BuildContext context) {
-    if (!canProceed) {
+    if (canProceed) {
+      saveSelectedItems();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Proceeding to next step..."),
+          duration: Duration(seconds: 1),
+        ),
+      );
+
+      Navigator.pushNamed(context, RouteNames.signinScreenTwentyFour);
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please select between 2 and 5 items."),
           duration: Duration(seconds: 2),
         ),
       );
-      return;
     }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Proceeding to next step..."),
-        duration: Duration(seconds: 1),
-      ),
-    );
-
-    // Example navigation:
-    Navigator.pushNamed(context, RouteNames.signinScreenTwentyFour);
   }
 }

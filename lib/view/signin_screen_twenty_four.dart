@@ -1,19 +1,60 @@
+import 'package:aifitness/repository/RegisterRepository.dart';
 import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/viewModel/RegisterViewModel.dart';
 import 'package:aifitness/viewModel/signin_twentyfour_viewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:mobile_device_identifier/mobile_device_identifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SigninScreenTwentyFour extends StatelessWidget {
+class SigninScreenTwentyFour extends StatefulWidget {
   const SigninScreenTwentyFour({super.key});
+
+  @override
+  State<SigninScreenTwentyFour> createState() => _SigninScreenTwentyFourState();
+}
+
+class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
+  String _deviceId = 'Unknown';
+  final _mobileDeviceIdentifierPlugin = MobileDeviceIdentifier();
+
+  @override
+  void initState() {
+    super.initState();
+    initDeviceId();
+  }
+
+  Future<void> initDeviceId() async {
+    String deviceId;
+    try {
+      deviceId =
+          await _mobileDeviceIdentifierPlugin.getDeviceId() ??
+          'Unknown platform version';
+    } on PlatformException {
+      deviceId = 'Failed to get platform version.';
+    }
+
+    if (!mounted) return;
+
+    setState(() async {
+      _deviceId = deviceId;
+      _deviceId = deviceId;
+      // print("_deviceId $_deviceId");
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("device_id", _deviceId);
+      print(prefs.getString("device_id"));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: ChangeNotifierProvider(
-        create: (_) => SigninTwentyFourViewModel(),
-        child: Consumer<SigninTwentyFourViewModel>(
+        create: (_) => RegisterViewModel(RegisterRepository1()),
+        child: Consumer<RegisterViewModel>(
           builder: (context, viewModel, _) {
             return Scaffold(
               backgroundColor: AppColors.backgroundColor,
@@ -51,6 +92,7 @@ class SigninScreenTwentyFour extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 12),
+
                     IntrinsicWidth(
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
@@ -78,6 +120,7 @@ class SigninScreenTwentyFour extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 18),
+
                     const Text(
                       "Please enter your personal \n .information to proceed",
                       style: TextStyle(
@@ -86,9 +129,10 @@ class SigninScreenTwentyFour extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+
                     const SizedBox(height: 24),
 
-                    // Full Name Field
+                    // Full Name
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: TextField(
@@ -97,7 +141,6 @@ class SigninScreenTwentyFour extends StatelessWidget {
                           labelText: "Full Name",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.grey),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -106,16 +149,13 @@ class SigninScreenTwentyFour extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 16),
 
-                    // Email Field
+                    // Email
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: TextField(
@@ -125,7 +165,6 @@ class SigninScreenTwentyFour extends StatelessWidget {
                           labelText: "Email",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.grey),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -134,16 +173,13 @@ class SigninScreenTwentyFour extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 16),
 
-                    // Password Field
+                    // Password
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: TextField(
@@ -156,13 +192,11 @@ class SigninScreenTwentyFour extends StatelessWidget {
                               viewModel.isPasswordVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
-                              color: Colors.grey,
                             ),
                             onPressed: viewModel.togglePasswordVisibility,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.grey),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -171,16 +205,12 @@ class SigninScreenTwentyFour extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 30),
 
-                    // Next Button
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -203,6 +233,13 @@ class SigninScreenTwentyFour extends StatelessWidget {
                           ),
                         ),
                       ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Text(
+                      "Device ID: $_deviceId",
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),

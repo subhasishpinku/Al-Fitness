@@ -10,6 +10,11 @@ class DashboardBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<DashboardBodyViewModel>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!viewModel.isLoading && viewModel.currentWeight == 0) {
+        context.read<DashboardBodyViewModel>().loadDashboard();
+      }
+    });
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -20,13 +25,16 @@ class DashboardBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Week Title
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.calendar_today, size: 20),
-                  SizedBox(width: 8),
+                  const Icon(Icons.calendar_today, size: 20),
+                  const SizedBox(width: 8),
                   Text(
-                    "Week 1",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    "Week ${viewModel.weekNumber}",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -61,6 +69,40 @@ class DashboardBody extends StatelessWidget {
               const SizedBox(height: 16),
 
               /// Data Cards Grid
+              // GridView.count(
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   shrinkWrap: true,
+              //   crossAxisCount: 2,
+              //   childAspectRatio: 1.2,
+              //   crossAxisSpacing: 10,
+              //   mainAxisSpacing: 10,
+              //   children: [
+              //     _DataCard(
+              //       title: "Enter Weight Today",
+              //       data: viewModel.weightData,
+              //     ),
+              //     const _DataCard(
+              //       title: "Enter Body Fat %",
+              //       data: [18, 17.8, 17.9, 17.6],
+              //     ),
+              //     const _DataCard(
+              //       title: "Enter Skeletal Muscle Mass",
+              //       data: [42, 42.2, 42.3, 42.5],
+              //     ),
+              //     const _DataCard(
+              //       title: "Enter Subcutaneous Fat",
+              //       data: [12, 11.8, 11.7, 11.9],
+              //     ),
+              //     const _DataCard(
+              //       title: "Enter Visceral Fat",
+              //       data: [8, 8, 7.9, 7.8],
+              //     ),
+              //     const _DataCard(
+              //       title: "Enter Body Water",
+              //       data: [62, 62.3, 62.5, 62.9],
+              //     ),
+              //   ],
+              // ),
               GridView.count(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -69,29 +111,36 @@ class DashboardBody extends StatelessWidget {
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
                 children: [
+                  // Pass API data from ViewModel
                   _DataCard(
                     title: "Enter Weight Today",
                     data: viewModel.weightData,
+                    index: 0,
                   ),
-                  const _DataCard(
+                  _DataCard(
                     title: "Enter Body Fat %",
-                    data: [18, 17.8, 17.9, 17.6],
+                    data: viewModel.bfpData,
+                    index: 1,
                   ),
-                  const _DataCard(
+                  _DataCard(
                     title: "Enter Skeletal Muscle Mass",
-                    data: [42, 42.2, 42.3, 42.5],
+                    data: viewModel.skeletalData,
+                    index: 2,
                   ),
-                  const _DataCard(
+                  _DataCard(
                     title: "Enter Subcutaneous Fat",
-                    data: [12, 11.8, 11.7, 11.9],
+                    data: viewModel.subcutaneousData,
+                    index: 3,
                   ),
-                  const _DataCard(
+                  _DataCard(
                     title: "Enter Visceral Fat",
-                    data: [8, 8, 7.9, 7.8],
+                    data: viewModel.visceralData,
+                    index: 4,
                   ),
-                  const _DataCard(
+                  _DataCard(
                     title: "Enter Body Water",
-                    data: [62, 62.3, 62.5, 62.9],
+                    data: viewModel.waterData,
+                    index: 5,
                   ),
                 ],
               ),
@@ -166,6 +215,8 @@ class DashboardBody extends StatelessWidget {
       Center(child: _button(context, "See Exercise List")),
       const SizedBox(height: 10),
       Center(child: _button(context, "See Your Nutrition")),
+      const SizedBox(height: 10),
+      Center(child: _button(context, "View Fitness Network")),
     ],
   );
 
@@ -184,8 +235,10 @@ class DashboardBody extends StatelessWidget {
       ),
       onPressed: () {
         if (text == "See Exercise List") {
-          // Navigator.pushNamed(context, RouteNames.nutritionScreen);
+          Navigator.pushNamed(context, RouteNames.exerciseListScreen);
         } else if (text == "See Your Nutrition") {
+          Navigator.pushNamed(context, RouteNames.nutritionScreen);
+        } else if (text == "View Fitness Network") {
           Navigator.pushNamed(context, RouteNames.nutritionScreen);
         }
       },
@@ -204,18 +257,33 @@ class DashboardBody extends StatelessWidget {
 class _DataCard extends StatelessWidget {
   final String title;
   final List<double> data;
-  const _DataCard({required this.title, required this.data});
+  final int index; // <-- Add index
+  const _DataCard({
+    required this.title,
+    required this.data,
+    required this.index, // <-- receive index
+  });
 
   @override
   Widget build(BuildContext context) {
-    final chartData = List.generate(
-      data.length,
-      (index) => _ChartData(index, data[index]),
-    );
+    final chartData = List.generate(data.length, (i) => _ChartData(i, data[i]));
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, RouteNames.weightTodayScreen);
+        // Navigate based on index
+        if (index == 0) {
+          Navigator.pushNamed(context, RouteNames.weightTodayScreen);
+        } else if (index == 1) {
+          Navigator.pushNamed(context, RouteNames.bodyFatScreen);
+        } else if (index == 2) {
+          Navigator.pushNamed(context, RouteNames.skeletalMuscleScreen);
+        } else if (index == 3) {
+          Navigator.pushNamed(context, RouteNames.subcutaneousFatScreen);
+        } else if (index == 4) {
+          Navigator.pushNamed(context, RouteNames.visceralFatScreen);
+        } else if (index == 5) {
+          Navigator.pushNamed(context, RouteNames.bodyWaterScreen);
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -233,6 +301,7 @@ class _DataCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Title
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
@@ -264,6 +333,7 @@ class _DataCard extends StatelessWidget {
                 ],
               ),
             ),
+            // Chart
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(6),

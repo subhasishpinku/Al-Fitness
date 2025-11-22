@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 
 class SigninSixteenViewModel extends ChangeNotifier {
@@ -27,17 +28,40 @@ class SigninSixteenViewModel extends ChangeNotifier {
     }
   }
 
-  /// Handle selection
-  void selectOption(int index) {
+  /// Handle selection and save to SharedPreferences
+  Future<void> selectOption(BuildContext context, int index) async {
     _selectedIndex = index;
     notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+
+    String selectedValue = "";
+    if (index == 0) {
+      selectedValue = "Non Veg";
+    } else if (index == 1) {
+      selectedValue = "Veg";
+    } else if (index == 2) {
+      selectedValue = "Vegan";
+    }
+
+    await prefs.setString('meal_type', selectedValue);
+
+    final savedValue = prefs.getString('meal_type');
+    print('meal_type: $savedValue');
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
   }
 
   /// Navigate to next screen
   void onNextPressed(BuildContext context) {
     if (_selectedIndex != -1) {
-      // Replace with your next route
       Navigator.pushNamed(context, RouteNames.signinScreenSeventeen);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select an option first")),
+      );
     }
   }
 }

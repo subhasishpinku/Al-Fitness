@@ -1,12 +1,20 @@
 import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/view/Target_change_screen.dart';
+import 'package:aifitness/view/Visceral_fat_screen.dart';
 import 'package:aifitness/view/account_setting_screen.dart';
+import 'package:aifitness/view/body_fat_screen.dart';
 import 'package:aifitness/view/body_image_progress.dart';
+import 'package:aifitness/view/body_water_screen.dart';
 import 'package:aifitness/view/change_details.dart';
+import 'package:aifitness/view/exercise_list_details.dart';
+import 'package:aifitness/view/exercise_list_screen.dart';
 import 'package:aifitness/view/extra_food_intake_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
+import 'package:aifitness/view/i_am_ready.dart';
+import 'package:aifitness/view/i_am_ready_final.dart';
 import 'package:aifitness/view/login_screen.dart';
+import 'package:aifitness/view/muscle_gain.dart';
 import 'package:aifitness/view/nutrition_screen.dart';
 import 'package:aifitness/view/signin_screen.dart';
 import 'package:aifitness/view/signin_screen_eight.dart';
@@ -33,6 +41,9 @@ import 'package:aifitness/view/signin_screen_twenty_four.dart';
 import 'package:aifitness/view/signin_screen_twenty_one.dart';
 import 'package:aifitness/view/signin_screen_twenty_three.dart';
 import 'package:aifitness/view/signin_screen_twenty_two.dart';
+import 'package:aifitness/view/skeletal_muscle_screen.dart';
+import 'package:aifitness/view/subcutaneous_fat_screen.dart';
+import 'package:aifitness/view/video_screen.dart';
 import 'package:aifitness/view/view_plan_screen.dart';
 import 'package:aifitness/view/weight_today_screen.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
@@ -185,6 +196,51 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const ViewPlanScreen(),
         );
+      case (RouteNames.exerciseListScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ExerciseListScreen(),
+        );
+      case (RouteNames.exerciseListDetails):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ExerciseListDetails(),
+        );
+      case (RouteNames.videoScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const VideoScreen(),
+        );
+      case (RouteNames.iamReady):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const IamReady(),
+        );
+      case (RouteNames.iamReadyFinal):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const IamReadyFinal(),
+        );
+      case (RouteNames.muscleGain):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const MuscleGainScreen(),
+        );
+      case (RouteNames.bodyFatScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const BodyFatScreen(),
+        );
+      case (RouteNames.skeletalMuscleScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SkeletalMuscleScreen(),
+        );
+      case (RouteNames.subcutaneousFatScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const SubcutaneousFatScreen(),
+        );
+         case (RouteNames.visceralFatScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const VisceralFatScreen(),
+        );
+       case (RouteNames.bodyWaterScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const BodyWaterScreen(),
+        );
+        
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

@@ -1,17 +1,29 @@
 import 'package:aifitness/utils/routes/routes.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/utils/shared_prefs_helper.dart';
 import 'package:aifitness/view/Target_change_screen.dart';
 import 'package:aifitness/view/body_image_progress.dart';
+import 'package:aifitness/view/body_water_screen.dart';
 import 'package:aifitness/view/extra_food_intake_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
+import 'package:aifitness/view/i_am_ready.dart';
+import 'package:aifitness/view/i_am_ready_final.dart';
 import 'package:aifitness/view/nutrition_screen.dart';
 import 'package:aifitness/view/signin_screen_twenty_five.dart';
 import 'package:aifitness/view/signin_screen_twenty_one.dart';
+import 'package:aifitness/view/subcutaneous_fat_screen.dart';
+import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
+import 'package:aifitness/viewModel/body_fat_viewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
+import 'package:aifitness/viewModel/body_water_view_model.dart';
 import 'package:aifitness/viewModel/change_details_viewModel.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
+import 'package:aifitness/viewModel/exercise_list_details_viewModel.dart';
+import 'package:aifitness/viewModel/exercise_list_viewModel.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
+import 'package:aifitness/viewModel/i_am_ready_final_viewModel.dart';
+import 'package:aifitness/viewModel/i_am_ready_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
 import 'package:aifitness/viewModel/nutration_screen_viewModel.dart';
 import 'package:aifitness/viewModel/nutrition_plan_viewmodel.dart';
@@ -39,13 +51,33 @@ import 'package:aifitness/viewModel/signin_twentyfour_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twentyone_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twentythree_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
+import 'package:aifitness/viewModel/skeletal_muscle_viewmodel.dart';
+import 'package:aifitness/viewModel/subcutaneous_fat_viewmodel.dart';
 import 'package:aifitness/viewModel/targetChangeScreen_viewModel.dart';
+import 'package:aifitness/viewModel/video_viewModel.dart';
 import 'package:aifitness/viewModel/view_plan_viewModel.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
+import 'package:aifitness/viewModel/workout_view_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Register platform-specific WebView implementation
+   WidgetsFlutterBinding.ensureInitialized();
+
+  // Register WebView implementation
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    WebViewPlatform.instance = AndroidWebViewPlatform();
+  } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+    WebViewPlatform.instance = WebKitWebViewPlatform();
+  }
+  await SharedPrefsHelper.init();
   runApp(
     MultiProvider(
       providers: [
@@ -85,7 +117,16 @@ void main() {
         ChangeNotifierProvider(create: (_) => NutritionScreenViewModel()),
         ChangeNotifierProvider(create: (_) => ViewPlanViewModel()),
         ChangeNotifierProvider(create: (_) => NutritionPlanViewModel()),
-
+        ChangeNotifierProvider(create: (_) => ExerciseListViewModel()),
+        ChangeNotifierProvider(create: (_) => WorkoutViewModel()),
+        ChangeNotifierProvider(create: (_) => VideoViewModel()),
+        ChangeNotifierProvider(create: (_) => IamReadyViewModel()),
+        ChangeNotifierProvider(create: (_) => IamReadyFinalViewModel()),
+        ChangeNotifierProvider(create: (_) => BodyFatViewModel()),
+        ChangeNotifierProvider(create: (_) => SkeletalMuscleViewModel()),
+        ChangeNotifierProvider(create: (_) => SubcutaneousFatViewModel()),
+        ChangeNotifierProvider(create: (_) => VisceralFatViewModel()),
+        ChangeNotifierProvider(create: (_) => BodyWaterViewModel()),
 
       ],
       child: const MyApp(),

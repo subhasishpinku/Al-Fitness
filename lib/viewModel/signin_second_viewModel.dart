@@ -1,5 +1,6 @@
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninSecondViewModel extends ChangeNotifier {
   final List<String> _topics = [
@@ -10,7 +11,7 @@ class SigninSecondViewModel extends ChangeNotifier {
 
   List<String> get topics => _topics;
 
-  // For animation visibility
+  // For button visibility animation
   final List<bool> _isVisible = [false, false, false];
   List<bool> get isVisible => _isVisible;
 
@@ -31,15 +32,39 @@ class SigninSecondViewModel extends ChangeNotifier {
   }
 
   /// Handle topic selection
-  void onTopicSelected(BuildContext context, String topic) {
+  Future<void> onTopicSelected(BuildContext context, String topic) async {
     _selectedTopic = topic;
     notifyListeners();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Selected: $topic")),
-    );
+    final prefs = await SharedPreferences.getInstance();
 
-    // Example: Navigate to next screen or perform logic
+    //  Always use lowercase, consistent key naming
+    String fitnessGoal = '';
+
+    if (topic == "Strength Training") {
+      fitnessGoal = 'strength';
+    } else if (topic == "Cardio Training") {
+      fitnessGoal = 'cardio';
+    } else if (topic == "Strength & Cardio Training") {
+      fitnessGoal = 'strength_cardio';
+    }
+
+    // Save value
+    await prefs.setString('fitness_goal', fitnessGoal);
+
+    //  Optional safety (forces sync from disk)
+    await prefs.reload();
+
+    //  Verify saved value
+    final savedGoal = prefs.getString('fitness_goal');
+    debugPrint(' Saved fitness_goal: $savedGoal');
+
+    //  Show feedback
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
+
+    // Navigate only after ensuring data is saved
     Navigator.pushNamed(context, RouteNames.signinScreenThird);
   }
 }

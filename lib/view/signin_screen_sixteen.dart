@@ -70,7 +70,7 @@ class SigninScreenSixteen extends StatelessWidget {
                   isVisible: isVisible,
                   onTopicSelected: (context, topic) {
                     final index = options.indexOf(topic);
-                    provider.selectOption(index);
+                    provider.selectOption(context, index);
                     provider.onNextPressed(context);
                   },
                 ),

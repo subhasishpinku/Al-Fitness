@@ -1,5 +1,6 @@
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninThirdViewModel extends ChangeNotifier {
   final List<String> _topics = [
@@ -31,15 +32,38 @@ class SigninThirdViewModel extends ChangeNotifier {
   }
 
   /// Handle topic selection
-  void onTopicSelected(BuildContext context, String topic) {
+  Future<void> onTopicSelected(BuildContext context, String topic) async {
     _selectedTopic = topic;
     notifyListeners();
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
+    final prefs = await SharedPreferences.getInstance();
 
-    // Example: Navigate to next screen or perform logic
+    // Use consistent lowercase snake_case key
+    String howFast = '';
+
+    if (topic == "Safe (0.25 kg/week)") {
+      howFast = 'easy';
+    } else if (topic == "Moderate (0.5 kg/week)") {
+      howFast = 'normal';
+    } else if (topic == "Aggressive (0.75 kg/week)") {
+      howFast = 'challenge';
+    }
+
+    //  Save safely
+    await prefs.setString('how_fast_to_reach_goal', howFast);
+
+    //  Optional: reload from disk to ensure data sync
+    await prefs.reload();
+
+    //  Verify saved value
+    final savedValue = prefs.getString('how_fast_to_reach_goal');
+    debugPrint(' Saved how_fast_to_reach_goal: $savedValue');
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Selected: $topic")),
+    );
+
+    //  Navigate after successful save
     Navigator.pushNamed(context, RouteNames.signinScreenFourth);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 
 class SigninFourteenViewModel extends ChangeNotifier {
@@ -28,15 +29,40 @@ class SigninFourteenViewModel extends ChangeNotifier {
   }
 
   /// Handle option selection
-  void selectOption(int index) {
+  Future<void> selectOption(BuildContext context, int index) async {
     _selectedIndex = index;
     notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+
+    int selectedValue = 0;
+    if (index == 0) {
+      selectedValue = 1;
+    } else if (index == 1) {
+      selectedValue = 3;
+    } else if (index == 2) {
+      selectedValue = 6;
+    }
+
+    /// ✅ Save selectedValue as int
+    await prefs.setInt('no_of_days_per_week', selectedValue);
+
+    final savedValue = prefs.getInt('no_of_days_per_week');
+    print('Saved No_of_days_per_week: $savedValue');
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
   }
 
-  /// Navigate to the next screen
+  /// Navigate to next screen
   void onNextPressed(BuildContext context) {
     if (_selectedIndex != -1) {
       Navigator.pushNamed(context, RouteNames.signinScreenFifteen);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select an option first")),
+      );
     }
   }
 }

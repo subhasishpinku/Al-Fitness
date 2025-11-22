@@ -13,33 +13,60 @@ class SigninScreenTwentyOne extends StatefulWidget {
 
 class _SigninScreenTwentyOneState extends State<SigninScreenTwentyOne> {
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<SigninTwentyOneViewModel>(context, listen: false)
+          .fetchFoods();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => SigninTwentyOneViewModel(),
-      child: Consumer<SigninTwentyOneViewModel>(
-        builder: (context, viewModel, _) {
-          return Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            appBar: const SigninSecondAppBar(),
-            body: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Select the fruits you'd like to include in your meal plan",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+    return Consumer<SigninTwentyOneViewModel>(
+      builder: (context, viewModel, _) {
+        return Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: const SigninSecondAppBar(),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Select the fruits you'd like to include in your meal plan",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "Please select a minimum of 2 items and a maximum of 5 items.",
+                  style: TextStyle(fontSize: 14, color: Colors.black),
+                ),
+                const SizedBox(height: 20),
+
+                // LOADING
+                if (viewModel.isLoading)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+
+                // ERROR
+                if (!viewModel.isLoading && viewModel.errorMessage.isNotEmpty)
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        viewModel.errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Please select a minimum of 2 items and a maximum of 5 items.",
-                    style: TextStyle(fontSize: 14, color: Colors.black),
-                  ),
-                  const SizedBox(height: 20),
+
+                // LIST VIEW
+                if (!viewModel.isLoading && viewModel.errorMessage.isEmpty)
                   Expanded(
                     child: GridView.builder(
                       gridDelegate:
@@ -49,14 +76,17 @@ class _SigninScreenTwentyOneState extends State<SigninScreenTwentyOne> {
                         mainAxisSpacing: 12,
                         childAspectRatio: 1,
                       ),
-                      itemCount: viewModel.fruits.length,
+                      itemCount: viewModel.foods.length,
                       itemBuilder: (context, index) {
-                        final fruit = viewModel.fruits[index];
+                        
+                        
+                        final food = viewModel.foods[index];
                         final isSelected =
-                            viewModel.selectedFruits.contains(fruit);
+                            viewModel.selectedItems.contains(food.name);
 
                         return GestureDetector(
-                          onTap: () => viewModel.toggleSelection(fruit),
+                          onTap: () =>
+                              viewModel.toggleSelection(food),
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -72,7 +102,7 @@ class _SigninScreenTwentyOneState extends State<SigninScreenTwentyOne> {
                               alignment: Alignment.center,
                               children: [
                                 Text(
-                                  fruit,
+                                  food.rawItem ?? "",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 14,
@@ -99,35 +129,35 @@ class _SigninScreenTwentyOneState extends State<SigninScreenTwentyOne> {
                       },
                     ),
                   ),
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      onPressed: viewModel.canProceed
-                          ? () => viewModel.onNextPressed(context)
-                          : null,
-                      child: const Text(
-                        "Next",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    ),
+                    onPressed: viewModel.canProceed
+                        ? () => viewModel.onNextPressed(context)
+                        : null,
+                    child: const Text(
+                      "Next",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
