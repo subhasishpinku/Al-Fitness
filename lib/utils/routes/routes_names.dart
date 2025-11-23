@@ -29,7 +29,7 @@ class RouteNames {
   static const String dashboard = "dashboard";
   static const String extraFoodIntakeScreen = "extra_food_intake_screen";
   static const String weightTodayScreen = "weight_today_screen";
-  static const String targetChangeScreen = "target_change_screen";
+  static const String targetChangeDetails = "target_change_details";
   static const String changeDetails = "change_details";
   static const String bodyImageProgress = "body_image_progress";
   static const String accountSettingScreen = "account_setting_screen";
@@ -46,5 +46,6 @@ class RouteNames {
   static const String subcutaneousFatScreen = "subcutaneous_fat_screen";
   static const String visceralFatScreen = "Visceral_fat_screen";
   static const String bodyWaterScreen = "body_water_screen";
+  static const String fitNetwork = "fit_network";
 
 }

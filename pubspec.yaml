@@ -46,6 +46,8 @@ dependencies:
   chewie: ^1.13.0
   vimeo_video_player: ^1.0.1
   webview_flutter: ^4.13.0
+  url_launcher: ^6.3.2
+  youtube_player_flutter: ^9.1.3
 
 
 
@@ -90,6 +92,14 @@ flutter:
     - assets/images/sweet_potato.jpeg
     - assets/images/sweet_potato1.png
     - assets/images/preworkout.png
+
+    - assets/images/bg1.png
+    - assets/images/cerN.png
+    - assets/images/cerP.png
+    - assets/images/cg55.jpg
+    - assets/images/logo2.png
+    - assets/images/new1024.png
+
 
 
 

@@ -239,7 +239,7 @@ class DashboardBody extends StatelessWidget {
         } else if (text == "See Your Nutrition") {
           Navigator.pushNamed(context, RouteNames.nutritionScreen);
         } else if (text == "View Fitness Network") {
-          Navigator.pushNamed(context, RouteNames.nutritionScreen);
+          Navigator.pushNamed(context, RouteNames.fitNetwork);
         }
       },
       child: Text(

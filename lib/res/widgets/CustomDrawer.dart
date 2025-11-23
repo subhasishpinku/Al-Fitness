@@ -68,7 +68,7 @@ class CustomDrawer extends StatelessWidget {
                     onTap: () => {
                       Navigator.pushNamed(
                         context,
-                        RouteNames.targetChangeScreen,
+                        RouteNames.targetChangeDetails,
                       ),
                     },
                   ),

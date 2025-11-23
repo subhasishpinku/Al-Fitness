@@ -1,5 +1,6 @@
 import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/view/FitNetwork.dart';
 import 'package:aifitness/view/Target_change_screen.dart';
 import 'package:aifitness/view/Visceral_fat_screen.dart';
 import 'package:aifitness/view/account_setting_screen.dart';
@@ -43,6 +44,7 @@ import 'package:aifitness/view/signin_screen_twenty_three.dart';
 import 'package:aifitness/view/signin_screen_twenty_two.dart';
 import 'package:aifitness/view/skeletal_muscle_screen.dart';
 import 'package:aifitness/view/subcutaneous_fat_screen.dart';
+import 'package:aifitness/view/target_change_details.dart';
 import 'package:aifitness/view/video_screen.dart';
 import 'package:aifitness/view/view_plan_screen.dart';
 import 'package:aifitness/view/weight_today_screen.dart';
@@ -172,9 +174,9 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const WeightTodayScreen(),
         );
-      case (RouteNames.targetChangeScreen):
+      case (RouteNames.targetChangeDetails):
         return MaterialPageRoute(
-          builder: (BuildContext context) => const TargetChangeScreen(),
+          builder: (BuildContext context) => const TargetChangeDetails(),
         );
       case (RouteNames.changeDetails):
         return MaterialPageRoute(
@@ -232,15 +234,19 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const SubcutaneousFatScreen(),
         );
-         case (RouteNames.visceralFatScreen):
+      case (RouteNames.visceralFatScreen):
         return MaterialPageRoute(
           builder: (BuildContext context) => const VisceralFatScreen(),
         );
-       case (RouteNames.bodyWaterScreen):
+      case (RouteNames.bodyWaterScreen):
         return MaterialPageRoute(
           builder: (BuildContext context) => const BodyWaterScreen(),
         );
-        
+      case (RouteNames.fitNetwork):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const FitNetwork(),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(
