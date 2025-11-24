@@ -1,5 +1,5 @@
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
 
 class SigninThirdAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title; // 👈 Dynamic title text

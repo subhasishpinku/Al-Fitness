@@ -1,8 +1,8 @@
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/signin_twelve_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

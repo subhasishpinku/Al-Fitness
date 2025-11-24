@@ -1,6 +1,6 @@
 import 'package:aifitness/repository/RegisterRepository.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/RegisterViewModel.dart';
 import 'package:aifitness/viewModel/signin_twentyfour_viewModel.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class SigninScreenTwentyFour extends StatefulWidget {
   const SigninScreenTwentyFour({super.key});
@@ -19,7 +20,7 @@ class SigninScreenTwentyFour extends StatefulWidget {
 class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
   String _deviceId = 'Unknown';
   final _mobileDeviceIdentifierPlugin = MobileDeviceIdentifier();
-
+  final uuid = Uuid();
   @override
   void initState() {
     super.initState();
@@ -28,6 +29,8 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
 
   Future<void> initDeviceId() async {
     String deviceId;
+    String id = uuid.v4();
+
     try {
       deviceId =
           await _mobileDeviceIdentifierPlugin.getDeviceId() ??
@@ -45,6 +48,7 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("device_id", _deviceId);
       print(prefs.getString("device_id"));
+      print("UUID ${id}  ${prefs.getString("device_id")}");
     });
   }
 
@@ -133,114 +137,224 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
                     const SizedBox(height: 24),
 
                     // Full Name
+                    // Directionality(
+                    //   textDirection: TextDirection.ltr,
+                    //   child: TextField(
+                    //     controller: viewModel.fullNameController,
+                    //     decoration: InputDecoration(
+                    //       labelText: "Full Name",
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //       ),
+                    //       focusedBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //         borderSide: BorderSide(
+                    //           color: AppColors.primaryColor,
+                    //           width: 2,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Directionality(
                       textDirection: TextDirection.ltr,
-                      child: TextField(
-                        controller: viewModel.fullNameController,
-                        decoration: InputDecoration(
-                          labelText: "Full Name",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: AppColors.primaryColor,
-                              width: 2,
-                            ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: TextField(
+                          controller: viewModel.fullNameController,
+                          textDirection: TextDirection.ltr,
+                          decoration: const InputDecoration(
+                            hintText: "Full Name",
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 16),
 
                     // Email
+                    // Directionality(
+                    //   textDirection: TextDirection.ltr,
+                    //   child: TextField(
+                    //     controller: viewModel.emailController,
+                    //     keyboardType: TextInputType.emailAddress,
+                    //     decoration: InputDecoration(
+                    //       labelText: "Email",
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //       ),
+                    //       focusedBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //         borderSide: BorderSide(
+                    //           color: AppColors.primaryColor,
+                    //           width: 2,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Directionality(
                       textDirection: TextDirection.ltr,
-                      child: TextField(
-                        controller: viewModel.emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: "Email",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: AppColors.primaryColor,
-                              width: 2,
-                            ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: TextField(
+                          controller: viewModel.emailController,
+                          textDirection: TextDirection.ltr,
+                          decoration: const InputDecoration(
+                            hintText: "Email",
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 16),
 
                     // Password
+                    // Directionality(
+                    //   textDirection: TextDirection.ltr,
+                    //   child: TextField(
+                    //     controller: viewModel.passwordController,
+                    //     obscureText: !viewModel.isPasswordVisible,
+                    //     decoration: InputDecoration(
+                    //       labelText: "Password",
+                    //       suffixIcon: IconButton(
+                    //         icon: Icon(
+                    //           viewModel.isPasswordVisible
+                    //               ? Icons.visibility
+                    //               : Icons.visibility_off,
+                    //         ),
+                    //         onPressed: viewModel.togglePasswordVisibility,
+                    //       ),
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //       ),
+                    //       focusedBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //         borderSide: BorderSide(
+                    //           color: AppColors.primaryColor,
+                    //           width: 2,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: TextField(
                         controller: viewModel.passwordController,
                         obscureText: !viewModel.isPasswordVisible,
+
                         decoration: InputDecoration(
                           labelText: "Password",
+
+                          // ---- DESIGN MATCHING YOUR IMAGE ----
+                          filled: true, // enables background color
+                          fillColor: const Color(
+                            0xFFF2F2F2,
+                          ), // light grey background
+
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 18,
+                          ),
+
+                          // No visible border
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+
+                          // Eye icon
                           suffixIcon: IconButton(
                             icon: Icon(
                               viewModel.isPasswordVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
+                              color: Colors.grey,
                             ),
                             onPressed: viewModel.togglePasswordVisibility,
                           ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: SizedBox(
+                        width: 200,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.8),
+                            side: const BorderSide(
+                              color: AppColors
+                                  .bolderColor, // <-- added custom border color
                               width: 2,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 0,
+                          ),
+                          onPressed: () => viewModel.onNextPressed(context),
+                          child: Text(
+                            "Next",
+                            style: TextStyle(
+                              color: AppColors
+                                  .primaryColor, // <-- optional: match text color too
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
                             ),
                           ),
                         ),
                       ),
                     ),
 
-                    const SizedBox(height: 30),
-
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 14,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () => viewModel.onNextPressed(context),
-                        child: const Text(
-                          "Next",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-
+                    // Center(
+                    //   child: ElevatedButton(
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor: AppColors.primaryColor,
+                    //       padding: const EdgeInsets.symmetric(
+                    //         horizontal: 40,
+                    //         vertical: 14,
+                    //       ),
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //       ),
+                    //     ),
+                    //     onPressed: () => viewModel.onNextPressed(context),
+                    //     child: const Text(
+                    //       "Next",
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w600,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 20),
 
-                    Text(
-                      "Device ID: $_deviceId",
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
+                    // Text(
+                    //   "Device ID: $_deviceId",
+                    //   style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    // ),
                   ],
                 ),
               ),

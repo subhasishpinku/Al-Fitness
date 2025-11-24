@@ -1,5 +1,5 @@
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/signin_twentyone_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +16,10 @@ class _SigninScreenTwentyOneState extends State<SigninScreenTwentyOne> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      Provider.of<SigninTwentyOneViewModel>(context, listen: false)
-          .fetchFoods();
+      Provider.of<SigninTwentyOneViewModel>(
+        context,
+        listen: false,
+      ).fetchFoods();
     });
   }
 
@@ -71,29 +73,27 @@ class _SigninScreenTwentyOneState extends State<SigninScreenTwentyOne> {
                     child: GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 1,
-                      ),
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 1,
+                          ),
                       itemCount: viewModel.foods.length,
                       itemBuilder: (context, index) {
-                        
-                        
                         final food = viewModel.foods[index];
-                        final isSelected =
-                            viewModel.selectedItems.contains(food.name);
+                        final isSelected = viewModel.selectedItems.contains(
+                          food.name,
+                        );
 
                         return GestureDetector(
-                          onTap: () =>
-                              viewModel.toggleSelection(food),
+                          onTap: () => viewModel.toggleSelection(food),
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: isSelected
-                                    ? Colors.black
-                                    : Colors.grey.shade500,
+                                    ? AppColors.bolderColor
+                                    : AppColors.bolderColor,
                                 width: 2,
                               ),
                             ),
@@ -135,7 +135,9 @@ class _SigninScreenTwentyOneState extends State<SigninScreenTwentyOne> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryColor,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 12),
+                        horizontal: 40,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

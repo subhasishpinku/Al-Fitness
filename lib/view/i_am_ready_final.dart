@@ -1,8 +1,8 @@
 import 'package:aifitness/models/workout_exercise_model.dart';
 import 'package:aifitness/repository/IamReadyFinalRepository.dart';
 import 'package:aifitness/res/widgets/UniversalMediaWidget.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/i_am_ready_final_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

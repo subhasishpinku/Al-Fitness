@@ -1,5 +1,5 @@
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/signin_sixth_viewModel.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +205,7 @@ class _SigninScreenSixthBody extends StatelessWidget {
                         foregroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: AppColors.primaryColor),
+                          side: BorderSide(color: AppColors.bolderColor),
                         ),
                         elevation: 0,
                       ),

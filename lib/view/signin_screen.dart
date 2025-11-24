@@ -1,7 +1,7 @@
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_header.dart';
 import 'package:aifitness/res/widgets/signin_topbar.dart';
 import 'package:aifitness/res/widgets/signin_topic_list.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

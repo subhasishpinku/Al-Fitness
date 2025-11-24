@@ -95,6 +95,8 @@ class LoginViewModel extends ChangeNotifier {
     // Demo credentials
     emailController.text = "debjit23@gmail.com";
     passwordController.text = "Test@123";
+    // emailController.text = "";
+    // passwordController.text = "";
     initDeviceId();
   }
   Future<void> login(BuildContext context) async {
@@ -135,11 +137,11 @@ class LoginViewModel extends ChangeNotifier {
         'email',
         loginResponse.data!.userDetails!.email.toString(),
       );
-       await prefs.setString(
+      await prefs.setString(
         'image_full_url',
         loginResponse.data!.userDetails!.imageFullUrl.toString(),
       );
-      //loginResponse.data.userDetails.id ??
+      //loginResponse.data!.userDetails!.id!
       //2870
       await prefs.setInt('user_id', 2858);
       print("UserIdResponse ${loginResponse.data!.userDetails!.id}");

@@ -1,6 +1,6 @@
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
 
 class SigninTopBar extends StatelessWidget implements PreferredSizeWidget {
   const SigninTopBar({super.key});
@@ -26,14 +26,14 @@ class SigninTopBar extends StatelessWidget implements PreferredSizeWidget {
           automaticallyImplyLeading: false,
           title: Padding(
             padding: const EdgeInsets.only(right: 120),
-            child: Text(
-              textAlign: TextAlign.left,
-              "AI FITNESS",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
-                letterSpacing: 1.0,
+            child: Container(
+              height: 50,
+              width: 80,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/logo2.png'),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -44,7 +44,7 @@ class SigninTopBar extends StatelessWidget implements PreferredSizeWidget {
                 decoration: BoxDecoration(
                   color: AppColors.signInButtonColor,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.primaryColor, width: 1),
+                  border: Border.all(color: AppColors.bolderColor, width: 1),
                 ),
                 child: TextButton(
                   onPressed: () {

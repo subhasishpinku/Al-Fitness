@@ -1,5 +1,5 @@
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
 
 class SigninTopicList extends StatelessWidget {
   final List<String> topics;
@@ -32,15 +32,29 @@ class SigninTopicList extends StatelessWidget {
                 child: IntrinsicWidth(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 15),
-                      side: BorderSide(color: AppColors.primaryColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 14,
                       ),
-                      foregroundColor: AppColors.primaryColor,
-                      backgroundColor: AppColors.backgroundColor,
+                      side: BorderSide(
+                        color: AppColors.bolderColor,
+                        width: 1.4,
+                      ),
+                      backgroundColor:
+                          Colors.white, // light background like image
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          bottomLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                          bottomRight: Radius.circular(0),
+                        ),
+                      ),
+
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
+
                     onPressed: () => onTopicSelected(context, topics[index]),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,

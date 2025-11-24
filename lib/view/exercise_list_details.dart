@@ -1,5 +1,6 @@
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/res/widgets/SigninFifthAppBar.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/workout_view_model.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class _ExerciseListDetailsState extends State<ExerciseListDetails> {
             builder: (context, viewModel, child) {
               return Scaffold(
                 backgroundColor: AppColors.backgroundColor,
-                appBar: const SigninFourthAppBar(),
+                appBar: const SigninFifthAppBar(),
                 body: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -73,7 +74,8 @@ class _ExerciseListDetailsState extends State<ExerciseListDetails> {
 
                       const SizedBox(height: 16),
 
-                      Expanded(
+                      SizedBox(
+                        height: 400,
                         child: viewModel.loading
                             ? const Center(child: CircularProgressIndicator())
                             : ListView.builder(
@@ -106,9 +108,18 @@ class _ExerciseListDetailsState extends State<ExerciseListDetails> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.black,
-                            side: const BorderSide(color: Colors.black),
+                            side: BorderSide(
+                              color: AppColors.bolderColor,
+                              width: 1.4,
+                            ),
+
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(40),
+                                bottomLeft: Radius.circular(40),
+                                topRight: Radius.circular(40),
+                                bottomRight: Radius.circular(0),
+                              ),
                             ),
                           ),
                           child: const Padding(

@@ -76,7 +76,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register platform-specific WebView implementation
-   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // Register WebView implementation
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -141,9 +141,6 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ContactUsViewModel()),
         ChangeNotifierProvider(create: (_) => PrivacyPolicyViewModel()),
         ChangeNotifierProvider(create: (_) => TermsConditionViewModel()),
-
-
-
       ],
       child: const MyApp(),
     ),
@@ -162,7 +159,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: RouteNames.getStartScreen,
+      initialRoute: RouteNames.splashScreen,
       onGenerateRoute: Routes.generateRoutes,
       //  This ensures everything is RTL
       builder: (context, child) {

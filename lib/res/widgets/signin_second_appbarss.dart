@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/utils/app_colors.dart';
 
 class SigninSecondAppBarss extends StatelessWidget
     implements PreferredSizeWidget {

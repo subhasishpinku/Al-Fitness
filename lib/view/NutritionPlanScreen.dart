@@ -1,6 +1,6 @@
 import 'package:aifitness/models/FoodItem.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/nutrition_plan_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

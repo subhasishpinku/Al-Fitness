@@ -50,5 +50,8 @@ class RouteNames {
   static const String contactUs = "contact_us";
   static const String privacyPolicy = "privacy_policy";
   static const String termsCondition = "terms_condition";
+  static const String splashScreen = "splash_screen";
+  static const String beginYourScreen = "begin_your_screen";
+  static const String aboutsUs = "abouts_us";
 
 }

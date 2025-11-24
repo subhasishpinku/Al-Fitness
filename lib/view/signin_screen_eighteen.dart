@@ -1,5 +1,5 @@
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/sigin_eighteen_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +9,7 @@ class SigninScreenEighteen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final provider = Provider.of<SigninEighteenViewModel>(context);
+    final provider = Provider.of<SigninEighteenViewModel>(context);
 
     // LOAD API ONLY ONCE
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -82,18 +82,20 @@ class SigninScreenEighteen extends StatelessWidget {
                     itemCount: provider.foods.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 1,
-                    ),
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1,
+                        ),
                     itemBuilder: (context, index) {
-                        final item = provider.foods[index]; // FoodModel
-                      final String rawItem = item.rawItem;// display name
+                      final item = provider.foods[index]; // FoodModel
+                      final String rawItem = item.rawItem; // display name
 
                       // final bool isSelected =
                       //     provider.selectedItems.contains(name);
-                  final bool isSelected = provider.selectedItems.contains(item.name);
+                      final bool isSelected = provider.selectedItems.contains(
+                        item.name,
+                      );
 
                       return GestureDetector(
                         onTap: () => provider.toggleSelection(item),
@@ -103,8 +105,8 @@ class SigninScreenEighteen extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: isSelected
-                                  ? AppColors.primaryColor
-                                  : Colors.grey.shade500,
+                                  ? AppColors.bolderColor
+                                  : AppColors.bolderColor,
                               width: 2,
                             ),
                           ),
@@ -112,8 +114,9 @@ class SigninScreenEighteen extends StatelessWidget {
                             alignment: Alignment.center,
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
                                 child: Text(
                                   rawItem,
                                   textAlign: TextAlign.center,
@@ -127,7 +130,7 @@ class SigninScreenEighteen extends StatelessWidget {
 
                               if (isSelected)
                                 const Positioned(
-                                  top: 8,
+                                  bottom: 8,
                                   right: 8,
                                   child: CircleAvatar(
                                     radius: 10,

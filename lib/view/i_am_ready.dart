@@ -1,5 +1,6 @@
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/res/widgets/SigninSeventhAppBar.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/i_am_ready_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class _IamReadyState extends State<IamReady> {
         builder: (context, viewModel, child) {
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar: const SigninFourthAppBar(),
+            appBar: const SigninSeventhAppBar(),
             body: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
@@ -61,7 +62,7 @@ class _IamReadyState extends State<IamReady> {
                         },
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.black,
-                          side: const BorderSide(color: Colors.black),
+                          side: const BorderSide(color: AppColors.bolderColor),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -71,33 +72,33 @@ class _IamReadyState extends State<IamReady> {
                           ),
                         ),
                         child: const Text(
-                          "Track Progress",
+                          "I'm Ready",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
                       const SizedBox(height: 12),
 
                       // I'm Ready Button
-                      ElevatedButton(
-                        onPressed: () {
-                          viewModel.onReady(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 28,
-                            vertical: 12,
-                          ),
-                        ),
-                        child: const Text(
-                          "I'm Ready",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     viewModel.onReady(context);
+                      //   },
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor: Colors.black,
+                      //     foregroundColor: Colors.white,
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(8),
+                      //     ),
+                      //     padding: const EdgeInsets.symmetric(
+                      //       horizontal: 28,
+                      //       vertical: 12,
+                      //     ),
+                      //   ),
+                      //   child: const Text(
+                      //     "I'm Ready",
+                      //     style: TextStyle(fontWeight: FontWeight.w600),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

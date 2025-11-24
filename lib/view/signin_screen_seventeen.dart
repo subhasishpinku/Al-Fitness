@@ -1,5 +1,5 @@
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/sigin_seventeen_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +109,9 @@ class SigninScreenSeventeen extends StatelessWidget {
                       // final bool isSelected = provider.selectedItems.contains(
                       //   rawItem,
                       // );
-                  final bool isSelected = provider.selectedItems.contains(item.name);
+                      final bool isSelected = provider.selectedItems.contains(
+                        item.name,
+                      );
 
                       return GestureDetector(
                         onTap: () => provider.toggleSelection(item),
@@ -119,8 +121,8 @@ class SigninScreenSeventeen extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: isSelected
-                                  ? AppColors.primaryColor
-                                  : Colors.black54,
+                                  ? AppColors.bolderColor
+                                  : AppColors.bolderColor,
                               width: 2,
                             ),
                           ),

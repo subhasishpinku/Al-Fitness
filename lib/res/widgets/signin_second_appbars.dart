@@ -1,5 +1,5 @@
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:aifitness/res/widgets/coloors.dart';
 
 class SigninSecondAppBars extends StatelessWidget
     implements PreferredSizeWidget {
@@ -33,16 +33,15 @@ class SigninSecondAppBars extends StatelessWidget
                 icon: Icon(Icons.arrow_back, color: AppColors.primaryColor),
                 onPressed: () => Navigator.pop(context),
               ),
-              Expanded(
-                child: Text(
-                  "AI FITNESS",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
+              SizedBox(
+                width: 110,
+                height: 50,
+                child: Image.asset(
+                  'assets/images/logo2.png',
+                  fit: BoxFit.contain,
                 ),
               ),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Text(
@@ -56,6 +55,7 @@ class SigninSecondAppBars extends StatelessWidget
               ),
             ],
           ),
+
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1),
             child: Container(

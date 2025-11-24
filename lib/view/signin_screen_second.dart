@@ -1,5 +1,5 @@
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_topic_list.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/signin_second_viewModel.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart'; // 👈 Import new AppBar
 import 'package:flutter/material.dart';

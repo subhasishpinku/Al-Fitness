@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:flutter/material.dart';
@@ -25,19 +26,49 @@ class DashboardBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Week Title
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.calendar_today, size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    "Week ${viewModel.weekNumber}",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_today, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Week ${viewModel.weekNumber}",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  // --- PROGRESS BAR ---
+                  Container(
+                    height: 4, // thin line
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: const Color(
+                        0x332596be,
+                      ), // light background (20% opacity)
+                    ),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: viewModel.weekProgress,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: const Color(0xFF2596BE), // Primary blue
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
+
               const SizedBox(height: 16),
 
               /// Dynamic Weight Info from Provider
@@ -172,8 +203,9 @@ class DashboardBody extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Colors.grey.shade400),
+        color: AppColors.dashboardColor, // <<--- BACKGROUND COLOR HERE
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.dashboardColor),
       ),
       child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
     );
@@ -183,7 +215,7 @@ class DashboardBody extends StatelessWidget {
     width: double.infinity,
     padding: const EdgeInsets.symmetric(vertical: 14),
     decoration: BoxDecoration(
-      color: Colors.grey.shade200,
+      color: AppColors.dashboardColor,
       borderRadius: BorderRadius.circular(10),
     ),
     child: Row(
@@ -229,7 +261,7 @@ class DashboardBody extends StatelessWidget {
         foregroundColor: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: const BorderSide(color: Colors.black),
+          side: const BorderSide(color: AppColors.bolderColor),
         ),
         elevation: 0,
       ),
@@ -289,7 +321,7 @@ class _DataCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: AppColors.bolderColor),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
@@ -305,7 +337,7 @@ class _DataCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: AppColors.dashboardColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),

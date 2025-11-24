@@ -1,5 +1,6 @@
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/res/widgets/ManualEntryScreen.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/signin_eleventh_viewModel.dart';
 import 'package:flutter/material.dart';
@@ -70,9 +71,7 @@ class _SigninScreenEleventhBody extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: OutlinedButton(
                     onPressed: () {
-                      context.read<SigninEleventhViewModel>().enterManually(
-                        context,
-                      );
+                      showManualEntryDialog(context);
                     },
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -80,9 +79,13 @@ class _SigninScreenEleventhBody extends StatelessWidget {
                         vertical: 14,
                       ),
                       backgroundColor: Colors.white,
+                      side: BorderSide(
+                        color: AppColors.bolderColor,
+                        width: 1.4, // (optional) you can change thickness
+                      ),
+
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: AppColors.primaryColor),
                       ),
                     ),
                     child: Text(

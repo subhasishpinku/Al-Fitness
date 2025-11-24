@@ -1,5 +1,7 @@
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/res/widgets/SigninSixthAppBar.dart';
+import 'package:aifitness/res/widgets/UniversalMediaWidget.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/video_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +22,7 @@ class _VideoScreenState extends State<VideoScreen> {
         builder: (context, viewModel, child) {
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar: const SigninFourthAppBar(),
+            appBar: const SigninSixthAppBar(),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
@@ -85,12 +87,16 @@ class _VideoScreenState extends State<VideoScreen> {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.black54),
                         ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.play_circle_fill,
-                            color: Colors.black54,
-                            size: 50,
-                          ),
+                        // child: const Center(
+                        //   child: Icon(
+                        //     Icons.play_circle_fill,
+                        //     color: Colors.black54,
+                        //     size: 50,
+                        //   ),
+                        child: UniversalMediaWidget(
+                          mediaUri: "https://player.vimeo.com/video/897714560",
+                          mediaUrl: "https://player.vimeo.com/video/897714560",
+                          height: 220,
                         ),
                       ),
                     ],
@@ -136,10 +142,10 @@ class _VideoScreenState extends State<VideoScreen> {
                       ],
                     ),
                   ),
-                  const Spacer(),
 
                   // --- Complete Button ---
-                  Center(
+                  Align(
+                    alignment: Alignment.bottomRight,
                     child: ElevatedButton(
                       onPressed: () {
                         viewModel.onComplete(context);
@@ -147,16 +153,25 @@ class _VideoScreenState extends State<VideoScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,
-                        side: const BorderSide(color: Colors.black),
+                        side: BorderSide(
+                          color: AppColors.bolderColor,
+                          width: 1.4,
+                        ),
+
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            bottomLeft: Radius.circular(40),
+                            topRight: Radius.circular(40),
+                            bottomRight: Radius.circular(0),
+                          ),
                         ),
                         elevation: 0,
                       ),
                       child: const Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 10,
+                          horizontal: 8,
+                          vertical: 15,
                         ),
                         child: Text(
                           "Complete",

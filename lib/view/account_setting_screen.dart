@@ -191,6 +191,13 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                 ),
                 _buildMenuItem(
                   context,
+                  title: "About Us",
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteNames.aboutsUs);
+                  },
+                ),
+                _buildMenuItem(
+                  context,
                   title: "Contact Us",
                   onTap: () {
                     Navigator.pushNamed(context, RouteNames.contactUs);

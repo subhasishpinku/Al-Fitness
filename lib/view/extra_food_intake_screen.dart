@@ -1,4 +1,4 @@
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

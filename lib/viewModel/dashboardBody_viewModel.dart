@@ -11,6 +11,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
   double currentWeight = 0;
   double targetWeight = 0;
   double dailyCalories = 0;
+  double weekProgress = 0.0; // 25% completed
 
   int weekNumber = 1;
   String gender = ""; //  NEW added
@@ -33,7 +34,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       String deviceId = prefs.getString("device_id") ?? "123456";
       int? userId = prefs.getInt("user_id") ?? 0;
-
+      print("WonDeviceId ${deviceId} ${userId}");
       DashboardModel model = await _repo.fetchDashboardData(
         userId: userId,
         deviceId: deviceId,
@@ -67,6 +68,22 @@ class DashboardBodyViewModel extends ChangeNotifier {
       waterData = _toDoubleList(data.latestTotalBodyWaterLogs);
       subcutaneousData = _toDoubleList(data.latestSubcutaneousFatLogs);
       visceralData = _toDoubleList(data.latestVisceralFatLevelLogs);
+      // weekProgress = _toDoubleList(data.dayDetails.week);
+      int week = data.dayDetails!.week!;
+      double weekProgress;
+
+      if (week == 1) {
+        weekProgress = 1.0;
+      } else if (week == 2) {
+        weekProgress = 2.0;
+      } else if (week == 3) {
+        weekProgress = 3.0;
+      } else if (week == 4) {
+        weekProgress = 4.0;
+      } else {
+        weekProgress = week.toDouble(); // fallback
+      }
+      print("weekProgress ${weekProgress}");
 
       /// ----------------------------------------
       ///   CURRENT PHASE PROGRESS

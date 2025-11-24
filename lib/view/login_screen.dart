@@ -1,4 +1,4 @@
-import 'package:aifitness/res/widgets/coloors.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
@@ -155,7 +155,7 @@ class _LoginBody extends StatelessWidget {
                         foregroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: AppColors.primaryColor),
+                          side: BorderSide(color: AppColors.bolderColor),
                         ),
                         elevation: 0,
                       ),

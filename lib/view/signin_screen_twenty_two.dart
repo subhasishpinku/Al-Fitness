@@ -1,5 +1,5 @@
-import 'package:aifitness/res/widgets/coloors.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/signin_twentytwo_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -85,8 +85,8 @@ class _SigninScreenTwentyTwoState extends State<SigninScreenTwentyTwo> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: isSelected
-                                      ? Colors.black
-                                      : Colors.grey.shade500,
+                                      ? AppColors.bolderColor
+                                      : AppColors.bolderColor,
                                   width: 2,
                                 ),
                               ),

@@ -187,6 +187,7 @@ class SigninTwentyFourViewModel extends ChangeNotifier {
 
       loading = false;
       notifyListeners();
+          print("FINAL DATA: ${response.data}");
 
       if (response.data["success"] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
