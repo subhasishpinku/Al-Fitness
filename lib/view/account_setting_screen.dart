@@ -1,10 +1,44 @@
 import 'dart:io';
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AccountSettingScreen extends StatelessWidget {
+class AccountSettingScreen extends StatefulWidget {
   const AccountSettingScreen({super.key});
+
+  @override
+  State<AccountSettingScreen> createState() => _AccountSettingScreenState();
+}
+
+class _AccountSettingScreenState extends State<AccountSettingScreen> {
+  int userId = 0;
+  String? deviceId = "";
+  String? name = "";
+  String? email = "";
+  String? imageFullUrl = "";
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      userId = prefs.getInt("user_id") ?? 0;
+      deviceId = prefs.getString("device_id");
+      name = prefs.getString("name");
+      email = prefs.getString("email");
+      imageFullUrl = prefs.getString("image_full_url");
+    });
+
+    print(
+      "UserDetails => $userId | $deviceId | $name | $email  | $imageFullUrl",
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +75,14 @@ class AccountSettingScreen extends StatelessWidget {
                           backgroundColor: Colors.grey.shade200,
                           backgroundImage: vm.profileImage != null
                               ? FileImage(vm.profileImage!)
-                              : null,
-                          child: vm.profileImage == null
+                              : (imageFullUrl != null &&
+                                        imageFullUrl!.isNotEmpty
+                                    ? NetworkImage(imageFullUrl!)
+                                    : null),
+                          child:
+                              vm.profileImage == null &&
+                                  (imageFullUrl == null ||
+                                      imageFullUrl!.isEmpty)
                               ? const Icon(
                                   Icons.person,
                                   size: 50,
@@ -50,6 +90,7 @@ class AccountSettingScreen extends StatelessWidget {
                                 )
                               : null,
                         ),
+
                         Positioned(
                           bottom: 0,
                           right: 0,
@@ -110,7 +151,7 @@ class AccountSettingScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        vm.userName,
+                        "${name}",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -118,7 +159,7 @@ class AccountSettingScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        vm.userEmail,
+                        "${email}",
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.grey,
@@ -134,13 +175,27 @@ class AccountSettingScreen extends StatelessWidget {
 
                 // Menu Options
                 _buildMenuItem(context, title: "Delete Profile", onTap: () {}),
-                _buildMenuItem(context, title: "Privacy Policy", onTap: () {}),
+                _buildMenuItem(
+                  context,
+                  title: "Privacy Policy",
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteNames.privacyPolicy);
+                  },
+                ),
                 _buildMenuItem(
                   context,
                   title: "Terms of Service",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteNames.termsCondition);
+                  },
                 ),
-                _buildMenuItem(context, title: "Contact Us", onTap: () {}),
+                _buildMenuItem(
+                  context,
+                  title: "Contact Us",
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteNames.contactUs);
+                  },
+                ),
               ],
             ),
           ),

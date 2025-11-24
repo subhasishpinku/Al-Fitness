@@ -1,47 +1,72 @@
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
+
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  int userId = 0;
+  String? deviceId = "";
+  String? name = "";
+  String? email = "";
+  String? imageFullUrl = "";
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      userId = prefs.getInt("user_id") ?? 0;
+      deviceId = prefs.getString("device_id");
+      name = prefs.getString("name");
+      email = prefs.getString("email");
+      imageFullUrl = prefs.getString("image_full_url");
+    });
+
+    print("UserDetails => $userId | $deviceId | $name | $email  | $imageFullUrl");
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(0),
-          bottomRight: Radius.circular(0),
-        ),
-      ),
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// 🔹 Header Section
+            /// Header
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 20,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
                 children: [
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          "Hi Subhasish,",
-                          style: TextStyle(
+                          name ?? "",
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: Colors.black87,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          "pinku.subhasish@gmail.com",
-                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                          email ?? "",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
@@ -57,7 +82,7 @@ class CustomDrawer extends StatelessWidget {
 
             const Divider(height: 1, color: Colors.grey),
 
-            /// 🔹 Drawer Options
+            /// Drawer Items
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -65,12 +90,10 @@ class CustomDrawer extends StatelessWidget {
                   _drawerItem(
                     icon: Icons.flag,
                     title: "Target & Change Details",
-                    onTap: () => {
-                      Navigator.pushNamed(
-                        context,
-                        RouteNames.targetChangeDetails,
-                      ),
-                    },
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteNames.targetChangeDetails,
+                    ),
                   ),
                   _drawerItem(
                     icon: Icons.image_outlined,
@@ -83,15 +106,15 @@ class CustomDrawer extends StatelessWidget {
                   _drawerItem(
                     icon: Icons.settings_outlined,
                     title: "Account Setting",
-                    onTap: () =>  Navigator.pushNamed(
-                        context,
-                        RouteNames.accountSettingScreen,
-                      ),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteNames.accountSettingScreen,
+                    ),
                   ),
                   _drawerItem(
                     icon: Icons.logout_outlined,
                     title: "Sign Out",
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => logout(context),
                   ),
                 ],
               ),
@@ -102,7 +125,7 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  /// 🔸 Drawer Item Widget
+  /// Drawer Item Widget
   Widget _drawerItem({
     required IconData icon,
     required String title,
@@ -117,6 +140,18 @@ class CustomDrawer extends StatelessWidget {
       ),
       trailing: const Icon(Icons.chevron_right, color: Colors.black45),
       onTap: onTap,
+    );
+  }
+
+  /// Logout logic
+  Future<void> logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      RouteNames.loginScreen,
+      (route) => false,
     );
   }
 }

@@ -124,13 +124,25 @@ class LoginViewModel extends ChangeNotifier {
 
       final loginResponse = LoginResponse.fromJson(json);
       await prefs.setString(
-        'user_type',
-        loginResponse.data.userDetails.userType.toString(),
+        'name',
+        loginResponse.data!.userDetails!.name.toString(),
+      );
+      await prefs.setString(
+        'name',
+        loginResponse.data!.userDetails!.name.toString(),
+      );
+      await prefs.setString(
+        'email',
+        loginResponse.data!.userDetails!.email.toString(),
+      );
+       await prefs.setString(
+        'image_full_url',
+        loginResponse.data!.userDetails!.imageFullUrl.toString(),
       );
       //loginResponse.data.userDetails.id ??
       //2870
       await prefs.setInt('user_id', 2858);
-      print(loginResponse.data.userDetails.id);
+      print("UserIdResponse ${loginResponse.data!.userDetails!.id}");
       _isLoading = false;
       notifyListeners();
 

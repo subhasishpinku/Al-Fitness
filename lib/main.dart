@@ -19,6 +19,7 @@ import 'package:aifitness/viewModel/body_fat_viewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
 import 'package:aifitness/viewModel/body_water_view_model.dart';
 import 'package:aifitness/viewModel/change_details_viewModel.dart';
+import 'package:aifitness/viewModel/contact_us_viewModel.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_details_viewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_viewModel.dart';
@@ -30,6 +31,7 @@ import 'package:aifitness/viewModel/i_am_ready_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
 import 'package:aifitness/viewModel/nutration_screen_viewModel.dart';
 import 'package:aifitness/viewModel/nutrition_plan_viewmodel.dart';
+import 'package:aifitness/viewModel/privacy_policy_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_eighteen_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_fifteen_viewModel.dart';
 import 'package:aifitness/viewModel/sigin_foutreen_viewModel.dart';
@@ -58,6 +60,7 @@ import 'package:aifitness/viewModel/skeletal_muscle_viewmodel.dart';
 import 'package:aifitness/viewModel/subcutaneous_fat_viewmodel.dart';
 import 'package:aifitness/viewModel/targetChangeScreen_viewModel.dart';
 import 'package:aifitness/viewModel/target_change_details_viewModel.dart';
+import 'package:aifitness/viewModel/terms_condition_viewModel.dart';
 import 'package:aifitness/viewModel/video_viewModel.dart';
 import 'package:aifitness/viewModel/view_plan_viewModel.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
@@ -135,6 +138,10 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AddExerciseTrackerViewModel()),
         ChangeNotifierProvider(create: (_) => FitNetworkViewModel()),
         ChangeNotifierProvider(create: (_) => TargetChangeDetailsViewModel()),
+        ChangeNotifierProvider(create: (_) => ContactUsViewModel()),
+        ChangeNotifierProvider(create: (_) => PrivacyPolicyViewModel()),
+        ChangeNotifierProvider(create: (_) => TermsConditionViewModel()),
+
 
 
       ],

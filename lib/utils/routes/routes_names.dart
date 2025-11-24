@@ -47,5 +47,8 @@ class RouteNames {
   static const String visceralFatScreen = "Visceral_fat_screen";
   static const String bodyWaterScreen = "body_water_screen";
   static const String fitNetwork = "fit_network";
+  static const String contactUs = "contact_us";
+  static const String privacyPolicy = "privacy_policy";
+  static const String termsCondition = "terms_condition";
 
 }

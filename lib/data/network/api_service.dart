@@ -27,6 +27,7 @@ class ApiService {
       if (resData is Map && resData['data'] is String) {
         resData['data'] = jsonDecode(resData['data']);
       }
+      print("contracted $resData");
 
       return Response(
         requestOptions: response.requestOptions,
@@ -38,6 +39,32 @@ class ApiService {
       throw Exception(e.response?.data ?? e.message);
     }
   }
+  Future<Map<String, dynamic>> postContractRequest(String url, Map<String, dynamic> data) async {
+  try {
+    final response = await _dio.post(url, data: data);
+
+    dynamic resData = response.data;
+
+    // If backend returns string
+    if (resData is String) {
+      resData = jsonDecode(resData);
+    }
+
+    // Inner data decode
+    if (resData is Map && resData["data"] is String) {
+      resData["data"] = jsonDecode(resData["data"]);
+    }
+
+    print("contracted $resData");
+
+    // 🔥 RETURN ONLY MAP, NOT Response
+    return resData;
+
+  } on DioException catch (e) {
+    throw Exception(e.response?.data ?? e.message);
+  }
+}
+
 
   // Future<Response> postRequestFood(
   //   String endpoint,
@@ -65,7 +92,7 @@ class ApiService {
   //   }
   // }
 
-   Future<Response> post(String endpoint, Map<String, dynamic> data) async {
+  Future<Response> post(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await _dio.post(endpoint, data: data);
       return response;

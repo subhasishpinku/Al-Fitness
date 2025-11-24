@@ -1,6 +1,8 @@
 import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/view/ContactUs.dart';
 import 'package:aifitness/view/FitNetwork.dart';
+import 'package:aifitness/view/PrivacyPolicy.dart';
 import 'package:aifitness/view/Target_change_screen.dart';
 import 'package:aifitness/view/Visceral_fat_screen.dart';
 import 'package:aifitness/view/account_setting_screen.dart';
@@ -45,6 +47,7 @@ import 'package:aifitness/view/signin_screen_twenty_two.dart';
 import 'package:aifitness/view/skeletal_muscle_screen.dart';
 import 'package:aifitness/view/subcutaneous_fat_screen.dart';
 import 'package:aifitness/view/target_change_details.dart';
+import 'package:aifitness/view/terms_condition.dart';
 import 'package:aifitness/view/video_screen.dart';
 import 'package:aifitness/view/view_plan_screen.dart';
 import 'package:aifitness/view/weight_today_screen.dart';
@@ -246,7 +249,18 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const FitNetwork(),
         );
-
+      case (RouteNames.contactUs):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ContactUs(),
+        );
+      case (RouteNames.privacyPolicy):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const PrivacyPolicy(),
+        );
+        case (RouteNames.termsCondition):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const TermsCondition(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

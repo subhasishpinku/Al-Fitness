@@ -2,10 +2,37 @@ import 'dart:io';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class BodyImageProgress extends StatelessWidget {
+class BodyImageProgress extends StatefulWidget {
   const BodyImageProgress({super.key});
 
+  @override
+  State<BodyImageProgress> createState() => _BodyImageProgressState();
+}
+
+class _BodyImageProgressState extends State<BodyImageProgress> {
+    int userId = 0;
+  String? deviceId = "";
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getInt("user_id") ?? 0;
+    deviceId = prefs.getString("device_id");
+
+    if (deviceId == null) return;
+
+    // Kick off fetching categories + initial news
+    Future.microtask(() {
+      final vm = context.read<BodyImageProgressViewModel>();
+      vm.fetchAiDetails(deviceId!, userId);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<BodyImageProgressViewModel>(context);
