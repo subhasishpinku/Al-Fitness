@@ -26,6 +26,6 @@ class SigninTwelveViewModel extends ChangeNotifier {
     final percentage = bodyFatList[index]['percent']!;
 
     await prefs.setString('target_bfp', percentage);
-    debugPrint('✅ Saved target_bfp: $percentage');
+    debugPrint('Saved target_bfp: $percentage');
   }
 }

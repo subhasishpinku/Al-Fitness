@@ -6,7 +6,7 @@ class VideoViewModel extends ChangeNotifier {
   void onComplete(BuildContext context) {
     // Example: Go to next workout screen
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Warm-up complete! Let's begin workout 💪")),
+      const SnackBar(content: Text("Warm-up complete! Let's begin workout ")),
     );
     Navigator.pushNamed(context, RouteNames.iamReady);
 

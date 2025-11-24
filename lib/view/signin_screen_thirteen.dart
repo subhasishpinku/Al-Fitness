@@ -183,7 +183,7 @@ class FatLossContent extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// ✅ Target Weight + Duration
+                    /// Target Weight + Duration
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: Text(
@@ -193,7 +193,7 @@ class FatLossContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
 
-                    /// ✅ Current Intake
+                    ///  Current Intake
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: Text(
@@ -203,7 +203,7 @@ class FatLossContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
 
-                    /// ✅ New Intake (dailyCalories - deficientCalories)
+                    ///  New Intake (dailyCalories - deficientCalories)
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: Text(

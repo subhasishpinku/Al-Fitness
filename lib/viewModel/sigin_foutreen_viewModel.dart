@@ -44,7 +44,7 @@ class SigninFourteenViewModel extends ChangeNotifier {
       selectedValue = 6;
     }
 
-    /// ✅ Save selectedValue as int
+    ///  Save selectedValue as int
     await prefs.setInt('no_of_days_per_week', selectedValue);
 
     final savedValue = prefs.getInt('no_of_days_per_week');

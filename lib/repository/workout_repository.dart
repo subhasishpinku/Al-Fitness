@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:aifitness/models/exercise_models.dart';
 import 'package:http/http.dart' as http;
-import '../models/exercise_model.dart';
 
 class WorkoutRepository {
   Future<List<Exercise>> fetchWorkouts({

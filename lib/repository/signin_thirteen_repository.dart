@@ -19,7 +19,7 @@ class SigninThirteenRepository {
 
       dynamic responseData = response.data;
 
-      // ✅ Case 1: response is a string (decode it)
+      //  Case 1: response is a string (decode it)
       if (responseData is String) {
         try {
           responseData = jsonDecode(responseData);
@@ -28,7 +28,7 @@ class SigninThirteenRepository {
         }
       }
 
-      // ✅ Case 2: response must now be a JSON Map
+      //  Case 2: response must now be a JSON Map
       if (responseData is Map<String, dynamic>) {
         if (responseData["success"] == true &&
             responseData.containsKey("data")) {

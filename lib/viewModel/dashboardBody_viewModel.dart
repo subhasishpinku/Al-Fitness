@@ -13,11 +13,11 @@ class DashboardBodyViewModel extends ChangeNotifier {
   double dailyCalories = 0;
 
   int weekNumber = 1;
-  String gender = ""; // ⭐ NEW added
+  String gender = ""; //  NEW added
   String day = "";
   String logValue = "";
 
-  // ⭐ Line Chart Arrays (MATCHING iOS)
+  //  Line Chart Arrays (MATCHING iOS)
   List<double> weightData = [];
   List<double> bfpData = [];
   List<double> skeletalData = [];
