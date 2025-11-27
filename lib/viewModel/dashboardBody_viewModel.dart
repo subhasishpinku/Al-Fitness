@@ -11,7 +11,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
   double currentWeight = 0;
   String targetWeight = "";
   double dailyCalories = 0;
-  double weekProgress = 0.0; // 25% completed
+  double weekProgress = 3.5; // 25% completed
 
   int weekNumber = 1;
   String gender = ""; //  NEW added
@@ -69,27 +69,19 @@ class DashboardBodyViewModel extends ChangeNotifier {
       waterData = _toDoubleList(data.latestTotalBodyWaterLogs);
       subcutaneousData = _toDoubleList(data.latestSubcutaneousFatLogs);
       visceralData = _toDoubleList(data.latestVisceralFatLevelLogs);
-      // weekProgress = _toDoubleList(data.dayDetails.week);
+      // int?  weekProgress = data.dayDetails!.week;
       deload_week = data.weekFlags!.deloadWeek!;
       progressive_week = data.weekFlags!.deloadWeek!;
       prefs.setString("deload_week", deload_week!);
       prefs.setString("progressive_week", progressive_week!);
 
-      int week = data.dayDetails!.week!;
-      double weekProgress;
+      int week = data.dayDetails!.week ?? 1;
 
-      if (week == 1) {
-        weekProgress = 1.0;
-      } else if (week == 2) {
-        weekProgress = 2.0;
-      } else if (week == 3) {
-        weekProgress = 3.0;
-      } else if (week == 4) {
-        weekProgress = 4.0;
-      } else {
-        weekProgress = week.toDouble(); // fallback
-      }
-      print("weekProgress ${weekProgress}");
+      // total weeks = 4 (you can change if needed)
+      const totalWeeks = 4;
+
+      // progress must be between 0–1
+      weekProgress = (week / totalWeeks).clamp(0.0, 1.0);
 
       /// ----------------------------------------
       ///   CURRENT PHASE PROGRESS

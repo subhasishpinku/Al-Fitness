@@ -16,43 +16,43 @@ class NutritionPlanViewModel extends ChangeNotifier {
   DietData? dietData;
   String? errorMessage;
 
-  List<MealSection> get mealSections => [
-    MealSection(
-      title: "Pre-Workout Meal (Eat 60–90 mins before workout)",
-      iconPath: "assets/images/preworkout.png",
-      totalKcal: "420 kcal",
-      items: [
-        MealItem(
-          name: "¾ Cup cooked quinoa (90 g)",
-          image: "assets/images/quinoa.jpg",
-          carbs: "20g",
-          protein: "4g",
-          fats: "2g",
-        ),
-        MealItem(
-          name: "1 Piece of Avocado",
-          image: "assets/images/avocado.jpeg",
-          carbs: "4g",
-          protein: "1g",
-          fats: "22g",
-        ),
-      ],
-    ),
-    MealSection(
-      title: "Post-Workout Meal (Eat within 30 mins after workout)",
-      iconPath: "assets/images/sweet_potato1.png",
-      totalKcal: "350 kcal",
-      items: [
-        MealItem(
-          name: "1 Banana + 1 Scoop Whey Protein",
-          image: "assets/images/sweet_potato.jpeg",
-          carbs: "25g",
-          protein: "24g",
-          fats: "2g",
-        ),
-      ],
-    ),
-  ];
+  // List<MealSection> get mealSections => [
+  //   MealSection(
+  //     title: "Pre-Workout Meal (Eat 60–90 mins before workout)",
+  //     iconPath: "assets/images/preworkout.png",
+  //     totalKcal: "420 kcal",
+  //     items: [
+  //       MealItem(
+  //         name: "¾ Cup cooked quinoa (90 g)",
+  //         image: "assets/images/quinoa.jpg",
+  //         carbs: "20g",
+  //         protein: "4g",
+  //         fats: "2g",
+  //       ),
+  //       MealItem(
+  //         name: "1 Piece of Avocado",
+  //         image: "assets/images/avocado.jpeg",
+  //         carbs: "4g",
+  //         protein: "1g",
+  //         fats: "22g",
+  //       ),
+  //     ],
+  //   ),
+  //   MealSection(
+  //     title: "Post-Workout Meal (Eat within 30 mins after workout)",
+  //     iconPath: "assets/images/sweet_potato1.png",
+  //     totalKcal: "350 kcal",
+  //     items: [
+  //       MealItem(
+  //         name: "1 Banana + 1 Scoop Whey Protein",
+  //         image: "assets/images/sweet_potato.jpeg",
+  //         carbs: "25g",
+  //         protein: "24g",
+  //         fats: "2g",
+  //       ),
+  //     ],
+  //   ),
+  // ];
   Future<void> getDiet({
     required int week,
     required int userId,
@@ -74,9 +74,9 @@ class NutritionPlanViewModel extends ChangeNotifier {
         dietData = response.data;
         // meals = response.data;
         meals = {
-          "breakfast": response.data!.breakfast,
-          "lunch": response.data!.lunch,
-          "dinner": response.data!.dinner,
+          "breakfast": response.data!.breakfast!,
+          "lunch": response.data!.lunch!,
+          "dinner": response.data!.dinner!,
           "pre_workout": response.data!.preWorkout ?? [],
           "post_workout": response.data!.postWorkout ?? [],
           "snacks": response.data!.snacks ?? [],

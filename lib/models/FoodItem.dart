@@ -1,54 +1,81 @@
 class FoodItem {
-  final String id;
-  final String name;
-  final String rawItem;
-  final String quantityUnit;
-  final String calories;
-  final String carbs;
-  final String protein;
-  final String fat;
-  final String quantityUi;
-  final List<FoodMedia> media;
+  String? id;
+  String? type;
+  String? quantityUnit;
+  String? quantityLimit;
+  String? category;
+  String? classification;
+  String? special;
+  String? fixedQuantity;
+  String? name;
+  String? rawItem;
+  String? description;
+  String? goal;
+  String? time;
+  String? carbs;
+  String? fat;
+  String? protein;
+  String? lysine;
+  String? fiber;
+  String? calories;
+  String? mealTypeSubOption;
+  String? media;
+  String? createdAt;
+  String? updatedAt;
+  List<FoodMedia>? mediaDecoded;
+  String? quantityUnitDisplay;
+  String? qty;
+  String? quantityUi;
 
-  FoodItem({
-    required this.id,
-    required this.name,
-    required this.rawItem,
-    required this.quantityUnit,
-    required this.calories,
-    required this.carbs,
-    required this.protein,
-    required this.fat,
-    required this.quantityUi,
-    required this.media,
-  });
+  FoodItem.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    type = json['type'];
+    quantityUnit = json['quantity_unit'];
+    quantityLimit = json['quantity_limit'];
+    category = json['category'];
+    classification = json['classification'];
+    special = json['special'];
+    fixedQuantity = json['fixed_quantity'];
+    name = json['name'];
+    rawItem = json['raw_item'];
+    description = json['description'];
+    goal = json['goal'];
+    time = json['time'];
+    carbs = json['carbs'];
+    fat = json['fat'];
+    protein = json['protein'];
+    lysine = json['lysine'];
+    fiber = json['fiber'];
+    calories = json['calories'];
+    mealTypeSubOption = json['meal_type_sub_option'];
+    media = json['media'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
 
-  factory FoodItem.fromJson(Map<String, dynamic> json) {
-    return FoodItem(
-      id: json["id"],
-      name: json["name"],
-      rawItem: json["raw_item"],
-      quantityUnit: json["quantity_unit"],
-      calories: json["calories"],
-      carbs: json["carbs"],
-      protein: json["protein"],
-      fat: json["fat"],
-      quantityUi: json["quantity_ui"],
-      media: json["media_decoded"] == null
-          ? []
-          : (json["media_decoded"] as List)
-              .map((e) => FoodMedia.fromJson(e))
-              .toList(),
-    );
+    if (json['media_decoded'] != null) {
+      mediaDecoded = [];
+      json['media_decoded'].forEach((v) {
+        mediaDecoded!.add(FoodMedia.fromJson(v));
+      });
+    }
+
+    quantityUnitDisplay = json['quantity_unit_display'];
+    qty = json['qty'];
+    quantityUi = json['quantity_ui'];
   }
 }
 
+
 class FoodMedia {
-  final String url;
+  String? uri;
+  String? type;
+  String? group;
+  String? url;
 
-  FoodMedia({required this.url});
-
-  factory FoodMedia.fromJson(Map<String, dynamic> json) {
-    return FoodMedia(url: json["url"]);
+  FoodMedia.fromJson(Map<String, dynamic> json) {
+    uri = json['uri'];
+    type = json['type'];
+    group = json['group'];
+    url = json['url'];
   }
 }

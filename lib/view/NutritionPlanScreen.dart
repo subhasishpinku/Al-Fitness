@@ -1,3 +1,4 @@
+import 'package:aifitness/models/DietData.dart';
 import 'package:aifitness/models/FoodItem.dart';
 import 'package:aifitness/res/widgets/NutritionAppBar.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
@@ -82,9 +83,10 @@ class _NutritionPlanScreenState extends State<NutritionPlanScreen> {
                     const Text(
                       "Follow pre- and post-workout meals\nbased on your workout start time.",
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
+                        fontSize: 20,
+                        color: Colors.black,
                         height: 1.4,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -116,6 +118,7 @@ class _NutritionPlanScreenState extends State<NutritionPlanScreen> {
 }
 
 /// -------- SECTION WIDGET (LIKE IMAGE) --------
+
 class MealSectionWidget extends StatelessWidget {
   final String title;
   final List<FoodItem> items;
@@ -130,22 +133,30 @@ class MealSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (items.isEmpty) return const SizedBox.shrink();
 
-    /// Calculate nutrition summary
-    double totalCarb = 0, totalProtein = 0, totalFat = 0;
+    double totalCarb = 0,
+        totalProtein = 0,
+        totalFat = 0,
+        totalFiber = 0,
+        totalLeucine = 0;
+
     for (var item in items) {
-      totalCarb += double.tryParse(item.carbs) ?? 0;
-      totalProtein += double.tryParse(item.protein) ?? 0;
-      totalFat += double.tryParse(item.fat) ?? 0;
+      totalCarb += double.tryParse(item.carbs ?? "0") ?? 0;
+      totalProtein += double.tryParse(item.protein ?? "0") ?? 0;
+      totalFat += double.tryParse(item.fat ?? "0") ?? 0;
+      totalFiber += double.tryParse(item.fiber ?? "0") ?? 0;
+      totalLeucine += double.tryParse(item.lysine ?? "0") ?? 0;
     }
+
     double totalKcal = (totalCarb * 4) + (totalProtein * 4) + (totalFat * 9);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 22),
+
+        /// HEADER ROW
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
             Image.asset(
               "assets/images/preworkout.png",
@@ -153,11 +164,12 @@ class MealSectionWidget extends StatelessWidget {
               width: 50,
               fit: BoxFit.contain,
             ),
+            const SizedBox(width: 12),
             Expanded(
               child: Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 15.8,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: Colors.black87,
                 ),
@@ -168,24 +180,51 @@ class MealSectionWidget extends StatelessWidget {
 
         const SizedBox(height: 14),
 
-        /// FOOD CARDS
+        /// FOOD ITEMS
         ...items.map((item) => FoodCard(item: item)),
 
-        const SizedBox(height: 6),
+        const SizedBox(height: 10),
 
-        /// SUMMARY BAR
+        /// ============================
+        ///      NUTRITION SUMMARY
+        /// ============================
         Row(
-          children: const [
-            Icon(Icons.bar_chart, size: 16, color: Colors.blue),
-            SizedBox(width: 6),
+          children: [
+            const Icon(Icons.bar_chart, size: 16, color: Colors.blue),
+            const SizedBox(width: 6),
+            Text(
+              "≈ ${totalKcal.toStringAsFixed(0)} Kcal",
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
           ],
         ),
-        Text(
-          "≈ ${totalKcal.toStringAsFixed(0)} Kcal | "
-          "Protein: ${totalProtein.toStringAsFixed(1)}g | "
-          "Carbs: ${totalCarb.toStringAsFixed(1)}g | "
-          "Fats: ${totalFat.toStringAsFixed(1)}g",
-          style: const TextStyle(fontSize: 13, color: Colors.black87),
+
+        const SizedBox(height: 4),
+
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.science, size: 16, color: Colors.purple),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                "Protein: ${totalProtein.toStringAsFixed(1)}g | "
+                "Carbs: ${totalCarb.toStringAsFixed(1)}g | "
+                "Fats: ${totalFat.toStringAsFixed(1)}g | "
+                "Fiber: ${totalFiber.toStringAsFixed(1)}g | "
+                "Leucine: ${totalLeucine.toStringAsFixed(1)}g",
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.black87,
+                  height: 1.3,
+                ),
+              ),
+            ),
+          ],
         ),
 
         const SizedBox(height: 28),
@@ -217,7 +256,9 @@ class FoodCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
-              item.media.isNotEmpty ? item.media.first.url : "",
+              item.mediaDecoded != null && item.mediaDecoded!.isNotEmpty
+                  ? item.mediaDecoded!.first.url ?? ""
+                  : "",
               height: 78,
               width: 78,
               fit: BoxFit.cover,
@@ -229,6 +270,7 @@ class FoodCard extends StatelessWidget {
               ),
             ),
           ),
+
           const SizedBox(width: 10),
 
           /// NAME & MACROS
@@ -237,7 +279,7 @@ class FoodCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.name,
+                  item.name ?? "",
                   style: const TextStyle(
                     fontSize: 14.8,
                     fontWeight: FontWeight.w600,
@@ -246,15 +288,15 @@ class FoodCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  "Carbs: ${item.carbs}g",
+                  "Carbs: ${item.carbs ?? "0"}g",
                   style: const TextStyle(fontSize: 12.5, color: Colors.black54),
                 ),
                 Text(
-                  "Protein: ${item.protein}g",
+                  "Protein: ${item.protein ?? "0"}g",
                   style: const TextStyle(fontSize: 12.5, color: Colors.black54),
                 ),
                 Text(
-                  "Fat: ${item.fat}g",
+                  "Fat: ${item.fat ?? "0"}g",
                   style: const TextStyle(fontSize: 12.5, color: Colors.black54),
                 ),
               ],

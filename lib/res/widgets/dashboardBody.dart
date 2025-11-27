@@ -56,7 +56,7 @@ class DashboardBody extends StatelessWidget {
                 ),
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
-                  widthFactor: viewModel.weekProgress,
+                  widthFactor: viewModel.weekProgress, // value must be 0–1
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
