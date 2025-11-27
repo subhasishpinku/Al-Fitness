@@ -83,12 +83,12 @@ class SigninTwentyTwoViewModel extends ChangeNotifier {
       // TODO: Update with your next screen route
       Navigator.pushNamed(context, RouteNames.signinScreenTwentyThree);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please select between 2 and 5 items."),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Please select between 2 and 5 items."),
+      //     duration: Duration(seconds: 2),
+      //   ),
+      // );
     }
   }
 }

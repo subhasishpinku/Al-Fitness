@@ -59,7 +59,7 @@ class _GetStartScreenState extends State<GetStartScreen> {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.8),
+                          backgroundColor: Colors.white.withOpacity(0),
                           side: const BorderSide(
                             color: AppColors
                                 .bolderColor, // <-- added custom border color
@@ -80,8 +80,8 @@ class _GetStartScreenState extends State<GetStartScreen> {
                           "GET STARTED",
                           style: TextStyle(
                             color: AppColors
-                                .secondaryColor, // <-- optional: match text color too
-                            fontSize: 16,
+                                .primaryColor, // <-- optional: match text color too
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1,
                           ),

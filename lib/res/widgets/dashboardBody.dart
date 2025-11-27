@@ -20,179 +20,191 @@ class DashboardBody extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// Week Title
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.calendar_today, size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        "Week ${viewModel.weekNumber}",
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await context.read<DashboardBodyViewModel>().loadDashboard();
+          },
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                // physics: const AlwaysScrollableScrollPhysics(), // <-- Required
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Week Title
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.calendar_today, size: 20),
+                            const SizedBox(width: 8),
+                            Text(
+                              "Week ${viewModel.weekNumber}",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
 
-                  const SizedBox(height: 6),
+                        const SizedBox(height: 6),
 
-                  // --- PROGRESS BAR ---
-                  Container(
-                    height: 4, // thin line
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: const Color(
-                        0x332596be,
-                      ), // light background (20% opacity)
-                    ),
-                    child: FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: viewModel.weekProgress,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: const Color(0xFF2596BE), // Primary blue
+                        // --- PROGRESS BAR ---
+                        Container(
+                          height: 4, // thin line
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2),
+                            color: const Color(
+                              0x332596be,
+                            ), // light background (20% opacity)
+                          ),
+                          child: FractionallySizedBox(
+                            alignment: Alignment.centerLeft,
+                            widthFactor: viewModel.weekProgress,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2),
+                                color: const Color(0xFF2596BE), // Primary blue
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
 
-              const SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-              /// Dynamic Weight Info from Provider
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Current Weight:"),
-                  _infoBox("${viewModel.currentWeight.toStringAsFixed(1)} kg"),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Target Weight for This Week:"),
-                  _infoBox("${viewModel.targetWeight.toStringAsFixed(1)} kg"),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Daily Calories for This Week:"),
-                  _infoBox(
-                    "${viewModel.dailyCalories.toStringAsFixed(1)} kcal/day",
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
+                    /// Dynamic Weight Info from Provider
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Current Weight:"),
+                        _infoBox(
+                          "${viewModel.currentWeight.toStringAsFixed(1)} kg",
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Target Weight for This Week:"),
+                        _infoBox("${viewModel.targetWeight} kg"),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Daily Calories for This Week:"),
+                        _infoBox(
+                          "${viewModel.dailyCalories.toStringAsFixed(1)} kcal/day",
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
 
-              /// Data Cards Grid
-              // GridView.count(
-              //   physics: const NeverScrollableScrollPhysics(),
-              //   shrinkWrap: true,
-              //   crossAxisCount: 2,
-              //   childAspectRatio: 1.2,
-              //   crossAxisSpacing: 10,
-              //   mainAxisSpacing: 10,
-              //   children: [
-              //     _DataCard(
-              //       title: "Enter Weight Today",
-              //       data: viewModel.weightData,
-              //     ),
-              //     const _DataCard(
-              //       title: "Enter Body Fat %",
-              //       data: [18, 17.8, 17.9, 17.6],
-              //     ),
-              //     const _DataCard(
-              //       title: "Enter Skeletal Muscle Mass",
-              //       data: [42, 42.2, 42.3, 42.5],
-              //     ),
-              //     const _DataCard(
-              //       title: "Enter Subcutaneous Fat",
-              //       data: [12, 11.8, 11.7, 11.9],
-              //     ),
-              //     const _DataCard(
-              //       title: "Enter Visceral Fat",
-              //       data: [8, 8, 7.9, 7.8],
-              //     ),
-              //     const _DataCard(
-              //       title: "Enter Body Water",
-              //       data: [62, 62.3, 62.5, 62.9],
-              //     ),
-              //   ],
-              // ),
-              GridView.count(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                childAspectRatio: 1.2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: [
-                  // Pass API data from ViewModel
-                  _DataCard(
-                    title: "Enter Weight Today",
-                    data: viewModel.weightData,
-                    index: 0,
-                  ),
-                  _DataCard(
-                    title: "Enter Body Fat %",
-                    data: viewModel.bfpData,
-                    index: 1,
-                  ),
-                  _DataCard(
-                    title: "Enter Skeletal Muscle Mass",
-                    data: viewModel.skeletalData,
-                    index: 2,
-                  ),
-                  _DataCard(
-                    title: "Enter Subcutaneous Fat",
-                    data: viewModel.subcutaneousData,
-                    index: 3,
-                  ),
-                  _DataCard(
-                    title: "Enter Visceral Fat",
-                    data: viewModel.visceralData,
-                    index: 4,
-                  ),
-                  _DataCard(
-                    title: "Enter Body Water",
-                    data: viewModel.waterData,
-                    index: 5,
-                  ),
-                ],
-              ),
+                    /// Data Cards Grid
+                    // GridView.count(
+                    //   physics: const NeverScrollableScrollPhysics(),
+                    //   shrinkWrap: true,
+                    //   crossAxisCount: 2,
+                    //   childAspectRatio: 1.2,
+                    //   crossAxisSpacing: 10,
+                    //   mainAxisSpacing: 10,
+                    //   children: [
+                    //     _DataCard(
+                    //       title: "Enter Weight Today",
+                    //       data: viewModel.weightData,
+                    //     ),
+                    //     const _DataCard(
+                    //       title: "Enter Body Fat %",
+                    //       data: [18, 17.8, 17.9, 17.6],
+                    //     ),
+                    //     const _DataCard(
+                    //       title: "Enter Skeletal Muscle Mass",
+                    //       data: [42, 42.2, 42.3, 42.5],
+                    //     ),
+                    //     const _DataCard(
+                    //       title: "Enter Subcutaneous Fat",
+                    //       data: [12, 11.8, 11.7, 11.9],
+                    //     ),
+                    //     const _DataCard(
+                    //       title: "Enter Visceral Fat",
+                    //       data: [8, 8, 7.9, 7.8],
+                    //     ),
+                    //     const _DataCard(
+                    //       title: "Enter Body Water",
+                    //       data: [62, 62.3, 62.5, 62.9],
+                    //     ),
+                    //   ],
+                    // ),
+                    GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      children: [
+                        // Pass API data from ViewModel
+                        _DataCard(
+                          title: "Enter Weight Today",
+                          data: viewModel.weightData,
+                          index: 0,
+                        ),
+                        _DataCard(
+                          title: "Enter Body Fat %",
+                          data: viewModel.bfpData,
+                          index: 1,
+                        ),
+                        _DataCard(
+                          title: "Enter Skeletal Muscle Mass",
+                          data: viewModel.skeletalData,
+                          index: 2,
+                        ),
+                        _DataCard(
+                          title: "Enter Subcutaneous Fat",
+                          data: viewModel.subcutaneousData,
+                          index: 3,
+                        ),
+                        _DataCard(
+                          title: "Enter Visceral Fat",
+                          data: viewModel.visceralData,
+                          index: 4,
+                        ),
+                        _DataCard(
+                          title: "Enter Body Water",
+                          data: viewModel.waterData,
+                          index: 5,
+                        ),
+                      ],
+                    ),
 
-              const SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-              /// Log button + Action buttons remain same
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    RouteNames.extraFoodIntakeScreen,
-                  );
-                },
-                child: _logButton(),
-              ),
-              const SizedBox(height: 24),
-              _infoText(),
-              const SizedBox(height: 20),
-              _bottomButtons(context),
-            ],
+                    /// Log button + Action buttons remain same
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RouteNames.extraFoodIntakeScreen,
+                        );
+                      },
+                      child: _logButton(),
+                    ),
+                    const SizedBox(height: 24),
+                    // _infoText(),
+                    // const SizedBox(height: 20),
+                    _bottomButtons(context),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -269,7 +281,7 @@ class DashboardBody extends StatelessWidget {
         if (text == "See Exercise List") {
           Navigator.pushNamed(context, RouteNames.exerciseListScreen);
         } else if (text == "See Your Nutrition") {
-          Navigator.pushNamed(context, RouteNames.nutritionScreen);
+          Navigator.pushNamed(context, RouteNames.viewPlanScreen);
         } else if (text == "View Fitness Network") {
           Navigator.pushNamed(context, RouteNames.fitNetwork);
         }
@@ -366,7 +378,46 @@ class _DataCard extends StatelessWidget {
               ),
             ),
             // Chart
-            Expanded(
+            // Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(6),
+            //     child: SfCartesianChart(
+            //       plotAreaBorderWidth: 0,
+            //       margin: EdgeInsets.zero,
+            //       primaryXAxis: NumericAxis(isVisible: false),
+            //       primaryYAxis: NumericAxis(isVisible: false),
+            //       series: <CartesianSeries<_ChartData, int>>[
+            //         SplineSeries<_ChartData, int>(
+            //           dataSource: chartData,
+            //           xValueMapper: (_ChartData d, _) => d.x,
+            //           yValueMapper: (_ChartData d, _) => d.y,
+            //           dashArray: const [6, 4],
+            //           color: Colors.black,
+            //           width: 2,
+            //           markerSettings: const MarkerSettings(
+            //             isVisible: true,
+            //             width: 10,
+            //             height: 10,
+            //             shape: DataMarkerType.circle,
+            //             color: Colors.black,
+            //           ),
+            //           dataLabelSettings: const DataLabelSettings(
+            //             isVisible: true,
+            //             textStyle: TextStyle(
+            //               fontSize: 10,
+            //               fontWeight: FontWeight.bold,
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+
+            // Chart
+            SizedBox(
+              height: 40, // FIXED HEIGHT
               child: Padding(
                 padding: const EdgeInsets.all(6),
                 child: SfCartesianChart(
@@ -380,19 +431,19 @@ class _DataCard extends StatelessWidget {
                       xValueMapper: (_ChartData d, _) => d.x,
                       yValueMapper: (_ChartData d, _) => d.y,
                       dashArray: const [6, 4],
-                      color: Colors.black,
+                      color: AppColors.dashboardColor,
                       width: 2,
                       markerSettings: const MarkerSettings(
                         isVisible: true,
-                        width: 10,
-                        height: 10,
+                        width: 8,
+                        height: 8,
                         shape: DataMarkerType.circle,
                         color: Colors.black,
                       ),
                       dataLabelSettings: const DataLabelSettings(
                         isVisible: true,
                         textStyle: TextStyle(
-                          fontSize: 10,
+                          fontSize: 9,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),

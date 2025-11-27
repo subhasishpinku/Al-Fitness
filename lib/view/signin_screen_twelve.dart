@@ -6,8 +6,30 @@ import 'package:provider/provider.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SigninScreenTwelve extends StatelessWidget {
+class SigninScreenTwelve extends StatefulWidget {
   const SigninScreenTwelve({super.key});
+
+  @override
+  State<SigninScreenTwelve> createState() => _SigninScreenTwelveState();
+}
+
+class _SigninScreenTwelveState extends State<SigninScreenTwelve> {
+  String? savedBfp = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    load();
+  }
+
+  load() async {
+    final prefs = await SharedPreferences.getInstance();
+    savedBfp = prefs.getString('current_bfp');
+    setState(() {
+      savedBfp = savedBfp;
+    });
+    print('current_bfp: $savedBfp');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +50,15 @@ class SigninScreenTwelve extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 10),
-                const Text(
-                  "You're currently at 40+% body fat percentage.\nWhat's your goal body fat percentage?",
-                  textAlign: TextAlign.center,
+                Text(
+                  "You're currently at ${savedBfp}+% body fat percentage.\nWhat's your goal body fat percentage?",
+                  textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 20),
                 const Text(
                   "Tap the image that matches your desired body fat percentage",
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(height: 20),
@@ -81,9 +103,9 @@ class SigninScreenTwelve extends StatelessWidget {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: isSelected
-                                      ? AppColors.primaryColor
+                                      ? AppColors.bolderColor
                                       : Colors.white,
-                                  width: 2,
+                                  width: 1,
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),

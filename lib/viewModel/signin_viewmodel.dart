@@ -52,9 +52,9 @@ class SigninViewModel extends ChangeNotifier {
     await prefs.reload();
     final selectedTopic = prefs.getString('plan_type');
     debugPrint('Saved plan_type: $selectedTopic');
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
     //  Navigate after value saved
     Navigator.pushNamed(context, RouteNames.signinScreenSecond);
   }

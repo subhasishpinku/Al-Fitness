@@ -59,9 +59,9 @@ class SigninThirdViewModel extends ChangeNotifier {
     final savedValue = prefs.getString('how_fast_to_reach_goal');
     debugPrint(' Saved how_fast_to_reach_goal: $savedValue');
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Selected: $topic")),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text("Selected: $topic")),
+    // );
 
     //  Navigate after successful save
     Navigator.pushNamed(context, RouteNames.signinScreenFourth);

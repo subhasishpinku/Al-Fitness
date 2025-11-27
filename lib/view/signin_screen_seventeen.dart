@@ -19,7 +19,7 @@ class SigninScreenSeventeen extends StatelessWidget {
     });
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: const SigninSecondAppBar(),
@@ -61,7 +61,7 @@ class SigninScreenSeventeen extends StatelessWidget {
               const SizedBox(height: 10),
               const Text(
                 "Please select a minimum of 2 items and a maximum of 5 items.",
-                textAlign: TextAlign.right,
+                textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.black87,
@@ -164,27 +164,56 @@ class SigninScreenSeventeen extends StatelessWidget {
               const SizedBox(height: 10),
 
               /// NEXT BUTTON
-              Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 12,
+              // Center(
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: AppColors.primaryColor,
+              //       padding: const EdgeInsets.symmetric(
+              //         horizontal: 40,
+              //         vertical: 12,
+              //       ),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(10),
+              //       ),
+              //     ),
+              //     onPressed: provider.canProceed
+              //         ? () => provider.onNextPressed(context)
+              //         : null,
+              //     child: const Text(
+              //       "Next",
+              //       style: TextStyle(
+              //         color: Colors.white,
+              //         fontSize: 16,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: 120,
+                  height: 45,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: AppColors.bolderColor),
+                      ),
+                      elevation: 0,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: provider.canProceed
-                      ? () => provider.onNextPressed(context)
-                      : null,
-                  child: const Text(
-                    "Next",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                    onPressed: provider.canProceed
+                        ? () => provider.onNextPressed(context)
+                        : null,
+                    child: const Text(
+                      "NEXT",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                      ),
                     ),
                   ),
                 ),

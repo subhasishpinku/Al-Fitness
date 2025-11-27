@@ -50,9 +50,9 @@ class SigninFourteenViewModel extends ChangeNotifier {
     final savedValue = prefs.getInt('no_of_days_per_week');
     print('Saved No_of_days_per_week: $savedValue');
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
   }
 
   /// Navigate to next screen

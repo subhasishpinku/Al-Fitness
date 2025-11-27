@@ -45,7 +45,8 @@ class ViewPlanScreen extends StatelessWidget {
                         child: _buildSection(
                           title: "Nutrition Plan for Workout Days",
                           days: vm.workoutDays,
-                          onDayPressed: (day) => vm.openDayPlan(context, day, "workout"),
+                          onDayPressed: (day) =>
+                              vm.openDayPlan(context, day, "workout"),
                         ),
                       ),
 
@@ -57,7 +58,8 @@ class ViewPlanScreen extends StatelessWidget {
                         child: _buildSection(
                           title: "Nutrition Plan for Non-Workout Days",
                           days: vm.nonWorkoutDays,
-                          onDayPressed: (day) => vm.openDayPlan(context, day, "non_workout"),
+                          onDayPressed: (day) =>
+                              vm.openDayPlan(context, day, "non_workout"),
                         ),
                       ),
                     ],
@@ -88,7 +90,6 @@ class ViewPlanScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            /// Animated buttons
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: List.generate(days.length, (index) {
@@ -107,31 +108,38 @@ class ViewPlanScreen extends StatelessWidget {
                   opacity: visible ? 1 : 0,
                   child: AnimatedSlide(
                     duration: const Duration(milliseconds: 400),
-                    offset: visible ? Offset.zero : const Offset(0.3, 0),
                     curve: Curves.easeOut,
+                    offset: visible ? Offset.zero : const Offset(0.3, 0),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: SizedBox(
-                        width: 90,
-                        height: 38,
-                        child: Material(
-                          color: Colors.white,
-                          shape: BubbleBorder(
-                            color: const Color(0xFF4C6FFF),
-                            width: 1.4,
-                            radius: 16,
+                        width: 120,
+                        height: 45,
+                        child: OutlinedButton(
+                          onPressed: () => onDayPressed(days[index]),
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(
+                              color: Color(0xFF4C6FFF),
+                              width: 1.4,
+                            ),
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            padding: EdgeInsets.zero,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(40),
+                                bottomLeft: Radius.circular(40),
+                                topRight: Radius.circular(40),
+                                bottomRight: Radius.circular(0),
+                              ),
+                            ),
                           ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(16),
-                            onTap: () => onDayPressed(days[index]),
-                            child: Center(
-                              child: Text(
-                                "Day ${days[index]}",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
-                                ),
+                          child: Center(
+                            child: Text(
+                              "Day ${days[index]}",
+                              style: const TextStyle(
+                                fontSize: 14.5,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),

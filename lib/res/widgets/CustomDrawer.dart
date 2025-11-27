@@ -32,7 +32,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
       imageFullUrl = prefs.getString("image_full_url");
     });
 
-    print("UserDetails => $userId | $deviceId | $name | $email  | $imageFullUrl");
+    print(
+      "UserDetails => $userId | $deviceId | $name | $email  | $imageFullUrl",
+    );
   }
 
   @override
@@ -95,14 +97,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       RouteNames.targetChangeDetails,
                     ),
                   ),
-                  _drawerItem(
-                    icon: Icons.image_outlined,
-                    title: "Body Image Progress",
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      RouteNames.bodyImageProgress,
-                    ),
-                  ),
+                  // _drawerItem(
+                  //   icon: Icons.image_outlined,
+                  //   title: "Body Image Progress",
+                  //   onTap: () => Navigator.pushNamed(
+                  //     context,
+                  //     RouteNames.bodyImageProgress,
+                  //   ),
+                  // ),
                   _drawerItem(
                     icon: Icons.settings_outlined,
                     title: "Account Setting",

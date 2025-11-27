@@ -1,5 +1,6 @@
 import 'package:aifitness/models/workout_exercise_model.dart';
 import 'package:aifitness/repository/IamReadyFinalRepository.dart';
+import 'package:aifitness/res/widgets/SigninExerciseAppBar.dart';
 import 'package:aifitness/res/widgets/UniversalMediaWidget.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
 import 'package:aifitness/utils/app_colors.dart';
@@ -45,7 +46,7 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar: const SigninFourthAppBar(),
+            appBar: const SigninExerciseAppBar(),
             body: _buildBody(vm),
           );
         },
@@ -126,39 +127,54 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
         children: [
           // Exercise Title
           Text(
-            exercise.name, // 🔥 correct
+            exercise.name, //  correct
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
 
           // Image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: imageUrl.isNotEmpty
-                ? Image.network(
-                    imageUrl,
-                    width: 70,
-                    height: 70,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Image.asset(
-                      "assets/images/placeholder.png",
-                      width: 70,
-                      height: 70,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : Image.asset(
-                    "assets/images/placeholder.png",
-                    width: 70,
-                    height: 70,
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          const SizedBox(height: 10),
-          UniversalMediaWidget(
-            mediaUri: mediaUri,
-            mediaUrl: mediaUrl,
-            height: 220,
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(8),
+          //   child: imageUrl.isNotEmpty
+          //       ? Image.network(
+          //           imageUrl,
+          //           width: 70,
+          //           height: 70,
+          //           fit: BoxFit.cover,
+          //           errorBuilder: (_, __, ___) => Image.asset(
+          //             "assets/images/placeholder.png",
+          //             width: 70,
+          //             height: 70,
+          //             fit: BoxFit.cover,
+          //           ),
+          //         )
+          //       : Image.asset(
+          //           "assets/images/placeholder.png",
+          //           width: 70,
+          //           height: 70,
+          //           fit: BoxFit.cover,
+          //         ),
+          // ),
+          // const SizedBox(height: 10),
+          Container(
+            height: 160,
+            width: 150,
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.black54),
+            ),
+            // child: const Center(
+            //   child: Icon(
+            //     Icons.play_circle_fill,
+            //     color: Colors.black54,
+            //     size: 50,
+            //   ),
+            child: UniversalMediaWidget(
+              mediaUri: mediaUri,
+              mediaUrl: mediaUrl,
+              height: 220,
+            ),
           ),
 
           const SizedBox(height: 16),
@@ -174,29 +190,45 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
             style: TextStyle(fontSize: 13.5, height: 1.4),
           ),
           const SizedBox(height: 12),
-
           Row(
             children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () =>
-                      vm.onHistoryPressed(context, exercise, userId),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
+              SizedBox(
+                width: 100,
+                child: Expanded(
+                  child: ElevatedButton(
+                    onPressed: () =>
+                        vm.onHistoryPressed(context, exercise, userId),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.dashboardColor,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ), // <-- radius here
+                      ),
+                    ),
+                    child: const Text("History"),
                   ),
-                  child: const Text("History"),
                 ),
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () => vm.onTrackPressed(context, exercise,userId),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
+              SizedBox(
+                width: 100,
+                child: Expanded(
+                  child: ElevatedButton(
+                    onPressed: () =>
+                        vm.onTrackPressed(context, exercise, userId),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.dashboardColor,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ), // <-- radius here
+                      ),
+                    ),
+                    child: const Text("Track"),
                   ),
-                  child: const Text("Track"),
                 ),
               ),
             ],

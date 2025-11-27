@@ -71,7 +71,7 @@ class FatLossContent extends StatelessWidget {
                     horizontal: 4,
                     vertical: 15,
                   ),
-                  side: BorderSide(color: AppColors.bolderColor),
+                  side: BorderSide(color: AppColors.signInButtonColor),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -83,7 +83,7 @@ class FatLossContent extends StatelessWidget {
                   "Based on Your Information, Here\nIs Your Fat Loss Target",
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 22,
                     fontWeight: FontWeight.w600,
                     height: 1.4,
                   ),
@@ -105,7 +105,7 @@ class FatLossContent extends StatelessWidget {
                   backgroundColor: AppColors.backgroundColor,
                   side: BorderSide(
                     color: AppColors.bolderColor,
-                    width: 1.4, // (optional) you can change thickness
+                    width: 0.5, // (optional) you can change thickness
                   ),
 
                   shape: RoundedRectangleBorder(
@@ -185,7 +185,7 @@ class FatLossContent extends StatelessWidget {
                   backgroundColor: AppColors.backgroundColor,
                   side: BorderSide(
                     color: AppColors.bolderColor,
-                    width: 1.4, // (optional) you can change thickness
+                    width: 0.5, // (optional) you can change thickness
                   ),
 
                   shape: RoundedRectangleBorder(
@@ -253,7 +253,7 @@ class FatLossContent extends StatelessWidget {
                   backgroundColor: AppColors.backgroundColor,
                   side: BorderSide(
                     color: AppColors.bolderColor,
-                    width: 1.4, // (optional) you can change thickness
+                    width: 0.5, // (optional) you can change thickness
                   ),
 
                   shape: RoundedRectangleBorder(

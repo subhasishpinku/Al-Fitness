@@ -39,6 +39,7 @@ class SigninFifteenViewModel extends ChangeNotifier {
     if (index == 0) {
       selectedValue = "Gym";
     } else if (index == 1) {
+      // selectedValue = "Home (With Limited Gym Equipments)"; 
       selectedValue = "Home (With Limited Gym Equipments)";
     } else if (index == 2) {
       selectedValue = "Home (Bodyweight)";
@@ -49,9 +50,9 @@ class SigninFifteenViewModel extends ChangeNotifier {
     final savedValue = prefs.getString('wo_mode');
     print('wo_mode: $savedValue');
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
   }
 
   /// Handle navigation on selection

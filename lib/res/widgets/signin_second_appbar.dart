@@ -33,14 +33,12 @@ class SigninSecondAppBar extends StatelessWidget
                 icon: Icon(Icons.arrow_back, color: AppColors.primaryColor),
                 onPressed: () => Navigator.pop(context),
               ),
-              Container(
-                height: 50,
-                width: 80,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/logo2.png'),
-                    fit: BoxFit.cover,
-                  ),
+              Text(
+                "Workout Plan",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryColor,
                 ),
               ),
             ],

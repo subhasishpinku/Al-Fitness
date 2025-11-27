@@ -32,8 +32,8 @@ class SigninEleventhViewModel extends ChangeNotifier {
 
   /// Placeholder for manual input feature
   void enterManually(BuildContext context) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text("Manual input coming soon")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(const SnackBar(content: Text("Manual input coming soon")));
   }
 }

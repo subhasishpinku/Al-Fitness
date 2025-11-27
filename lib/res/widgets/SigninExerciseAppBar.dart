@@ -2,9 +2,9 @@ import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
-class SigninFourthAppBar extends StatelessWidget
+class SigninExerciseAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const SigninFourthAppBar({super.key});
+  const SigninExerciseAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class SigninFourthAppBar extends StatelessWidget
                     onPressed: () => Navigator.pop(context),
                   ),
                   Text(
-                    "Days",
+                    "Exercise menu",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -54,7 +54,8 @@ class SigninFourthAppBar extends StatelessWidget
                 onPressed: () {
                   // TODO: Navigate to home screen
                   // Navigator.popUntil(context, (route) => route.isFirst);
-                  Navigator.pushNamed(context, RouteNames.dashboard);
+                                    Navigator.pushNamed(context, RouteNames.dashboard);
+
                 },
               ),
             ],

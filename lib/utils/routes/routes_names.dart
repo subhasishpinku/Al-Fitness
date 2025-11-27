@@ -53,5 +53,4 @@ class RouteNames {
   static const String splashScreen = "splash_screen";
   static const String beginYourScreen = "begin_your_screen";
   static const String aboutsUs = "abouts_us";
-
 }

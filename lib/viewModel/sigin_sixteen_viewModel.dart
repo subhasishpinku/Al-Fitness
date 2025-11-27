@@ -49,9 +49,9 @@ class SigninSixteenViewModel extends ChangeNotifier {
     final savedValue = prefs.getString('meal_type');
     print('meal_type: $savedValue');
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
   }
 
   /// Navigate to next screen
@@ -59,9 +59,9 @@ class SigninSixteenViewModel extends ChangeNotifier {
     if (_selectedIndex != -1) {
       Navigator.pushNamed(context, RouteNames.signinScreenSeventeen);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select an option first")),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text("Please select an option first")),
+      // );
     }
   }
 }

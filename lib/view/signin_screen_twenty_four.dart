@@ -246,49 +246,52 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
                     //     ),
                     //   ),
                     // ),
-                    Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: TextField(
-                        controller: viewModel.passwordController,
-                        obscureText: !viewModel.isPasswordVisible,
+                    SizedBox(
+                      height: 50,
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: TextField(
+                          controller: viewModel.passwordController,
+                          obscureText: !viewModel.isPasswordVisible,
 
-                        decoration: InputDecoration(
-                          labelText: "Password",
+                          decoration: InputDecoration(
+                            labelText: "Password",
 
-                          // ---- DESIGN MATCHING YOUR IMAGE ----
-                          filled: true, // enables background color
-                          fillColor: const Color(
-                            0xFFF2F2F2,
-                          ), // light grey background
+                            // ---- DESIGN MATCHING YOUR IMAGE ----
+                            filled: true, // enables background color
+                            fillColor: const Color(
+                              0xFFF2F2F2,
+                            ), // light grey background
 
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 18,
-                          ),
-
-                          // No visible border
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-
-                          // Eye icon
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              viewModel.isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
                             ),
-                            onPressed: viewModel.togglePasswordVisibility,
+
+                            // No visible border
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+
+                            // Eye icon
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                viewModel.isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                              onPressed: viewModel.togglePasswordVisibility,
+                            ),
                           ),
                         ),
                       ),

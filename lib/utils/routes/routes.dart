@@ -272,10 +272,11 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const BeginYourScreen(),
         );
-        case (RouteNames.aboutsUs):
+      case (RouteNames.aboutsUs):
         return MaterialPageRoute(
           builder: (BuildContext context) => const AboutUs(),
         );
+      
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

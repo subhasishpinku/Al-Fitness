@@ -1,4 +1,5 @@
 import 'package:aifitness/models/FoodItem.dart';
+import 'package:aifitness/res/widgets/NutritionAppBar.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/nutrition_plan_viewmodel.dart';
@@ -47,7 +48,7 @@ class _NutritionPlanScreenState extends State<NutritionPlanScreen> {
       textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: const SigninFourthAppBar(),
+        appBar: const NutritionAppBar(),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Consumer<NutritionPlanViewModel>(

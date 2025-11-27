@@ -11,9 +11,9 @@ class IamReadyViewModel extends ChangeNotifier {
   }
 
   void onReady(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Let's start your workout! ")),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(content: Text("Let's start your workout! ")),
+    // );
 
     // Example: Navigator.pushNamed(context, RouteNames.startWorkout);
   }

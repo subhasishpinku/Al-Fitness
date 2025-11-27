@@ -161,9 +161,9 @@ class _SigninScreenEleventhBody extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: isSelected
-                                        ? AppColors.primaryColor
+                                        ? AppColors.bolderColor
                                         : Colors.white,
-                                    width: 2,
+                                    width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),

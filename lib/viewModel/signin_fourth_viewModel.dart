@@ -65,9 +65,9 @@ class SigninFourthViewModel extends ChangeNotifier {
     final savedActivity = prefs.getString('activity_level');
     debugPrint(' Saved activity_level: $savedActivity');
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
 
     //  Navigate only after successful save
     Navigator.pushNamed(context, RouteNames.signinScreenFifth);

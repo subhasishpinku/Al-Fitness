@@ -2,9 +2,8 @@ import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
-class SigninFourthAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  const SigninFourthAppBar({super.key});
+class NutritionAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const NutritionAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class SigninFourthAppBar extends StatelessWidget
                     onPressed: () => Navigator.pop(context),
                   ),
                   Text(
-                    "Days",
+                    "Nutrition",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,

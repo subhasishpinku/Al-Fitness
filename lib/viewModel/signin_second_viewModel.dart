@@ -60,9 +60,9 @@ class SigninSecondViewModel extends ChangeNotifier {
     debugPrint(' Saved fitness_goal: $savedGoal');
 
     //  Show feedback
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
 
     // Navigate only after ensuring data is saved
     Navigator.pushNamed(context, RouteNames.signinScreenThird);

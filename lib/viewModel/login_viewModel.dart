@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aifitness/models/login_response.dart';
+import 'package:aifitness/res/widgets/dashboard.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -93,10 +94,10 @@ class LoginViewModel extends ChangeNotifier {
 
   LoginViewModel() {
     // Demo credentials
-    emailController.text = "debjit23@gmail.com";
-    passwordController.text = "Test@123";
-    // emailController.text = "";
-    // passwordController.text = "";
+    // emailController.text = "debjit23@gmail.com";
+    // passwordController.text = "Test@123";
+    emailController.text = "";
+    passwordController.text = "";
     initDeviceId();
   }
   Future<void> login(BuildContext context) async {
@@ -143,7 +144,8 @@ class LoginViewModel extends ChangeNotifier {
       );
       //loginResponse.data!.userDetails!.id!
       //2870
-      await prefs.setInt('user_id', 2858);
+      int? userIds = loginResponse.data!.userDetails!.id;
+      await prefs.setInt('user_id', userIds!);
       print("UserIdResponse ${loginResponse.data!.userDetails!.id}");
       _isLoading = false;
       notifyListeners();
@@ -152,7 +154,7 @@ class LoginViewModel extends ChangeNotifier {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text("Login Successful!")));
-        Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
+        Navigator.pushNamed(context, RouteNames.dashboard);
       } else {
         throw Exception(loginResponse.message);
       }

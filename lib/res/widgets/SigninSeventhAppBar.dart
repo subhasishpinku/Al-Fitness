@@ -1,4 +1,5 @@
 import 'package:aifitness/utils/app_colors.dart';
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class SigninSeventhAppBar extends StatelessWidget
@@ -52,7 +53,9 @@ class SigninSeventhAppBar extends StatelessWidget
                 icon: Icon(Icons.home_outlined, color: AppColors.primaryColor),
                 onPressed: () {
                   // TODO: Navigate to home screen
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  // Navigator.popUntil(context, (route) => route.isFirst);
+                                    Navigator.pushNamed(context, RouteNames.dashboard);
+
                 },
               ),
             ],

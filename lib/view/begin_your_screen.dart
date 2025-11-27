@@ -17,12 +17,17 @@ class _BeginYourScreenState extends State<BeginYourScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset("assets/videos/lose_weight.mp4")
-      ..initialize().then((_) {
-        if (mounted) setState(() {});
-      })
-      ..setLooping(true)
-      ..play();
+    // _controller = VideoPlayerController.asset("assets/videos/lose_weight.mp4")
+    _controller =
+        VideoPlayerController.asset(
+            "assets/videos/lose_weight.mp4",
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          )
+          ..initialize().then((_) {
+            if (mounted) setState(() {});
+          })
+          ..setLooping(true)
+          ..play();
   }
 
   @override
@@ -34,7 +39,12 @@ class _BeginYourScreenState extends State<BeginYourScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BeginTopBar(),
+      appBar: BeginTopBar(
+        onSkip: () {
+          _controller.pause(); //  stop video when Skip is tapped
+        },
+      ),
+      //  Pause video before navigation
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -111,7 +121,7 @@ class _BeginYourScreenState extends State<BeginYourScreen> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white.withOpacity(0.8),
+                  backgroundColor: Colors.white.withOpacity(0),
                   side: const BorderSide(
                     color: AppColors.bolderColor,
                     width: 2,
@@ -122,6 +132,7 @@ class _BeginYourScreenState extends State<BeginYourScreen> {
                   elevation: 0,
                 ),
                 onPressed: () {
+                  _controller.pause(); //  Pause video before navigation
                   Navigator.pushNamed(context, RouteNames.signinScreen);
                 },
                 child: Text(

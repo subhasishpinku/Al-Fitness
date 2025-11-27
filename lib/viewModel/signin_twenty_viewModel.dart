@@ -90,12 +90,12 @@ class SigninTwentyViewModel extends ChangeNotifier {
 
       Navigator.pushNamed(context, RouteNames.signinScreenTwentyOne);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please select between 2 and 5 items."),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Please select between 2 and 5 items."),
+      //     duration: Duration(seconds: 2),
+      //   ),
+      // );
     }
   }
 }

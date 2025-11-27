@@ -70,27 +70,35 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                     Stack(
                       alignment: Alignment.bottomRight,
                       children: [
+                        // CircleAvatar(
+                        //   radius: 70,
+                        //   backgroundColor: Colors.grey.shade200,
+                        //   backgroundImage: vm.profileImage != null
+                        //       ? FileImage(vm.profileImage!)
+                        //       : (imageFullUrl != null &&
+                        //                 imageFullUrl!.isNotEmpty
+                        //             ? NetworkImage(imageFullUrl!)
+                        //             : null),
+                        //   child:
+                        //       vm.profileImage == null &&
+                        //           (imageFullUrl == null ||
+                        //               imageFullUrl!.isEmpty)
+                        //       ? const Icon(
+                        //           Icons.person,
+                        //           size: 50,
+                        //           color: Colors.grey,
+                        //         )
+                        //       : null,
+                        // ),
                         CircleAvatar(
                           radius: 70,
                           backgroundColor: Colors.grey.shade200,
-                          backgroundImage: vm.profileImage != null
-                              ? FileImage(vm.profileImage!)
-                              : (imageFullUrl != null &&
-                                        imageFullUrl!.isNotEmpty
-                                    ? NetworkImage(imageFullUrl!)
-                                    : null),
-                          child:
-                              vm.profileImage == null &&
-                                  (imageFullUrl == null ||
-                                      imageFullUrl!.isEmpty)
-                              ? const Icon(
-                                  Icons.person,
-                                  size: 50,
-                                  color: Colors.grey,
-                                )
-                              : null,
+                          backgroundImage:
+                              const AssetImage(
+                                    "assets/images/profile_image.png",
+                                  )
+                                  as ImageProvider,
                         ),
-
                         Positioned(
                           bottom: 0,
                           right: 0,
@@ -109,7 +117,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                                   ),
                                 ],
                               ),
-                              child: const Icon(Icons.camera_alt, size: 16),
+                              // child: const Icon(Icons.camera_alt, size: 16),
                             ),
                           ),
                         ),

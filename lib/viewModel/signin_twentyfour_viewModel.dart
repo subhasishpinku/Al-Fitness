@@ -54,7 +54,7 @@ class SigninTwentyFourViewModel extends ChangeNotifier {
     String? vegetablesRaw = prefs.getString("vegetables");
     String? nutsRaw = prefs.getString("nut");
     String? proteinsRaw = prefs.getString("proteins");
-    String? fatsRaw = prefs.getString("fats");
+    String? fatsRaw = prefs.getString("fat");
     String? fibersRaw = prefs.getString("fibers");
     String? wodaysRaw = prefs.getString("wo_days");
     String? focusmuscleRaw = prefs.getString("focus_muscle");

@@ -9,7 +9,7 @@ class DashboardBodyViewModel extends ChangeNotifier {
   bool isLoading = false;
 
   double currentWeight = 0;
-  double targetWeight = 0;
+  String targetWeight = "";
   double dailyCalories = 0;
   double weekProgress = 0.0; // 25% completed
 
@@ -17,7 +17,8 @@ class DashboardBodyViewModel extends ChangeNotifier {
   String gender = ""; //  NEW added
   String day = "";
   String logValue = "";
-
+  String? deload_week = "";
+  String? progressive_week = "";
   //  Line Chart Arrays (MATCHING iOS)
   List<double> weightData = [];
   List<double> bfpData = [];
@@ -69,6 +70,11 @@ class DashboardBodyViewModel extends ChangeNotifier {
       subcutaneousData = _toDoubleList(data.latestSubcutaneousFatLogs);
       visceralData = _toDoubleList(data.latestVisceralFatLevelLogs);
       // weekProgress = _toDoubleList(data.dayDetails.week);
+      deload_week = data.weekFlags!.deloadWeek!;
+      progressive_week = data.weekFlags!.deloadWeek!;
+      prefs.setString("deload_week", deload_week!);
+      prefs.setString("progressive_week", progressive_week!);
+
       int week = data.dayDetails!.week!;
       double weekProgress;
 
@@ -90,11 +96,11 @@ class DashboardBodyViewModel extends ChangeNotifier {
       /// ----------------------------------------
       final phaseList = data.newAppData?.phaseSummaryDynamic ?? [];
       final currentPhase = data.newAppData?.currentPhase;
+      targetWeight = data.currentWeekTargetWeightValue ?? "";
 
       for (var item in phaseList) {
         if (item.phase == currentPhase) {
           currentWeight = double.tryParse(item.startWeight ?? "0") ?? 0;
-          targetWeight = double.tryParse(item.endWeight ?? "0") ?? 0;
           dailyCalories = double.tryParse(item.dailyCalories ?? "0") ?? 0;
         }
       }

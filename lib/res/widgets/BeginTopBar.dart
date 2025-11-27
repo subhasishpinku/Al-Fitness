@@ -3,7 +3,9 @@ import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class BeginTopBar extends StatelessWidget implements PreferredSizeWidget {
-  const BeginTopBar({super.key});
+  final VoidCallback? onSkip;
+
+  const BeginTopBar({super.key, this.onSkip});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,8 @@ class BeginTopBar extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.only(right: 16),
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, RouteNames.loginScreen);
+                  if (onSkip != null) onSkip!(); // pause video
+                  Navigator.pushNamed(context, RouteNames.signinScreen);
                 },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

@@ -50,9 +50,9 @@ class SigninFifthViewModel extends ChangeNotifier {
     debugPrint(' Saved gender: $savedGender');
 
     //  User feedback
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
 
     // Navigate only after data saved
     Navigator.pushNamed(context, RouteNames.signinScreenSixth);
