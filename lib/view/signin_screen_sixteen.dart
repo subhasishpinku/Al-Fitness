@@ -10,7 +10,7 @@ class SigninScreenSixteen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SigninSixteeclscd nViewModel>(context);
+    final provider = Provider.of<SigninSixteenViewModel>(context);
     final options = provider.options;
     final isVisible = provider.isVisible;
 

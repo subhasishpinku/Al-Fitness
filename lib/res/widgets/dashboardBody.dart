@@ -11,6 +11,7 @@ class DashboardBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<DashboardBodyViewModel>();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!viewModel.isLoading && viewModel.currentWeight == 0) {
         context.read<DashboardBodyViewModel>().loadDashboard();
@@ -24,198 +25,166 @@ class DashboardBody extends StatelessWidget {
           onRefresh: () async {
             await context.read<DashboardBodyViewModel>().loadDashboard();
           },
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                // physics: const AlwaysScrollableScrollPhysics(), // <-- Required
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Week Title
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.calendar_today, size: 20),
-                            const SizedBox(width: 8),
-                            Text(
-                              "Week ${viewModel.weekNumber}",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 6),
-
-                        // --- PROGRESS BAR ---
-                        Container(
-                          height: 4, // thin line
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(2),
-                            color: const Color(
-                              0x332596be,
-                            ), // light background (20% opacity)
-                          ),
-                          child: FractionallySizedBox(
-                            alignment: Alignment.centerLeft,
-                            widthFactor: viewModel.weekProgress,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                color: const Color(0xFF2596BE), // Primary blue
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: [
+              // ---------------- WEEK HEADER ----------------
+              Row(
+                children: [
+                  const Icon(Icons.calendar_today, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    "Week ${viewModel.weekNumber}",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                ],
+              ),
 
-                    const SizedBox(height: 16),
+              const SizedBox(height: 6),
 
-                    /// Dynamic Weight Info from Provider
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Current Weight:"),
-                        _infoBox(
-                          "${viewModel.currentWeight.toStringAsFixed(1)} kg",
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Target Weight for This Week:"),
-                        _infoBox("${viewModel.targetWeight} kg"),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Daily Calories for This Week:"),
-                        _infoBox(
-                          "${viewModel.dailyCalories.toStringAsFixed(1)} kcal/day",
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    /// Data Cards Grid
-                    // GridView.count(
-                    //   physics: const NeverScrollableScrollPhysics(),
-                    //   shrinkWrap: true,
-                    //   crossAxisCount: 2,
-                    //   childAspectRatio: 1.2,
-                    //   crossAxisSpacing: 10,
-                    //   mainAxisSpacing: 10,
-                    //   children: [
-                    //     _DataCard(
-                    //       title: "Enter Weight Today",
-                    //       data: viewModel.weightData,
-                    //     ),
-                    //     const _DataCard(
-                    //       title: "Enter Body Fat %",
-                    //       data: [18, 17.8, 17.9, 17.6],
-                    //     ),
-                    //     const _DataCard(
-                    //       title: "Enter Skeletal Muscle Mass",
-                    //       data: [42, 42.2, 42.3, 42.5],
-                    //     ),
-                    //     const _DataCard(
-                    //       title: "Enter Subcutaneous Fat",
-                    //       data: [12, 11.8, 11.7, 11.9],
-                    //     ),
-                    //     const _DataCard(
-                    //       title: "Enter Visceral Fat",
-                    //       data: [8, 8, 7.9, 7.8],
-                    //     ),
-                    //     const _DataCard(
-                    //       title: "Enter Body Water",
-                    //       data: [62, 62.3, 62.5, 62.9],
-                    //     ),
-                    //   ],
-                    // ),
-                    GridView.count(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      childAspectRatio: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: [
-                        // Pass API data from ViewModel
-                        _DataCard(
-                          title: "Enter Weight Today",
-                          data: viewModel.weightData,
-                          index: 0,
-                        ),
-                        _DataCard(
-                          title: "Enter Body Fat %",
-                          data: viewModel.bfpData,
-                          index: 1,
-                        ),
-                        _DataCard(
-                          title: "Enter Skeletal Muscle Mass",
-                          data: viewModel.skeletalData,
-                          index: 2,
-                        ),
-                        _DataCard(
-                          title: "Enter Subcutaneous Fat",
-                          data: viewModel.subcutaneousData,
-                          index: 3,
-                        ),
-                        _DataCard(
-                          title: "Enter Visceral Fat",
-                          data: viewModel.visceralData,
-                          index: 4,
-                        ),
-                        _DataCard(
-                          title: "Enter Body Water",
-                          data: viewModel.waterData,
-                          index: 5,
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    /// Log button + Action buttons remain same
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          RouteNames.extraFoodIntakeScreen,
-                        );
-                      },
-                      child: _logButton(),
-                    ),
-                    const SizedBox(height: 24),
-                    // _infoText(),
-                    // const SizedBox(height: 20),
-                    _bottomButtons(context),
-                  ],
+              // PROGRESS BAR
+              Container(
+                height: 4,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  color: const Color(0x332596be),
                 ),
-              );
-            },
+                child: FractionallySizedBox(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: viewModel.weekProgress,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: const Color(0xFF2596BE),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              // ---------------- CURRENT WEIGHT INFO ----------------
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Current Weight:"),
+                  _infoBox("${viewModel.currentWeight.toStringAsFixed(1)} kg"),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Target Weight for This Week:"),
+                  _infoBox("${viewModel.targetWeight} kg"),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Daily Calories for This Week:"),
+                  _infoBox(
+                    "${viewModel.dailyCalories.toStringAsFixed(1)} kcal/day",
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 8),
+
+              // ---------------- DATA CARDS ----------------
+              GridView.count(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                childAspectRatio: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: [
+                  _DataCard(
+                    title: "Enter Weight Today",
+                    data: viewModel.weightData,
+                    index: 0,
+                  ),
+                  _DataCard(
+                    title: "Enter Body Fat %",
+                    data: viewModel.bfpData,
+                    index: 1,
+                  ),
+                  _DataCard(
+                    title: "Enter Skeletal Muscle Mass",
+                    data: viewModel.skeletalData,
+                    index: 2,
+                  ),
+                  _DataCard(
+                    title: "Enter Subcutaneous Fat",
+                    data: viewModel.subcutaneousData,
+                    index: 3,
+                  ),
+                  _DataCard(
+                    title: "Enter Visceral Fat",
+                    data: viewModel.visceralData,
+                    index: 4,
+                  ),
+                  _DataCard(
+                    title: "Enter Body Water",
+                    data: viewModel.waterData,
+                    index: 5,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 8),
+
+              // ---------------- LOG EXTRA FOOD BUTTON ----------------
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  RouteNames.extraFoodIntakeScreen,
+                ),
+                child: _logButton(),
+              ),
+
+              const SizedBox(height: 5),
+
+              // ---------------- BOTTOM BUTTONS ----------------
+              Card(
+                color: Colors.white, // White background
+                elevation: 5, // Shadow depth
+                shadowColor: Colors.black26, // Softer shadow
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin: const EdgeInsets.all(5),
+                child: Container(
+                  width: double.infinity, // Full width
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 10,
+                  ),
+                  child: _bottomButtons(context), // Your 3 buttons column
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
+  // ---------------- SMALL INFO BOX ----------------
   static Widget _infoBox(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.dashboardColor, // <<--- BACKGROUND COLOR HERE
+        color: AppColors.dashboardColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.dashboardColor),
       ),
@@ -223,6 +192,7 @@ class DashboardBody extends StatelessWidget {
     );
   }
 
+  // ---------------- EXTRA FOOD LOG BUTTON ----------------
   static Widget _logButton() => Container(
     width: double.infinity,
     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -248,11 +218,7 @@ class DashboardBody extends StatelessWidget {
     ),
   );
 
-  static Widget _infoText() => const Text(
-    "You can view your nutrition plan and workout schedule for today in the Nutrition and Exercise Plan.",
-    style: TextStyle(fontSize: 14, color: Colors.black87),
-  );
-
+  // ---------------- BOTTOM BUTTONS ----------------
   static Widget _bottomButtons(BuildContext context) => Column(
     children: [
       const SizedBox(height: 10),
@@ -263,49 +229,99 @@ class DashboardBody extends StatelessWidget {
       Center(child: _button(context, "View Fitness Network")),
     ],
   );
-
-  static Widget _button(BuildContext context, String text) => SizedBox(
-    width: 250,
-    height: 45,
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: const BorderSide(color: AppColors.bolderColor),
-        ),
-        elevation: 0,
+  static Widget _button(BuildContext context, String text) => Container(
+    width: double.infinity,
+    margin: const EdgeInsets.symmetric(horizontal: 20),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: Colors.blue.shade300, // Border similar to screenshot
+        width: 1.2,
       ),
-      onPressed: () {
-        if (text == "See Exercise List") {
-          Navigator.pushNamed(context, RouteNames.exerciseListScreen);
-        } else if (text == "See Your Nutrition") {
-          Navigator.pushNamed(context, RouteNames.viewPlanScreen);
-        } else if (text == "View Fitness Network") {
-          Navigator.pushNamed(context, RouteNames.fitNetwork);
-        }
-      },
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 1.2,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.blue.shade100.withOpacity(0.3),
+          blurRadius: 10,
+          spreadRadius: 2,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          if (text == "See Exercise List") {
+            Navigator.pushNamed(context, RouteNames.exerciseListScreen);
+          } else if (text == "See Your Nutrition") {
+            Navigator.pushNamed(context, RouteNames.viewPlanScreen);
+          } else if (text == "View Fitness Network") {
+            Navigator.pushNamed(context, RouteNames.fitNetwork);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 16,
+              letterSpacing: 0.5,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
         ),
       ),
     ),
   );
+
+  // static Widget _button(BuildContext context, String text) => SizedBox(
+  //   width: 250,
+  //   height: 45,
+  //   child: ElevatedButton(
+  //     style: ElevatedButton.styleFrom(
+  //       backgroundColor: Colors.white,
+  //       foregroundColor: Colors.black,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(8),
+  //         side: const BorderSide(color: AppColors.bolderColor),
+  //       ),
+  //       elevation: 0,
+  //     ),
+  //     onPressed: () {
+  //       if (text == "See Exercise List") {
+  //         Navigator.pushNamed(context, RouteNames.exerciseListScreen);
+  //       } else if (text == "See Your Nutrition") {
+  //         Navigator.pushNamed(context, RouteNames.viewPlanScreen);
+  //       } else if (text == "View Fitness Network") {
+  //         Navigator.pushNamed(context, RouteNames.fitNetwork);
+  //       }
+  //     },
+  //     child: Text(
+  //       text,
+  //       style: const TextStyle(
+  //         fontSize: 16,
+  //         fontWeight: FontWeight.w600,
+  //         letterSpacing: 1.2,
+  //       ),
+  //     ),
+  //   ),
+  // );
 }
 
+// ---------------- DATA CARD WITH CHART ----------------
 class _DataCard extends StatelessWidget {
   final String title;
   final List<double> data;
-  final int index; // <-- Add index
+  final int index;
+
   const _DataCard({
     required this.title,
     required this.data,
-    required this.index, // <-- receive index
+    required this.index,
   });
 
   @override
@@ -314,7 +330,6 @@ class _DataCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // Navigate based on index
         if (index == 0) {
           Navigator.pushNamed(context, RouteNames.weightTodayScreen);
         } else if (index == 1) {
@@ -345,7 +360,7 @@ class _DataCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title
+            // Title Bar
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
@@ -365,7 +380,7 @@ class _DataCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                        fontSize: 10,
                       ),
                     ),
                   ),
@@ -377,8 +392,10 @@ class _DataCard extends StatelessWidget {
                 ],
               ),
             ),
+
             // Chart
-            // Expanded(
+            // SizedBox(
+            //   height: 30,
             //   child: Padding(
             //     padding: const EdgeInsets.all(6),
             //     child: SfCartesianChart(
@@ -389,22 +406,22 @@ class _DataCard extends StatelessWidget {
             //       series: <CartesianSeries<_ChartData, int>>[
             //         SplineSeries<_ChartData, int>(
             //           dataSource: chartData,
-            //           xValueMapper: (_ChartData d, _) => d.x,
-            //           yValueMapper: (_ChartData d, _) => d.y,
+            //           xValueMapper: (d, _) => d.x,
+            //           yValueMapper: (d, _) => d.y,
             //           dashArray: const [6, 4],
-            //           color: Colors.black,
+            //           color: AppColors.dashboardColor,
             //           width: 2,
             //           markerSettings: const MarkerSettings(
             //             isVisible: true,
-            //             width: 10,
-            //             height: 10,
+            //             width: 5,
+            //             height: 5,
             //             shape: DataMarkerType.circle,
             //             color: Colors.black,
             //           ),
             //           dataLabelSettings: const DataLabelSettings(
             //             isVisible: true,
             //             textStyle: TextStyle(
-            //               fontSize: 10,
+            //               fontSize: 9,
             //               fontWeight: FontWeight.bold,
             //               color: Colors.black,
             //             ),
@@ -414,49 +431,152 @@ class _DataCard extends StatelessWidget {
             //     ),
             //   ),
             // ),
-
             // Chart
-            SizedBox(
-              height: 40, // FIXED HEIGHT
-              child: Padding(
-                padding: const EdgeInsets.all(6),
-                child: SfCartesianChart(
-                  plotAreaBorderWidth: 0,
-                  margin: EdgeInsets.zero,
-                  primaryXAxis: NumericAxis(isVisible: false),
-                  primaryYAxis: NumericAxis(isVisible: false),
-                  series: <CartesianSeries<_ChartData, int>>[
-                    SplineSeries<_ChartData, int>(
-                      dataSource: chartData,
-                      xValueMapper: (_ChartData d, _) => d.x,
-                      yValueMapper: (_ChartData d, _) => d.y,
-                      dashArray: const [6, 4],
-                      color: AppColors.dashboardColor,
-                      width: 2,
-                      markerSettings: const MarkerSettings(
-                        isVisible: true,
-                        width: 8,
-                        height: 8,
-                        shape: DataMarkerType.circle,
-                        color: Colors.black,
-                      ),
-                      dataLabelSettings: const DataLabelSettings(
-                        isVisible: true,
-                        textStyle: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+            Column(
+              children: [
+                // ---- Demo Values Row ABOVE chart ----
+                if (data.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${_defaultDemoValue(index).toInt()}",
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
+                        Text(
+                          "${_defaultDemoValue(index).toInt()}",
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+
+                SizedBox(
+                  height: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: SfCartesianChart(
+                      plotAreaBorderWidth: 0,
+                      margin: EdgeInsets.zero,
+                      primaryXAxis: NumericAxis(isVisible: false),
+                      primaryYAxis: NumericAxis(isVisible: false),
+
+                      series: <CartesianSeries<_ChartData, int>>[
+                        SplineSeries<_ChartData, int>(
+                          dataSource: data.isNotEmpty
+                              ? List.generate(
+                                  data.length,
+                                  (i) => _ChartData(i, data[i]),
+                                )
+                              : [
+                                  _ChartData(0, _defaultDemoValue(index)),
+                                  _ChartData(1, _defaultDemoValue(index)),
+                                ],
+                          xValueMapper: (d, _) => d.x,
+                          yValueMapper: (d, _) => d.y,
+                          dashArray: const [6, 4],
+                          color: AppColors.dashboardColor,
+                          width: 2,
+                          markerSettings: MarkerSettings(
+                            isVisible: data.isNotEmpty,
+                            width: 5,
+                            height: 5,
+                            color: Colors.black,
+                            borderColor: Colors.black,
+                          ),
+                          dataLabelSettings: DataLabelSettings(
+                            isVisible: data.isNotEmpty,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
+
+            // SizedBox(
+            //   height: 30,
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(6),
+            //     child: SfCartesianChart(
+            //       plotAreaBorderWidth: 0,
+            //       margin: EdgeInsets.zero,
+            //       primaryXAxis: NumericAxis(isVisible: false),
+            //       primaryYAxis: NumericAxis(isVisible: false),
+
+            //       series: <CartesianSeries<_ChartData, int>>[
+            //         SplineSeries<_ChartData, int>(
+            //           dataSource: data.isNotEmpty
+            //               ? List.generate(
+            //                   data.length,
+            //                   (i) => _ChartData(i, data[i]),
+            //                 )
+            //               : [
+            //                   _ChartData(0, 0),
+            //                   _ChartData(1, 0), // dashed horizontal line
+            //                 ],
+            //           xValueMapper: (d, _) => d.x,
+            //           yValueMapper: (d, _) => d.y,
+            //           dashArray: const [6, 4],
+            //           color: AppColors.dashboardColor,
+            //           width: 2,
+
+            //           // hide markers when no data
+            //           markerSettings: MarkerSettings(
+            //             isVisible: data.isNotEmpty,
+            //             width: 5,
+            //             height: 5,
+            //             color: Colors.black,
+            //           ),
+
+            //           // hide labels when no data
+            //           dataLabelSettings: DataLabelSettings(
+            //             isVisible: data.isNotEmpty,
+            //             textStyle: const TextStyle(
+            //               fontSize: 9,
+            //               fontWeight: FontWeight.bold,
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
     );
+  }
+
+  double _defaultDemoValue(int index) {
+    switch (index) {
+      case 0:
+        return 60;
+      case 1:
+        return 20;
+      case 2:
+        return 35;
+      case 3:
+        return 16;
+      case 4:
+        return 10;
+      case 5:
+        return 60;
+      default:
+        return 0;
+    }
   }
 }
 
