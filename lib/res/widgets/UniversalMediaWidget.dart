@@ -81,7 +81,8 @@ class _UniversalMediaWidgetState extends State<UniversalMediaWidget> {
 
     // 🔹 If video failed OR Vimeo detected → load in WebView iframe
     if (_videoInitFailed || _isVimeo) {
-      final embedHtml = '''
+      final embedHtml =
+          '''
         <!doctype html>
         <html>
           <head>

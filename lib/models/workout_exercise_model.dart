@@ -121,56 +121,57 @@ class WorkoutExerciseModel {
     }
     return <T>[];
   }
-static List<T> _parseList<T>(
-  dynamic value,
-  T Function(Map<String, dynamic>) mapper,
-) {
-  final List<T> result = [];
 
-  if (value == null) return result;
+  static List<T> _parseList<T>(
+    dynamic value,
+    T Function(Map<String, dynamic>) mapper,
+  ) {
+    final List<T> result = [];
 
-  List list;
+    if (value == null) return result;
 
-  // If backend sends list
-  if (value is List) {
-    list = value;
-  }
-  // If backend sends JSON string
-  else if (value is String) {
-    try {
-      final decoded = jsonDecode(value);
-      if (decoded is List) {
-        list = decoded;
-      } else {
+    List list;
+
+    // If backend sends list
+    if (value is List) {
+      list = value;
+    }
+    // If backend sends JSON string
+    else if (value is String) {
+      try {
+        final decoded = jsonDecode(value);
+        if (decoded is List) {
+          list = decoded;
+        } else {
+          return result;
+        }
+      } catch (_) {
         return result;
       }
-    } catch (_) {
+    } else {
       return result;
     }
-  } else {
+
+    for (var item in list) {
+      try {
+        if (item is Map<String, dynamic>) {
+          result.add(mapper(item));
+        } else if (item is Map) {
+          result.add(mapper(Map<String, dynamic>.from(item)));
+        } else if (item is String) {
+          final m = jsonDecode(item);
+          if (m is Map<String, dynamic>) {
+            result.add(mapper(m));
+          }
+        }
+      } catch (_) {
+        // instead of adding empty {}, SKIP the item
+        continue;
+      }
+    }
+
     return result;
   }
-
-  for (var item in list) {
-    try {
-      if (item is Map<String, dynamic>) {
-        result.add(mapper(item));
-      } else if (item is Map) {
-        result.add(mapper(Map<String, dynamic>.from(item)));
-      } else if (item is String) {
-        final m = jsonDecode(item);
-        if (m is Map<String, dynamic>) {
-          result.add(mapper(m));
-        }
-      }
-    } catch (_) {
-      // instead of adding empty {}, SKIP the item
-      continue;
-    }
-  }
-
-  return result;
-}
 
   factory WorkoutExerciseModel.fromJson(Map<String, dynamic> json) {
     // media field sometimes is a JSON string (e.g. "[{...}]")

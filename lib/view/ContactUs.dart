@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/contact_us_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,9 @@ class _ContactUsState extends State<ContactUs> {
       emailController.text = savedEmail!;
     }
 
-    print("UserDetails => $userId | $deviceId | $name | $savedEmail | $imageFullUrl");
+    print(
+      "UserDetails => $userId | $deviceId | $name | $savedEmail | $imageFullUrl",
+    );
   }
 
   @override
@@ -60,10 +63,7 @@ class _ContactUsState extends State<ContactUs> {
             Positioned.fill(
               child: Opacity(
                 opacity: 0.2,
-                child: Image.asset(
-                  "assets/images/cg55.jpg",
-                  fit: BoxFit.cover,
-                ),
+                child: Image.asset("assets/images/cg55.jpg", fit: BoxFit.cover),
               ),
             ),
 
@@ -97,8 +97,17 @@ class _ContactUsState extends State<ContactUs> {
                     /// Email Field
                     TextField(
                       controller: emailController,
+                      style: TextStyle(
+                        color: AppColors
+                            .secondaryColor, //  change this to any color you want
+                        fontSize: 16,
+                      ),
+                      readOnly: true,
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.email_outlined, color: Colors.black),
+                        prefixIcon: Icon(
+                          Icons.email_outlined,
+                          color: AppColors.secondaryColor,
+                        ),
                         hintText: "Email",
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 15,
@@ -106,11 +115,17 @@ class _ContactUsState extends State<ContactUs> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(color: Color(0xFF8A8AFF), width: 1),
+                          borderSide: const BorderSide(
+                            color: Color(0xFF8A8AFF),
+                            width: 1,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(color: Color(0xFF8A8AFF), width: 1.5),
+                          borderSide: const BorderSide(
+                            color: Color(0xFF8A8AFF),
+                            width: 1.5,
+                          ),
                         ),
                       ),
                     ),
@@ -122,7 +137,10 @@ class _ContactUsState extends State<ContactUs> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Message",
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
 
@@ -139,8 +157,10 @@ class _ContactUsState extends State<ContactUs> {
                         maxLines: 7,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 12,
+                          ),
                           hintText: "Write your message...",
                         ),
                       ),
@@ -157,7 +177,10 @@ class _ContactUsState extends State<ContactUs> {
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
-                            side: const BorderSide(color: Colors.blue, width: 1.5),
+                            side: const BorderSide(
+                              color: Colors.blue,
+                              width: 1.5,
+                            ),
                           ),
                         ),
                         onPressed: () async {
@@ -214,8 +237,6 @@ class _ContactUsState extends State<ContactUs> {
 
   /// Snackbar helper
   void showSnack(BuildContext context, String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 }

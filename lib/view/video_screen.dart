@@ -50,7 +50,7 @@ class _VideoScreenState extends State<VideoScreen> {
                             ),
                             onPressed: () {},
                             child: Text(
-                              "First1, you need to do a warm-up to loosen your muscles. "
+                              "First, you need to do a warm-up to loosen your muscles. "
                               "Please tap the link below and follow the video.",
                               textAlign: TextAlign.right,
                               style: TextStyle(
@@ -81,7 +81,7 @@ class _VideoScreenState extends State<VideoScreen> {
                       const SizedBox(height: 8),
                       Container(
                         height: 160,
-                        width: 150,
+                        width: 370,
                         decoration: BoxDecoration(
                           color: Colors.black12,
                           borderRadius: BorderRadius.circular(10),

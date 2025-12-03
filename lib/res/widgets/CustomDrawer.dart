@@ -10,11 +10,12 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  int userId = 0;
   String? deviceId = "";
-  String? name = "";
   String? email = "";
   String? imageFullUrl = "";
+  String? name = "";
+  int userId = 0;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +35,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
     print(
       "UserDetails => $userId | $deviceId | $name | $email  | $imageFullUrl",
+    );
+  }
+
+  /// Logout logic
+  Future<void> logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      RouteNames.getStartScreen,
+      (route) => false,
+    );
+  }
+
+  /// Drawer Item Widget
+  Widget _drawerItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+      leading: Icon(icon, color: Colors.black87),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 16, color: Colors.black87),
+      ),
+      trailing: const Icon(Icons.chevron_right, color: Colors.black45),
+      onTap: onTap,
     );
   }
 
@@ -124,36 +155,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ],
         ),
       ),
-    );
-  }
-
-  /// Drawer Item Widget
-  Widget _drawerItem({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-      leading: Icon(icon, color: Colors.black87),
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 16, color: Colors.black87),
-      ),
-      trailing: const Icon(Icons.chevron_right, color: Colors.black45),
-      onTap: onTap,
-    );
-  }
-
-  /// Logout logic
-  Future<void> logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      RouteNames.loginScreen,
-      (route) => false,
     );
   }
 }

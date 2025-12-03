@@ -89,6 +89,116 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
     IamReadyFinalViewModel vm,
     WorkoutExerciseModel exercise,
   ) {
+    // pick EMBEDDED first
+    final selectedMedia = exercise.mediaDecoded.isNotEmpty
+        ? exercise.mediaDecoded.firstWhere(
+            (m) => m.type.toLowerCase() == "embedded",
+            orElse: () => exercise.mediaDecoded.first,
+          )
+        : null;
+
+    final mediaUri = selectedMedia?.uri ?? "";
+
+    final mediaUrl = mediaUri.startsWith("http")
+        ? mediaUri
+        : "${IamReadyFinalRepository.BASE_URL}/$mediaUri";
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            exercise.name,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+
+          // 🔥 UNIVERSAL MEDIA
+          Container(
+            height: 250,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.black54),
+            ),
+            child: UniversalMediaWidget(
+              mediaUri: mediaUri,
+              mediaUrl: mediaUrl,
+              height: 240,
+            ),
+          ),
+
+          const SizedBox(height: 16),
+          Text(
+            "Target Muscle: ${exercise.subcategory}",
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 6),
+
+          const Text(
+            "Set 1 = Warm-Up Set\nSet 2 = Failure Set\nSet 3 = Working Set (Pump Set)",
+            style: TextStyle(fontSize: 13.5, height: 1.4),
+          ),
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+              SizedBox(
+                width: 100,
+                child: ElevatedButton(
+                  onPressed: () =>
+                      vm.onHistoryPressed(context, exercise, userId),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.dashboardColor,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text("History"),
+                ),
+              ),
+              const SizedBox(width: 12),
+              SizedBox(
+                width: 100,
+                child: ElevatedButton(
+                  onPressed: () => vm.onTrackPressed(context, exercise, userId),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.dashboardColor,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text("Track"),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExerciseCard1(
+    BuildContext context,
+    IamReadyFinalViewModel vm,
+    WorkoutExerciseModel exercise,
+  ) {
     // extract image from list — userer API te multiple image thake
     // final String imageUrl = exercise.imageUrlsDecoded.isNotEmpty
     //     ? exercise.imageUrlsDecoded[0].uri
@@ -157,8 +267,8 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
           // ),
           // const SizedBox(height: 10),
           Container(
-            height: 160,
-            width: 150,
+            height: 250,
+            width: 370,
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(10),

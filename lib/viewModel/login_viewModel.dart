@@ -25,6 +25,13 @@ class LoginViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isPasswordVisible => _isPasswordVisible;
 
+  int networkStatus = 1; // 1 = online, 0 = offline
+
+  void updateNetworkStatus(int status) {
+    networkStatus = status;
+    notifyListeners();
+  }
+
   void togglePasswordVisibility() {
     _isPasswordVisible = !_isPasswordVisible;
     notifyListeners();
@@ -156,11 +163,17 @@ class LoginViewModel extends ChangeNotifier {
         ).showSnackBar(const SnackBar(content: Text("Login Successful!")));
         Navigator.pushNamed(context, RouteNames.dashboard);
       } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Login failed!")));
         throw Exception(loginResponse.message);
       }
     } catch (e) {
       _isLoading = false;
       notifyListeners();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Login failed!")));
       throw Exception("Login failed: $e");
     }
   }

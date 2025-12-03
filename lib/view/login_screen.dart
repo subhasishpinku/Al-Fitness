@@ -1,22 +1,47 @@
+import 'package:aifitness/services/network_service.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  int status = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    networking();
+  }
+
+  networking() {
+    NetworkService().startListener((isConnected) {
+      setState(() {
+        status = isConnected ? 1 : 0;
+      });
+
+      print(isConnected ? "Connected" : "No Internet");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => LoginViewModel(),
-      child: const _LoginBody(),
+      child: _LoginBody(status: status), //  PASSING STATUS HERE
     );
   }
 }
 
 class _LoginBody extends StatelessWidget {
-  const _LoginBody();
+  final int status;
+  const _LoginBody({required this.status}); //  RECEIVING STATUS
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +58,7 @@ class _LoginBody extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.close, color: AppColors.primaryColor, size: 26),
-              onPressed: () {
-                Navigator.pop(context); // Go back
-              },
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         ),
@@ -49,7 +72,6 @@ class _LoginBody extends StatelessWidget {
                 children: [
                   const SizedBox(height: 40),
 
-                  // --- Title ---
                   const Text(
                     "- LOGIN -",
                     style: TextStyle(
@@ -58,9 +80,9 @@ class _LoginBody extends StatelessWidget {
                       letterSpacing: 1.2,
                     ),
                   ),
+
                   const SizedBox(height: 10),
 
-                  // --- Subtitle ---
                   Text(
                     "Enter your personal information\n to log in to your account.",
                     textAlign: TextAlign.center,
@@ -70,9 +92,10 @@ class _LoginBody extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+
                   const SizedBox(height: 40),
 
-                  // --- Email Field ---
+                  // EMAIL FIELD
                   TextFormField(
                     controller: provider.emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -83,10 +106,6 @@ class _LoginBody extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
                       ),
                     ),
                     validator: (value) {
@@ -103,7 +122,7 @@ class _LoginBody extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // --- Password Field ---
+                  // PASSWORD FIELD
                   TextFormField(
                     controller: provider.passwordController,
                     obscureText: !provider.isPasswordVisible,
@@ -124,10 +143,6 @@ class _LoginBody extends StatelessWidget {
                         ),
                         onPressed: provider.togglePasswordVisibility,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -142,14 +157,25 @@ class _LoginBody extends StatelessWidget {
 
                   const SizedBox(height: 40),
 
-                  // --- Sign In Button ---
+                  // SIGN IN BUTTON with NETWORK CHECK
                   SizedBox(
                     width: 180,
                     height: 50,
                     child: ElevatedButton(
                       onPressed: provider.isLoading
                           ? null
-                          : () => provider.login(context),
+                          : () {
+                              if (status == 0) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("No Internet Connection"),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                                return;
+                              }
+                              provider.login(context);
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.primaryColor,
@@ -161,7 +187,7 @@ class _LoginBody extends StatelessWidget {
                       ),
                       child: provider.isLoading
                           ? const CircularProgressIndicator(
-                              color: Colors.white,
+                              color: Colors.black,
                               strokeWidth: 2,
                             )
                           : const Text(

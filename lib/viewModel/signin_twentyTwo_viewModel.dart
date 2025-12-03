@@ -73,12 +73,12 @@ class SigninTwentyTwoViewModel extends ChangeNotifier {
 
   void onNextPressed(BuildContext context) {
     if (canProceed) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Proceeding to next step..."),
-          duration: Duration(seconds: 1),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Proceeding to next step..."),
+      //     duration: Duration(seconds: 1),
+      //   ),
+      // );
       saveSelectedItems();
       // TODO: Update with your next screen route
       Navigator.pushNamed(context, RouteNames.signinScreenTwentyThree);

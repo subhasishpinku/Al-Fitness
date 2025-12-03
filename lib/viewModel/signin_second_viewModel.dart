@@ -42,11 +42,11 @@ class SigninSecondViewModel extends ChangeNotifier {
     String fitnessGoal = '';
 
     if (topic == "Strength Training") {
-      fitnessGoal = 'strength';
+      fitnessGoal = 'Strength';
     } else if (topic == "Cardio Training") {
-      fitnessGoal = 'cardio';
+      fitnessGoal = 'Cardio';
     } else if (topic == "Strength & Cardio Training") {
-      fitnessGoal = 'strength_cardio';
+      fitnessGoal = 'Strength-Cardio';
     }
 
     // Save value

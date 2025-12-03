@@ -41,19 +41,19 @@ class SigninFourthViewModel extends ChangeNotifier {
     String activityLevel = '';
 
     if (topic == "Sedentary: Little to no \n physical activity.") {
-      activityLevel = 'sedentary_exercise';
+      activityLevel = 'Sedentary Exercise';
     } else if (topic ==
         "Lightly Active: Light exercise or \n physical activity 1–3 days a week.") {
-      activityLevel = 'light_exercise';
+      activityLevel = 'Light Exercise';
     } else if (topic ==
         "Moderately Active: Engaging in \n moderate exercise or physical \n activity 3–5 days a week.") {
-      activityLevel = 'moderate_exercise';
+      activityLevel = 'Moderate Exercise';
     } else if (topic ==
         "Very Active: Hard exercise or \n physical activity 6–7 days a week.") {
-      activityLevel = 'intense_exercise';
+      activityLevel = 'Intense Exercise';
     } else if (topic ==
         "Super Active: Very intense exercise \n or physical activity, often multiple \n times per day, or for those with \n physically demanding jobs or \n training programs.") {
-      activityLevel = 'super_intense_exercise';
+      activityLevel = 'Super Intense Exercise';
     }
 
     // Use consistent lowercase key naming

@@ -40,9 +40,44 @@ class RegisterViewModel extends ChangeNotifier {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+    if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please fill in all fields.")),
+        const SnackBar(content: Text(".Please enter your full name")),
+      );
+      return;
+    }
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text(".Please enter your email")));
+      return;
+    }
+
+    if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(".Please enter your password")),
+      );
+      return;
+    }
+
+    // OPTIONAL: Email format validation
+    final emailRegex = RegExp(
+      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    );
+    if (!emailRegex.hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(".Please enter a valid email address")),
+      );
+      return;
+    }
+
+    // OPTIONAL: Password requirement validation
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Password must be at least 6 characters."),
+        ),
       );
       return;
     }
@@ -117,6 +152,54 @@ class RegisterViewModel extends ChangeNotifier {
     //   mealTypeSubOption: "",
     //   mealType: prefs.getString("meal_type") ?? "",
     // );
+    // RegisterRequest model = RegisterRequest(
+    //   name: name,
+    //   email: email,
+    //   password: password,
+    //   gender: prefs.getString("gender") ?? "",
+    //   dobAgeYear: prefs.getString("dob_age_year") ?? "",
+    //   dobAgeMonth: "0",
+    //   heightValue: prefs.getString("height_value") ?? "",
+    //   heightUnit: "CM",
+    //   currentWeightValue: prefs.getString("current_weight_value") ?? "",
+    //   currentWeightUnit: "KG",
+    //   waist: prefs.getString("waist") ?? "",
+    //   waistUnit: "CM",
+    //   hip: prefs.getString("hip") ?? "",
+    //   hipUnit: "CM",
+    //   currentBfp: prefs.getString("current_bfp") ?? "",
+    //   targetBfp: (prefs.getString("target_bfp") ?? "").replaceAll("%", ""),
+    //   currentBodyShape: prefs.getString("current_body_shape") ?? "3",
+    //   desiredBodyShape: "3",
+    //   skeletalMuscle: "",
+    //   subcutaneousFatPercentage: "",
+    //   visceralFat: "",
+    //   waterWeight: "",
+    //   planType: prefs.getString("plan_type") ?? "",
+    //   fitnessGoal: prefs.getString("fitness_goal") ?? "",
+    //   woGoal: prefs.getString("wo_goal") ?? "",
+    //   activityLevel: prefs.getString("activity_level") ?? "",
+    //   howFastToReachGoal: "Easy",
+    //   lossGainTargetValue: "0",
+    //   woMode: prefs.getString("wo_mode") ?? "",
+    //   woModeSubOption: "",
+    //   woTime: "30",
+    //   noOfDaysPerWeek: prefs.getInt("no_of_days_per_week") ?? 0,
+    //   woDays: [],
+    //   focusMuscle: [],
+    //   mealType: prefs.getString("meal_type") ?? "",
+    //   mealTypeSubOption: "",
+    //   grains: grainsList ?? [],
+    //   fruits: fruitsList ?? [],
+    //   vegetables: vegetablesList ?? [],
+    //   proteins: proteinsList ?? [],
+    //   carbs: carbsList ?? [],
+    //   fats: fatsList ?? [],
+    //   nuts: nutsList ?? [],
+    //   fibers: [],
+    //   deviceId: prefs.getString("device_id") ?? "",
+    // );
+
     RegisterRequest model = RegisterRequest(
       name: name,
       email: email,
@@ -141,15 +224,21 @@ class RegisterViewModel extends ChangeNotifier {
       visceralFat: "",
       waterWeight: "",
       planType: prefs.getString("plan_type") ?? "",
+
+      // fitnessGoal: "Strength",
+      // woGoal: "Lose Weight",
+      // activityLevel: "Sedentary Exercise",
       fitnessGoal: prefs.getString("fitness_goal") ?? "",
       woGoal: prefs.getString("wo_goal") ?? "",
       activityLevel: prefs.getString("activity_level") ?? "",
+
       howFastToReachGoal: "Easy",
       lossGainTargetValue: "0",
       woMode: prefs.getString("wo_mode") ?? "",
       woModeSubOption: "",
       woTime: "30",
       noOfDaysPerWeek: prefs.getInt("no_of_days_per_week") ?? 0,
+
       woDays: [],
       focusMuscle: [],
       mealType: prefs.getString("meal_type") ?? "",
@@ -159,95 +248,64 @@ class RegisterViewModel extends ChangeNotifier {
       vegetables: vegetablesList ?? [],
       proteins: proteinsList ?? [],
       carbs: carbsList ?? [],
-      fats: ["Olive Oil", "½ cup cooked chia seeds (~120 g)"],
-      nuts: ["Peanut butter 30gm with Brown Bread 2pc", "Pistachios"],
+      fats: fatsList ?? [],
+      nuts: nutsList ?? [],
       fibers: [],
-      deviceId: "F6E5F462-57E9-4E47-99D1-C3B785BC97E6",
+      deviceId: prefs.getString("device_id") ?? "",
     );
 
     print("""
-===== FINAL REQUEST JSON =====
+      ===== FINAL REQUEST JSON =====
 
-Name: $name
-Hip: ${prefs.getString("hip") ?? ""}
-No. of Days per Week: ${prefs.getInt("no_of_days_per_week") ?? 0}
-WO Time: 45
-Password: $password
-Email: $email
+       name: ${name},
+      email: ${email},
+      password: ${password},
+      gender: ${prefs.getString("gender") ?? ""},
+      dobAgeYear: ${prefs.getString("dob_age_year") ?? ""},
+      dobAgeMonth: "0",
+      heightValue: ${prefs.getString("height_value") ?? ""},
+      heightUnit: "CM",
+      currentWeightValue: ${prefs.getString("current_weight_value") ?? ""},
+      currentWeightUnit: "KG",
+      waist: ${prefs.getString("waist") ?? ""},
+      waistUnit: "CM",
+      hip: ${prefs.getString("hip") ?? ""},
+      hipUnit: "CM",
+      currentBfp: ${prefs.getString("current_bfp") ?? ""},
+      targetBfp: ${(prefs.getString("target_bfp") ?? "").replaceAll("%", "")},
+      currentBodyShape: ${prefs.getString("current_body_shape") ?? "3"},
+      desiredBodyShape: "3",
+      skeletalMuscle: "",
+      subcutaneousFatPercentage: "",
+      visceralFat: "",
+      waterWeight: "",
+      planType: ${prefs.getString("plan_type") ?? ""},
+      fitnessGoal: ${prefs.getString("fitness_goal") ?? ""},
+      woGoal: ${prefs.getString("wo_goal") ?? ""},
+      activityLevel: ${prefs.getString("activity_level") ?? ""},
+      howFastToReachGoal: "Easy",
+      lossGainTargetValue: "0",
+      woMode: ${prefs.getString("wo_mode") ?? ""},
+      woModeSubOption: "",
+      woTime: "30",
+      noOfDaysPerWeek: ${prefs.getInt("no_of_days_per_week") ?? 0},
+      woDays: [],
+      focusMuscle: [],
+      mealType: ${prefs.getString("meal_type") ?? ""},
+      mealTypeSubOption: "",
+      grains: ${grainsList ?? []},
+      fruits: ${fruitsList ?? []},
+      vegetables: ${vegetablesList ?? []},
+      proteins: ${proteinsList ?? []},
+      carbs: ${carbsList ?? []},
+      fats: ${fatsList ?? []},
+      nuts: ${nutsList ?? []},
+      fibers: ${[]},
+      deviceId: ${prefs.getString("device_id") ?? ""},
 
-Fitness Goal: ${prefs.getString("fitness_goal") ?? ""}
-Current BFP: ${prefs.getString("current_bfp") ?? ""}
-
-Grains: $grainsList
-Fruits: $fruitsList
-Carbs: $carbsList
-Vegetables: $vegetablesList
-Nuts: $nutsList
-Proteins: $proteinsList
-Fats: $fatsList
-Fibers: $fibersList
-Focus Muscle: $focusMuscleList
-Workout Days: $woDaysList
-
-Waist: ${prefs.getString("waist") ?? ""}
-Plan Type: ${prefs.getString("plan_type") ?? ""}
-
-Current Body Shape: ${prefs.getString("current_body_shape") ?? "3"}
-Height Unit: CM
-Desired Body Shape: 3
-
-Target BFP: ${(prefs.getString("target_bfp") ?? "").replaceAll("%", "")}
-Current Weight Value: ${prefs.getString("current_weight_value") ?? ""}
-
-Activity Level: ${prefs.getString("activity_level") ?? ""}
-Hip Unit: CM
-Waist Unit: CM
-
-DOB Age Month: 0
-Workout Goal: ${prefs.getString("wo_goal") ?? ""}
-Device ID: ${prefs.getString("device_id") ?? ""}
-Workout Mode: ${prefs.getString("wo_mode") ?? ""}
-
-Skeletal Muscle: 
-Subcutaneous Fat %: 
-DOB Age Year: ${prefs.getString("dob_age_year") ?? ""}
-Height Value: ${prefs.getString("height_value") ?? ""}
-How Fast To Reach Goal: ${prefs.getString("how_fast_to_reach_goal") ?? ""}
-
-Visceral Fat: 
-Water Weight: 
-Current Weight Unit: KG
-Loss/Gain Target Value: 
-Gender: ${prefs.getString("gender") ?? ""}
-Meal Type Sub Option: 
-Meal Type: ${prefs.getString("meal_type") ?? ""}
-
-================================
-""");
-
-    print("""
-===== FINAL REQUEST JSON1 =====
-
-
-
-Skeletal Muscle: 
-Subcutaneous Fat %: 
-DOB Age Year: ${prefs.getString("dob_age_year") ?? ""}
-Height Value: ${prefs.getString("height_value") ?? ""}
-How Fast To Reach Goal: ${prefs.getString("how_fast_to_reach_goal") ?? ""}
-
-Visceral Fat: 
-Water Weight: 
-Current Weight Unit: KG
-Loss/Gain Target Value: 
-Gender: ${prefs.getString("gender") ?? ""}
-Meal Type Sub Option: 
-Meal Type: ${prefs.getString("meal_type") ?? ""}
-
-================================
-""");
-
-    // print("FINAL REQUEST JSON = ${jsonEncode(model.toJson())}");
+      ================================
+      """);
+    print("FINAL REQUEST JSON = ${jsonEncode(model.toJson())}");
 
     try {
       registerResponse = await repository.registerUser(model);
@@ -257,7 +315,15 @@ Meal Type: ${prefs.getString("meal_type") ?? ""}
       int? userIds = registerResponse!.data!.userDetails!.id;
       await prefs.setInt('user_id', userIds!);
       String? deviceIdS = registerResponse!.data!.userDetails!.deviceId;
+      String? name = registerResponse!.data!.userDetails!.name;
+      String? email = registerResponse!.data!.userDetails!.email;
+      String? imageFullUrl = registerResponse!.data!.userDetails!.image;
+
       await prefs.setString('device_id', deviceIdS!);
+      await prefs.setString('name', name!);
+
+      await prefs.setString('email', email!);
+      await prefs.setString('image_full_url', imageFullUrl!);
       print("ResponseAllIds ${userIds}  ${deviceIdS}");
       // Show success snackbar
       ScaffoldMessenger.of(context).showSnackBar(

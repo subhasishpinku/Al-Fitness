@@ -1,5 +1,6 @@
 import 'package:aifitness/repository/RegisterRepository.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
+import 'package:aifitness/services/network_service.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/RegisterViewModel.dart';
 import 'package:aifitness/viewModel/signin_twentyfour_viewModel.dart';
@@ -21,10 +22,12 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
   String _deviceId = 'Unknown';
   final _mobileDeviceIdentifierPlugin = MobileDeviceIdentifier();
   final uuid = Uuid();
+  int status = 0;
   @override
   void initState() {
     super.initState();
     initDeviceId();
+    networking();
   }
 
   Future<void> initDeviceId() async {
@@ -43,12 +46,21 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
 
     setState(() async {
       _deviceId = deviceId;
-      _deviceId = deviceId;
       // print("_deviceId $_deviceId");
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("device_id", _deviceId);
       print(prefs.getString("device_id"));
       print("UUID ${id}  ${prefs.getString("device_id")}");
+    });
+  }
+
+  networking() {
+    NetworkService().startListener((isConnected) {
+      setState(() {
+        status = isConnected ? 1 : 0;
+      });
+
+      print(isConnected ? "Connected" : "No Internet");
     });
   }
 
@@ -305,8 +317,7 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white.withOpacity(0.8),
                             side: const BorderSide(
-                              color: AppColors
-                                  .bolderColor, // <-- added custom border color
+                              color: AppColors.bolderColor,
                               width: 2,
                             ),
                             shape: RoundedRectangleBorder(
@@ -314,12 +325,27 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
                             ),
                             elevation: 0,
                           ),
-                          onPressed: () => viewModel.onNextPressed(context),
+
+                          onPressed: () {
+                            // ---- INTERNET CHECK ----
+                            if (status == 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("No Internet Connection"),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                              return;
+                            }
+
+                            // ---- Continue to next step ----
+                            viewModel.onNextPressed(context);
+                          },
+
                           child: Text(
                             "Next",
                             style: TextStyle(
-                              color: AppColors
-                                  .primaryColor, // <-- optional: match text color too
+                              color: AppColors.primaryColor,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1,
@@ -328,6 +354,38 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
                         ),
                       ),
                     ),
+
+                    // Center(
+                    //   child: SizedBox(
+                    //     width: 200,
+                    //     height: 50,
+                    //     child: ElevatedButton(
+                    //       style: ElevatedButton.styleFrom(
+                    //         backgroundColor: Colors.white.withOpacity(0.8),
+                    //         side: const BorderSide(
+                    //           color: AppColors
+                    //               .bolderColor, // <-- added custom border color
+                    //           width: 2,
+                    //         ),
+                    //         shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(8),
+                    //         ),
+                    //         elevation: 0,
+                    //       ),
+                    //       onPressed: () => viewModel.onNextPressed(context),
+                    //       child: Text(
+                    //         "Next",
+                    //         style: TextStyle(
+                    //           color: AppColors
+                    //               .primaryColor, // <-- optional: match text color too
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.bold,
+                    //           letterSpacing: 1,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // Center(
                     //   child: ElevatedButton(
