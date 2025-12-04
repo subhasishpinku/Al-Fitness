@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:aifitness/utils/routes/routes_names.dart';
+import 'package:aifitness/viewModel/account_delete_ViewModel.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +44,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<AccountSettingViewModel>(context);
+    final vm1 = Provider.of<AccountDeleteViewModel>(context);
 
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -182,7 +184,41 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                 const SizedBox(height: 8),
 
                 // Menu Options
-                _buildMenuItem(context, title: "Delete Profile", onTap: () {}),
+                _buildMenuItem(
+                  context,
+                  title: "Delete Profile",
+                  onTap: () async {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: AlertDialog(
+                            title: Text("Delete Account?"),
+                            content: Text(
+                              "Are you sure you want to delete your account permanently?",
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                              TextButton(
+                                child: Text(
+                                  "Delete",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                onPressed: () {
+                                  vm1.deleteAccount(context, userId);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
                 _buildMenuItem(
                   context,
                   title: "Privacy Policy",
@@ -206,7 +242,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                 ),
                 _buildMenuItem(
                   context,
-                  title: "Contact Us",
+                  title: "Contact Me",
                   onTap: () {
                     Navigator.pushNamed(context, RouteNames.contactUs);
                   },

@@ -1,3 +1,4 @@
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/target_change_details_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,20 +14,58 @@ class TargetChangeDetails extends StatefulWidget {
 class _TargetChangeDetailsState extends State<TargetChangeDetails> {
   int userId = 0;
   String? deviceId = "";
+  String? heightValue = "";
+  String? weightValue = "";
+  String? fitnessGoal = "";
+
+  String? activityLevel = "";
+  String? currentBfp = "";
+  String? targetBfp = "";
+
+  String? woMode = "";
+  String? mealType = "";
+
   @override
   void initState() {
     super.initState();
-    load();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      load(context);
+    });
   }
 
-  Future<void> load() async {
+  Future<void> load(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
+
     userId = prefs.getInt("user_id") ?? 0;
     deviceId = prefs.getString("device_id");
+    heightValue = prefs.getString("height_value");
+    weightValue = prefs.getString("weight_value");
+    fitnessGoal = prefs.getString("fitness_goal");
+    activityLevel = prefs.getString("activity_level");
+    currentBfp = prefs.getString("current_bfp");
+    targetBfp = prefs.getString("target_bfp");
+    woMode = prefs.getString("wo_mode");
+    mealType = prefs.getString("meal_type");
+
+    /// -------------------------------
+    /// Print all fetched SharedPrefs data
+    /// -------------------------------
+    print("===== Shared Preferences Loaded Data =====");
+    print("User ID: $userId");
+    print("Device ID: $deviceId");
+    print("Height: $heightValue");
+    print("Weight: $weightValue");
+    print("Fitness Goal: $fitnessGoal");
+    print("Activity Level: $activityLevel");
+    print("Current BFP: $currentBfp");
+    print("Target BFP: $targetBfp");
+    print("Workout Mode: $woMode");
+    print("Meal Type: $mealType");
+    print("==========================================");
 
     if (deviceId == null) return;
 
-    // Kick off fetching categories + initial news
+    // Kick off fetching categories + initial data
     Future.microtask(() {
       final vm = context.read<TargetChangeDetailsViewModel>();
       vm.fetchAiDetails(deviceId!, userId);
@@ -99,13 +138,30 @@ class _TargetChangeDetailsState extends State<TargetChangeDetails> {
               _sectionTitle("Tell us about yourself"),
               const SizedBox(height: 10),
 
-              CustomDropTile(
-                title: "What's your height?",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.heightValue} KG",
+              InkWell(
+                onTap: () {
+                  // Navigator.pushNamed(context, RouteNames.signinScreenSeventh);
+                  Navigator.pushNamed(
+                    context,
+                    RouteNames.signinScreenEight,
+                    arguments: "0",
+                  );
+                },
+                child: CustomDropTile(
+                  title: "What's your height?",
+                  value:
+                      "${vm.aiDetails!.data!.userBodyMetrics!.heightValue} KG",
+                ),
               ),
-              CustomDropTile(
-                title: "What's your weight?",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.weightValue} KG",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenEight);
+                },
+                child: CustomDropTile(
+                  title: "What's your weight?",
+                  value:
+                      "${vm.aiDetails!.data!.userBodyMetrics!.weightValue} KG",
+                ),
               ),
 
               const SizedBox(height: 25),
@@ -113,30 +169,61 @@ class _TargetChangeDetailsState extends State<TargetChangeDetails> {
               _sectionTitle("Workout Options"),
               const SizedBox(height: 10),
 
-              CustomDropTile(
-                title: "What is your fitness goal?",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.fitnessGoal}",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenSecond);
+                },
+                child: CustomDropTile(
+                  title: "What is your fitness goal?",
+                  value: "${vm.aiDetails!.data!.userBodyMetrics!.fitnessGoal}",
+                ),
               ),
-              CustomDropTile(
-                title: "Current activity level",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.activityLevel}",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenFourth);
+                },
+                child: CustomDropTile(
+                  title: "Current activity level",
+                  value:
+                      "${vm.aiDetails!.data!.userBodyMetrics!.activityLevel}",
+                ),
               ),
-              CustomDropTile(
-                title: "Current body fat percentage",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.currentBfp}%",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenEleventh);
+                },
+                child: CustomDropTile(
+                  title: "Current body fat percentage",
+                  value: "${vm.aiDetails!.data!.userBodyMetrics!.currentBfp}%",
+                ),
               ),
-              CustomDropTile(
-                title: "Target body fat percentage",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.targetBfp}%",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenTwelve);
+                },
+                child: CustomDropTile(
+                  title: "Target body fat percentage",
+                  value: "${vm.aiDetails!.data!.userBodyMetrics!.targetBfp}%",
+                ),
               ),
-              CustomDropTile(
-                title: "What day's would you like to workout?",
-                value:
-                    "${vm.aiDetails!.data!.userBodyMetrics!.noOfDaysPerWeek} Day / Week (6 days rest)",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenFourteen);
+                },
+                child: CustomDropTile(
+                  title: "What day's would you like to workout?",
+                  value:
+                      "${vm.aiDetails!.data!.userBodyMetrics!.noOfDaysPerWeek} Day / Week (6 days rest)",
+                ),
               ),
-              CustomDropTile(
-                title: "Workout mode",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.woMode}",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenFifteen);
+                },
+                child: CustomDropTile(
+                  title: "Workout mode",
+                  value: "${vm.aiDetails!.data!.userBodyMetrics!.woMode}",
+                ),
               ),
 
               const SizedBox(height: 25),
@@ -144,9 +231,14 @@ class _TargetChangeDetailsState extends State<TargetChangeDetails> {
               _sectionTitle("Selects Food"),
               const SizedBox(height: 10),
 
-              CustomDropTile(
-                title: "Diet type",
-                value: "${vm.aiDetails!.data!.userBodyMetrics!.mealType}",
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenSixteen);
+                },
+                child: CustomDropTile(
+                  title: "Diet type",
+                  value: "${vm.aiDetails!.data!.userBodyMetrics!.mealType}",
+                ),
               ),
             ],
           ),

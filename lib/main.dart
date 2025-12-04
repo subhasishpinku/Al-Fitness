@@ -14,6 +14,7 @@ import 'package:aifitness/view/signin_screen_twenty_one.dart';
 import 'package:aifitness/view/subcutaneous_fat_screen.dart';
 import 'package:aifitness/viewModel/AddExerciseTrackerViewModel.dart';
 import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
+import 'package:aifitness/viewModel/account_delete_ViewModel.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:aifitness/viewModel/body_fat_viewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
@@ -141,6 +142,10 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ContactUsViewModel()),
         ChangeNotifierProvider(create: (_) => PrivacyPolicyViewModel()),
         ChangeNotifierProvider(create: (_) => TermsConditionViewModel()),
+        ChangeNotifierProvider(create: (_) => TermsConditionViewModel()),
+        ChangeNotifierProvider(create: (_) => AccountDeleteViewModel()),
+
+        
       ],
       child: const MyApp(),
     ),

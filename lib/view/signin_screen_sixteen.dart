@@ -1,3 +1,4 @@
+import 'package:aifitness/res/widgets/SigninDietTypeAppBar.dart';
 import 'package:aifitness/res/widgets/signin_topic_list.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/sigin_sixteen_viewModel.dart';
@@ -18,7 +19,7 @@ class SigninScreenSixteen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: const SigninSecondAppBar(),
+        appBar: const SigninDietTypeAppBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Column(

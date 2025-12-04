@@ -1,3 +1,4 @@
+import 'package:aifitness/res/widgets/SigninHeightAppBar.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
@@ -28,7 +29,7 @@ class _SigninScreenSeventhBody extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: const SigninSecondAppBar(),
+      appBar: const SigninHeightAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

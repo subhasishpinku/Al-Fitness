@@ -1,3 +1,4 @@
+import 'package:aifitness/res/widgets/SigninTargetAppBar.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:aifitness/viewModel/signin_twelve_viewModel.dart';
@@ -42,7 +43,7 @@ class _SigninScreenTwelveState extends State<SigninScreenTwelve> {
       textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: const SigninSecondAppBar(),
+        appBar: const SigninTargetAppBar(),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

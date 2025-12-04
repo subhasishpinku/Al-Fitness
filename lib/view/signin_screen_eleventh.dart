@@ -1,4 +1,5 @@
 import 'package:aifitness/res/widgets/ManualEntryScreen.dart';
+import 'package:aifitness/res/widgets/SigninCurrentBFPAppBar.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
@@ -27,7 +28,7 @@ class _SigninScreenEleventhBody extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: const SigninSecondAppBar(),
+        appBar: const SigninCurrentBFPAppBar(),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

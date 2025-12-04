@@ -1,3 +1,4 @@
+import 'package:aifitness/res/widgets/SigninFinessGoalAppBar.dart';
 import 'package:aifitness/res/widgets/signin_topic_list.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/signin_second_viewModel.dart';
@@ -16,7 +17,7 @@ class SigninScreenSecond extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: const SigninSecondAppBar(), //  Use separated AppBar
+        appBar: const SigninFinessGoalAppBar(), //  Use separated AppBar
 
         body: SafeArea(
           child: Padding(

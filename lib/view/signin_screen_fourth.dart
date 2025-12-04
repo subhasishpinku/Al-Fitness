@@ -1,3 +1,4 @@
+import 'package:aifitness/res/widgets/SigninActivityLevelAppBar.dart';
 import 'package:aifitness/res/widgets/signin_second_appbar.dart';
 import 'package:aifitness/res/widgets/signin_topic_list.dart';
 import 'package:aifitness/utils/app_colors.dart';
@@ -21,7 +22,7 @@ class _SigninScreenFourthState extends State<SigninScreenFourth> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: const SigninSecondAppBar(), //  Use separated AppBar
+        appBar: const SigninActivityLevelAppBar(), //  Use separated AppBar
 
         body: SafeArea(
           child: Padding(

@@ -165,7 +165,7 @@ class LoginViewModel extends ChangeNotifier {
       } else {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text("Login failed!")));
+        ).showSnackBar(const SnackBar(content: Text("Invalid Credentials!")));
         throw Exception(loginResponse.message);
       }
     } catch (e) {
@@ -173,8 +173,8 @@ class LoginViewModel extends ChangeNotifier {
       notifyListeners();
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text("Login failed!")));
-      throw Exception("Login failed: $e");
+      ).showSnackBar(const SnackBar(content: Text("Invalid Credentials!")));
+      throw Exception("Invalid Credentials: $e");
     }
   }
 

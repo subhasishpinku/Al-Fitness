@@ -68,9 +68,12 @@ class _TargetChangeScreenState extends State<TargetChangeScreen>
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Weight: ${vm.weight}"),
-            Text("Goal: ${vm.goal}"),
-            Text("Weight to lose: ${vm.weightToLose}"),
+            InkWell(onTap: () {}, child: Text("Weight1: ${vm.weight}")),
+            InkWell(onTap: () {}, child: Text("Goal: ${vm.goal}")),
+            InkWell(
+              onTap: () {},
+              child: Text("Weight to lose: ${vm.weightToLose}"),
+            ),
           ],
         ),
       ),
