@@ -53,4 +53,16 @@ class RouteNames {
   static const String splashScreen = "splash_screen";
   static const String beginYourScreen = "begin_your_screen";
   static const String aboutsUs = "abouts_us";
+  static const String heightScreen = "height_screen";
+  static const String weightScreen = "weight_screen";
+  static const String fitnessGoalScreen = "fitness_goal_screen";
+  static const String activityLevelScreen = "activity_level_screen";
+  static const String currentBfpScreen = "current_bfp_screen";
+  static const String targetBfpScreen = "target_bfp_screen";
+  static const String worksOutDaysScreen = "works_out_days_screen";
+  static const String workoutModeScreen = "workout_mode_screen";
+  static const String dietTypeScreen = "diet_type_screen";
+
+  
+
 }

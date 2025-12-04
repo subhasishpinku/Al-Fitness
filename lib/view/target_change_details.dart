@@ -14,16 +14,6 @@ class TargetChangeDetails extends StatefulWidget {
 class _TargetChangeDetailsState extends State<TargetChangeDetails> {
   int userId = 0;
   String? deviceId = "";
-  String? heightValue = "";
-  String? weightValue = "";
-  String? fitnessGoal = "";
-
-  String? activityLevel = "";
-  String? currentBfp = "";
-  String? targetBfp = "";
-
-  String? woMode = "";
-  String? mealType = "";
 
   @override
   void initState() {
@@ -38,43 +28,33 @@ class _TargetChangeDetailsState extends State<TargetChangeDetails> {
 
     userId = prefs.getInt("user_id") ?? 0;
     deviceId = prefs.getString("device_id");
-    heightValue = prefs.getString("height_value");
-    weightValue = prefs.getString("weight_value");
-    fitnessGoal = prefs.getString("fitness_goal");
-    activityLevel = prefs.getString("activity_level");
-    currentBfp = prefs.getString("current_bfp");
-    targetBfp = prefs.getString("target_bfp");
-    woMode = prefs.getString("wo_mode");
-    mealType = prefs.getString("meal_type");
 
-    /// -------------------------------
-    /// Print all fetched SharedPrefs data
-    /// -------------------------------
     print("===== Shared Preferences Loaded Data =====");
     print("User ID: $userId");
     print("Device ID: $deviceId");
-    print("Height: $heightValue");
-    print("Weight: $weightValue");
-    print("Fitness Goal: $fitnessGoal");
-    print("Activity Level: $activityLevel");
-    print("Current BFP: $currentBfp");
-    print("Target BFP: $targetBfp");
-    print("Workout Mode: $woMode");
-    print("Meal Type: $mealType");
     print("==========================================");
 
     if (deviceId == null) return;
 
-    // Kick off fetching categories + initial data
-    Future.microtask(() {
-      final vm = context.read<TargetChangeDetailsViewModel>();
-      vm.fetchAiDetails(deviceId!, userId);
-    });
+    context.read<TargetChangeDetailsViewModel>().fetchAiDetails(
+      deviceId!,
+      userId,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<TargetChangeDetailsViewModel>();
+
+    // Wait for API Result — Prevent NULL Error
+    if (vm.aiDetails == null) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final data = vm.aiDetails!.data!.userBodyMetrics!;
 
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -84,29 +64,28 @@ class _TargetChangeDetailsState extends State<TargetChangeDetails> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           elevation: 0,
-          titleSpacing: 0,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () =>
+                      Navigator.pushNamed(context, RouteNames.dashboard),
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.black, // black circle
+                      color: Colors.black,
                     ),
                     child: const Icon(
                       Icons.close,
                       size: 16,
-                      color: Colors.white, // white "X"
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ),
-
               const Text(
                 "Change Detail",
                 style: TextStyle(
@@ -116,13 +95,16 @@ class _TargetChangeDetailsState extends State<TargetChangeDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: const Text(
-                  "Save",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w600,
+                padding: EdgeInsets.only(right: 15),
+                child: InkWell(
+                  onTap: () => {vm.updateSave(context)},
+                  child: Text(
+                    "Save",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -136,108 +118,93 @@ class _TargetChangeDetailsState extends State<TargetChangeDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _sectionTitle("Tell us about yourself"),
-              const SizedBox(height: 10),
 
               InkWell(
-                onTap: () {
-                  // Navigator.pushNamed(context, RouteNames.signinScreenSeventh);
-                  Navigator.pushNamed(
-                    context,
-                    RouteNames.signinScreenEight,
-                    arguments: "0",
-                  );
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.heightScreen),
                 child: CustomDropTile(
                   title: "What's your height?",
-                  value:
-                      "${vm.aiDetails!.data!.userBodyMetrics!.heightValue} KG",
+                  value: "${data.heightValue ?? "-"} CM",
                 ),
               ),
+
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenEight);
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.weightScreen),
                 child: CustomDropTile(
                   title: "What's your weight?",
-                  value:
-                      "${vm.aiDetails!.data!.userBodyMetrics!.weightValue} KG",
+                  value: "${data.currentWeightValue ?? "-"} KG",
                 ),
               ),
 
               const SizedBox(height: 25),
-
               _sectionTitle("Workout Options"),
-              const SizedBox(height: 10),
 
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenSecond);
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.fitnessGoalScreen),
                 child: CustomDropTile(
                   title: "What is your fitness goal?",
-                  value: "${vm.aiDetails!.data!.userBodyMetrics!.fitnessGoal}",
+                  value: data.fitnessGoal ?? "-",
                 ),
               ),
+
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenFourth);
-                },
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  RouteNames.activityLevelScreen,
+                ),
                 child: CustomDropTile(
                   title: "Current activity level",
-                  value:
-                      "${vm.aiDetails!.data!.userBodyMetrics!.activityLevel}",
+                  value: data.activityLevel ?? "-",
                 ),
               ),
+
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenEleventh);
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.currentBfpScreen),
                 child: CustomDropTile(
                   title: "Current body fat percentage",
-                  value: "${vm.aiDetails!.data!.userBodyMetrics!.currentBfp}%",
+                  value: "${data.currentBfp ?? "-"}%",
                 ),
               ),
+
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenTwelve);
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.targetBfpScreen),
                 child: CustomDropTile(
                   title: "Target body fat percentage",
-                  value: "${vm.aiDetails!.data!.userBodyMetrics!.targetBfp}%",
+                  value: "${data.targetBfp ?? "-"}%",
                 ),
               ),
+
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenFourteen);
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.worksOutDaysScreen),
                 child: CustomDropTile(
                   title: "What day's would you like to workout?",
-                  value:
-                      "${vm.aiDetails!.data!.userBodyMetrics!.noOfDaysPerWeek} Day / Week (6 days rest)",
+                  value: "${data.noOfDaysPerWeek ?? 0} Day / Week",
                 ),
               ),
+
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenFifteen);
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.workoutModeScreen),
                 child: CustomDropTile(
                   title: "Workout mode",
-                  value: "${vm.aiDetails!.data!.userBodyMetrics!.woMode}",
+                  value: data.woMode ?? "-",
                 ),
               ),
 
               const SizedBox(height: 25),
-
               _sectionTitle("Selects Food"),
-              const SizedBox(height: 10),
 
               InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RouteNames.signinScreenSixteen);
-                },
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.dietTypeScreen),
                 child: CustomDropTile(
                   title: "Diet type",
-                  value: "${vm.aiDetails!.data!.userBodyMetrics!.mealType}",
+                  value: data.mealType ?? "-",
                 ),
               ),
             ],
@@ -296,9 +263,9 @@ class CustomDropTile extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.black12, // or any color
+                color: Colors.black12,
               ),
               child: const Icon(
                 Icons.keyboard_arrow_down,

@@ -2,37 +2,62 @@ import 'dart:convert';
 
 import 'package:aifitness/models/UpdateDetailsRequest.dart';
 import 'package:aifitness/models/UserProfile.dart';
-import 'package:aifitness/models/ai_details_model.dart';
 import 'package:aifitness/repository/UpdateDetailsRepository.dart';
-import 'package:aifitness/repository/ai_details_repository.dart';
-import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aifitness/utils/routes/routes_names.dart';
 
-class TargetChangeDetailsViewModel extends ChangeNotifier {
-  // Example Variables
-  String height = "150 CM";
-  String weight = "60 KG";
+class WorkoutModeViewModel extends ChangeNotifier {
+  int _selectedIndex = -1;
+  int get selectedIndex => _selectedIndex;
 
-  void updateHeight(String val) {
-    height = val;
-    notifyListeners();
+  final List<String> options = [
+    "Gym",
+    "Home (Dumbbell, Barbell, Band)",
+    "Home (Bodyweight)",
+  ];
+
+  final List<bool> _isVisible = [false, false, false];
+  List<bool> get isVisible => _isVisible;
+
+  WorkoutModeViewModel() {
+    _animateButtonsSequentially();
   }
 
-  void updateWeight(String val) {
-    weight = val;
-    notifyListeners();
+  /// Animate the appearance of buttons one by one
+  Future<void> _animateButtonsSequentially() async {
+    for (int i = 0; i < options.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 250));
+      _isVisible[i] = true;
+      notifyListeners();
+    }
   }
 
-  final AiDetailsRepository _repo = AiDetailsRepository();
-
-  bool loading = false;
-  AiDetailsResponse? aiDetails;
   final UpdateDetailsRepository repository = UpdateDetailsRepository();
   UpdateDetailsRequest? updateDetailsRequestResponse;
   String? errorMessage;
-  Future<void> updateSave(BuildContext context) async {
+
+  /// Handle option selection
+  Future<void> selectOption(BuildContext context, int index) async {
+    _selectedIndex = index;
+    notifyListeners();
+
     final prefs = await SharedPreferences.getInstance();
+
+    String selectedValue = "";
+    if (index == 0) {
+      selectedValue = "Gym";
+    } else if (index == 1) {
+      // selectedValue = "Home (With Limited Gym Equipments)";
+      selectedValue = "Home (With Limited Gym Equipments)";
+    } else if (index == 2) {
+      selectedValue = "Home (Bodyweight)";
+    }
+
+    await prefs.setString('wo_mode', selectedValue);
+
+    final savedValue = prefs.getString('wo_mode');
+    print('wo_mode: $savedValue');
     final grainsList = decodeList(prefs.getString("grains"));
     final fruitsList = decodeList(prefs.getString("fruit"));
     final carbsList = decodeList(prefs.getString("carbs"));
@@ -103,7 +128,6 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
           ),
         ),
       );
-      Navigator.pushNamed(context, RouteNames.dashboard);
 
       // Navigate or do next step
     } catch (e) {
@@ -113,26 +137,20 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
       ).showSnackBar(SnackBar(content: Text("Error: $errorMessage")));
       print(errorMessage);
     }
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
   }
 
-  Future<void> fetchAiDetails(String deviceId, int userId) async {
-    loading = true;
-    notifyListeners();
-
-    try {
-      aiDetails = await _repo.getAiUserDetails(
-        deviceId: deviceId,
-        userId: userId,
+  /// Handle navigation on selection
+  void onNextPressed(BuildContext context) {
+    if (_selectedIndex != -1) {
+      Navigator.pushNamed(context, RouteNames.targetChangeDetails);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select an option first")),
       );
-
-      print("aiDetails: ${aiDetails!.data!.userBodyMetrics!.heightValue}");
-    } catch (e) {
-      debugPrint("Error fetching AI details: $e");
-      print("Error fetching AI details: $e");
     }
-
-    loading = false;
-    notifyListeners();
   }
 
   List<String>? decodeList(String? raw) {

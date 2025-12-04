@@ -1,4 +1,4 @@
-import 'package:aifitness/viewModel/weight_today_viewModel.dart';
+import 'package:aifitness/viewModel/body_fat_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +22,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
       int week = prefs.getInt("week") ?? 0;
       String day = prefs.getString("day") ?? "8";
 
-      Provider.of<WeightTodayViewModel>(context, listen: false).fetchWeightLogs(
+      Provider.of<BodyFatViewModel>(context, listen: false).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
         day: "8",
@@ -33,7 +33,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<WeightTodayViewModel>();
+    final viewModel = context.watch<BodyFatViewModel>();
 
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -130,6 +130,32 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
                           ),
 
                           onPressed: () async {
+                            final weightText = viewModel.weightController.text
+                                .trim();
+
+                            // --- VALIDATION CHECK ---
+                            if (weightText.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please enter your weight"),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+
+                            if (double.tryParse(weightText) == null ||
+                                double.parse(weightText) <= 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please enter a valid number"),
+                                  backgroundColor: Colors.black,
+                                ),
+                              );
+                              return;
+                            }
+
+                            // Proceed if valid
                             final prefs = await SharedPreferences.getInstance();
                             int userId = prefs.getInt("user_id") ?? 0;
                             int week = prefs.getInt("week") ?? 0;
@@ -138,13 +164,31 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
                             viewModel.submitWeight(
                               context,
                               userId: userId,
-                              logValue: viewModel.weightController.text.trim(),
+                              logValue: weightText,
                               week: week.toString(),
                               day: "8",
                               logType: "body_fat_percentage",
                             );
+
+                            // Optional: Clear input field after successfully submitting
+                            viewModel.weightController.clear();
                           },
 
+                          // onPressed: () async {
+                          //   final prefs = await SharedPreferences.getInstance();
+                          //   int userId = prefs.getInt("user_id") ?? 0;
+                          //   int week = prefs.getInt("week") ?? 0;
+                          //   String day = prefs.getString("day") ?? "1";
+
+                          //   viewModel.submitWeight(
+                          //     context,
+                          //     userId: userId,
+                          //     logValue: viewModel.weightController.text.trim(),
+                          //     week: week.toString(),
+                          //     day: "8",
+                          //     logType: "body_fat_percentage",
+                          //   );
+                          // },
                           child: const Text(
                             "Submit",
                             style: TextStyle(

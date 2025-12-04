@@ -74,6 +74,8 @@ class DashboardBodyViewModel extends ChangeNotifier {
       progressive_week = data.weekFlags!.deloadWeek!;
       prefs.setString("deload_week", deload_week!);
       prefs.setString("progressive_week", progressive_week!);
+      int dayAgo = data.dayDetails!.dayId!;
+      prefs.setInt("day_ago", dayAgo!);
 
       int week = data.dayDetails!.week ?? 1;
 

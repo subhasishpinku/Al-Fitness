@@ -2,37 +2,39 @@ import 'dart:convert';
 
 import 'package:aifitness/models/UpdateDetailsRequest.dart';
 import 'package:aifitness/models/UserProfile.dart';
-import 'package:aifitness/models/ai_details_model.dart';
 import 'package:aifitness/repository/UpdateDetailsRepository.dart';
-import 'package:aifitness/repository/ai_details_repository.dart';
-import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TargetChangeDetailsViewModel extends ChangeNotifier {
-  // Example Variables
-  String height = "150 CM";
-  String weight = "60 KG";
+class TargetBFPViewModel extends ChangeNotifier {
+  int? _selectedIndex;
 
-  void updateHeight(String val) {
-    height = val;
-    notifyListeners();
-  }
+  final List<Map<String, String>> bodyFatList = [
+    {'percent': '9%', 'image': 'assets/images/Desired/9.png'},
+    {'percent': '11%', 'image': 'assets/images/Desired/11.png'},
+    {'percent': '13%', 'image': 'assets/images/Desired/13.png'},
+    {'percent': '15%', 'image': 'assets/images/Desired/15.png'},
+    {'percent': '17%', 'image': 'assets/images/Desired/17.png'},
+    {'percent': '19%', 'image': 'assets/images/Desired/19.png'},
+    {'percent': '21%', 'image': 'assets/images/Desired/21.png'},
+    {'percent': '23%', 'image': 'assets/images/Desired/23.png'},
+    {'percent': '25%', 'image': 'assets/images/Desired/25.png'},
+  ];
 
-  void updateWeight(String val) {
-    weight = val;
-    notifyListeners();
-  }
-
-  final AiDetailsRepository _repo = AiDetailsRepository();
-
-  bool loading = false;
-  AiDetailsResponse? aiDetails;
+  int? get selectedIndex => _selectedIndex;
   final UpdateDetailsRepository repository = UpdateDetailsRepository();
   UpdateDetailsRequest? updateDetailsRequestResponse;
   String? errorMessage;
-  Future<void> updateSave(BuildContext context) async {
+  Future<void> selectIndex(int index, BuildContext context) async {
+    _selectedIndex = index;
+    notifyListeners();
+
     final prefs = await SharedPreferences.getInstance();
+    final percentage = bodyFatList[index]['percent']!;
+
+    await prefs.setString('target_bfp', percentage);
+    debugPrint('Saved target_bfp: $percentage');
+
     final grainsList = decodeList(prefs.getString("grains"));
     final fruitsList = decodeList(prefs.getString("fruit"));
     final carbsList = decodeList(prefs.getString("carbs"));
@@ -77,7 +79,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
       updateDetailsRequestResponse = await repository.registerUser(profile);
       errorMessage = null;
       print(
-        "UPDATE_PROFILE = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.heightValue!}",
+        "currentBfp = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.currentBfp!}",
       );
       final prefs = await SharedPreferences.getInstance();
       int? userIds = updateDetailsRequestResponse!.data!.userDetails!.id;
@@ -103,7 +105,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
           ),
         ),
       );
-      Navigator.pushNamed(context, RouteNames.dashboard);
+      // Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
 
       // Navigate or do next step
     } catch (e) {
@@ -113,26 +115,6 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
       ).showSnackBar(SnackBar(content: Text("Error: $errorMessage")));
       print(errorMessage);
     }
-  }
-
-  Future<void> fetchAiDetails(String deviceId, int userId) async {
-    loading = true;
-    notifyListeners();
-
-    try {
-      aiDetails = await _repo.getAiUserDetails(
-        deviceId: deviceId,
-        userId: userId,
-      );
-
-      print("aiDetails: ${aiDetails!.data!.userBodyMetrics!.heightValue}");
-    } catch (e) {
-      debugPrint("Error fetching AI details: $e");
-      print("Error fetching AI details: $e");
-    }
-
-    loading = false;
-    notifyListeners();
   }
 
   List<String>? decodeList(String? raw) {

@@ -2,37 +2,69 @@ import 'dart:convert';
 
 import 'package:aifitness/models/UpdateDetailsRequest.dart';
 import 'package:aifitness/models/UserProfile.dart';
-import 'package:aifitness/models/ai_details_model.dart';
 import 'package:aifitness/repository/UpdateDetailsRepository.dart';
-import 'package:aifitness/repository/ai_details_repository.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TargetChangeDetailsViewModel extends ChangeNotifier {
-  // Example Variables
-  String height = "150 CM";
-  String weight = "60 KG";
+class FitnessGoalSelectionViewModel extends ChangeNotifier {
+  final List<String> _topics = [
+    "Strength Training",
+    "Cardio Training",
+    "Strength & Cardio Training",
+  ];
 
-  void updateHeight(String val) {
-    height = val;
-    notifyListeners();
-  }
+  List<String> get topics => _topics;
 
-  void updateWeight(String val) {
-    weight = val;
-    notifyListeners();
-  }
+  // For button visibility animation
+  final List<bool> _isVisible = [false, false, false];
+  List<bool> get isVisible => _isVisible;
 
-  final AiDetailsRepository _repo = AiDetailsRepository();
-
-  bool loading = false;
-  AiDetailsResponse? aiDetails;
+  String? _selectedTopic;
+  String? get selectedTopic => _selectedTopic;
   final UpdateDetailsRepository repository = UpdateDetailsRepository();
   UpdateDetailsRequest? updateDetailsRequestResponse;
   String? errorMessage;
-  Future<void> updateSave(BuildContext context) async {
+  FitnessGoalSelectionViewModel() {
+    _animateButtonsSequentially();
+  }
+
+  /// Sequential animation for button appearance
+  Future<void> _animateButtonsSequentially() async {
+    for (int i = 0; i < _topics.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 250));
+      _isVisible[i] = true;
+      notifyListeners();
+    }
+  }
+
+  /// Handle topic selection
+  Future<void> onTopicSelected(BuildContext context, String topic) async {
+    _selectedTopic = topic;
+    notifyListeners();
+
     final prefs = await SharedPreferences.getInstance();
+
+    //  Always use lowercase, consistent key naming
+    String fitnessGoal = '';
+
+    if (topic == "Strength Training") {
+      fitnessGoal = 'Strength';
+    } else if (topic == "Cardio Training") {
+      fitnessGoal = 'Cardio';
+    } else if (topic == "Strength & Cardio Training") {
+      fitnessGoal = 'Strength-Cardio';
+    }
+
+    // Save value
+    await prefs.setString('fitness_goal', fitnessGoal);
+
+    //  Optional safety (forces sync from disk)
+    await prefs.reload();
+
+    //  Verify saved value
+    final savedGoal = prefs.getString('fitness_goal');
+    debugPrint(' Saved fitness_goal: $savedGoal');
     final grainsList = decodeList(prefs.getString("grains"));
     final fruitsList = decodeList(prefs.getString("fruit"));
     final carbsList = decodeList(prefs.getString("carbs"));
@@ -76,9 +108,9 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
     try {
       updateDetailsRequestResponse = await repository.registerUser(profile);
       errorMessage = null;
-      print(
-        "UPDATE_PROFILE = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.heightValue!}",
-      );
+      // print(
+      //   "UPDATE_fitness_goal = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.f!}",
+      // );
       final prefs = await SharedPreferences.getInstance();
       int? userIds = updateDetailsRequestResponse!.data!.userDetails!.id;
       await prefs.setInt('user_id', userIds!);
@@ -103,7 +135,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
           ),
         ),
       );
-      Navigator.pushNamed(context, RouteNames.dashboard);
+      Navigator.pushNamed(context, RouteNames.targetChangeDetails);
 
       // Navigate or do next step
     } catch (e) {
@@ -113,26 +145,13 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
       ).showSnackBar(SnackBar(content: Text("Error: $errorMessage")));
       print(errorMessage);
     }
-  }
 
-  Future<void> fetchAiDetails(String deviceId, int userId) async {
-    loading = true;
-    notifyListeners();
+    //  Show feedback
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: $topic")));
 
-    try {
-      aiDetails = await _repo.getAiUserDetails(
-        deviceId: deviceId,
-        userId: userId,
-      );
-
-      print("aiDetails: ${aiDetails!.data!.userBodyMetrics!.heightValue}");
-    } catch (e) {
-      debugPrint("Error fetching AI details: $e");
-      print("Error fetching AI details: $e");
-    }
-
-    loading = false;
-    notifyListeners();
+    // Navigate only after ensuring data is saved
   }
 
   List<String>? decodeList(String? raw) {

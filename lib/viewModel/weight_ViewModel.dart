@@ -2,37 +2,34 @@ import 'dart:convert';
 
 import 'package:aifitness/models/UpdateDetailsRequest.dart';
 import 'package:aifitness/models/UserProfile.dart';
-import 'package:aifitness/models/ai_details_model.dart';
 import 'package:aifitness/repository/UpdateDetailsRepository.dart';
-import 'package:aifitness/repository/ai_details_repository.dart';
-import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TargetChangeDetailsViewModel extends ChangeNotifier {
-  // Example Variables
-  String height = "150 CM";
-  String weight = "60 KG";
+class WeightViewModel extends ChangeNotifier {
+  // Generate weight list (40.0 → 120.0 kg with 0.1 step)
+  final List<double> weights = List.generate(
+    801,
+    (index) => 40.0 + index * 0.1,
+  );
 
-  void updateHeight(String val) {
-    height = val;
-    notifyListeners();
-  }
-
-  void updateWeight(String val) {
-    weight = val;
-    notifyListeners();
-  }
-
-  final AiDetailsRepository _repo = AiDetailsRepository();
-
-  bool loading = false;
-  AiDetailsResponse? aiDetails;
+  double _selectedWeight = 60.0; // Default weight
+  double get selectedWeight => _selectedWeight;
   final UpdateDetailsRepository repository = UpdateDetailsRepository();
   UpdateDetailsRequest? updateDetailsRequestResponse;
   String? errorMessage;
-  Future<void> updateSave(BuildContext context) async {
+  Future<void> setSelectedWeight(double value, BuildContext context) async {
+    _selectedWeight = value;
+    notifyListeners();
+
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('weight_value', value.toString());
+    await prefs.setString('current_weight_value', value.toString());
+
+    final savedYear = prefs.getString('weight_value');
+    final weightValue = prefs.getString('current_weight_value');
+
+    print('Saved weight_value: $savedYear');
     final grainsList = decodeList(prefs.getString("grains"));
     final fruitsList = decodeList(prefs.getString("fruit"));
     final carbsList = decodeList(prefs.getString("carbs"));
@@ -76,9 +73,9 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
     try {
       updateDetailsRequestResponse = await repository.registerUser(profile);
       errorMessage = null;
-      print(
-        "UPDATE_PROFILE = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.heightValue!}",
-      );
+      // print(
+      //   "UPDATE_PROFILE_Weight = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.currentWeightValue!}",
+      // );
       final prefs = await SharedPreferences.getInstance();
       int? userIds = updateDetailsRequestResponse!.data!.userDetails!.id;
       await prefs.setInt('user_id', userIds!);
@@ -103,7 +100,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
           ),
         ),
       );
-      Navigator.pushNamed(context, RouteNames.dashboard);
+      // Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
 
       // Navigate or do next step
     } catch (e) {
@@ -113,26 +110,6 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
       ).showSnackBar(SnackBar(content: Text("Error: $errorMessage")));
       print(errorMessage);
     }
-  }
-
-  Future<void> fetchAiDetails(String deviceId, int userId) async {
-    loading = true;
-    notifyListeners();
-
-    try {
-      aiDetails = await _repo.getAiUserDetails(
-        deviceId: deviceId,
-        userId: userId,
-      );
-
-      print("aiDetails: ${aiDetails!.data!.userBodyMetrics!.heightValue}");
-    } catch (e) {
-      debugPrint("Error fetching AI details: $e");
-      print("Error fetching AI details: $e");
-    }
-
-    loading = false;
-    notifyListeners();
   }
 
   List<String>? decodeList(String? raw) {

@@ -7,15 +7,20 @@ import 'package:aifitness/view/PrivacyPolicy.dart';
 import 'package:aifitness/view/Target_change_screen.dart';
 import 'package:aifitness/view/Visceral_fat_screen.dart';
 import 'package:aifitness/view/account_setting_screen.dart';
+import 'package:aifitness/view/activity_level_screen.dart';
 import 'package:aifitness/view/begin_your_screen.dart';
 import 'package:aifitness/view/body_fat_screen.dart';
 import 'package:aifitness/view/body_image_progress.dart';
 import 'package:aifitness/view/body_water_screen.dart';
 import 'package:aifitness/view/change_details.dart';
+import 'package:aifitness/view/current_bfp_screen.dart';
+import 'package:aifitness/view/diet_type_screen.dart';
 import 'package:aifitness/view/exercise_list_details.dart';
 import 'package:aifitness/view/exercise_list_screen.dart';
 import 'package:aifitness/view/extra_food_intake_screen.dart';
+import 'package:aifitness/view/fitness_goal_screen.dart';
 import 'package:aifitness/view/get_start_screen.dart';
+import 'package:aifitness/view/height_screen.dart';
 import 'package:aifitness/view/i_am_ready.dart';
 import 'package:aifitness/view/i_am_ready_final.dart';
 import 'package:aifitness/view/login_screen.dart';
@@ -49,11 +54,15 @@ import 'package:aifitness/view/signin_screen_twenty_two.dart';
 import 'package:aifitness/view/skeletal_muscle_screen.dart';
 import 'package:aifitness/view/splash_screen.dart';
 import 'package:aifitness/view/subcutaneous_fat_screen.dart';
+import 'package:aifitness/view/target_bfp_screen.dart';
 import 'package:aifitness/view/target_change_details.dart';
 import 'package:aifitness/view/terms_condition.dart';
 import 'package:aifitness/view/video_screen.dart';
 import 'package:aifitness/view/view_plan_screen.dart';
+import 'package:aifitness/view/weight_screen.dart';
 import 'package:aifitness/view/weight_today_screen.dart';
+import 'package:aifitness/view/workout_mode_screen.dart';
+import 'package:aifitness/view/works_out_days_screen.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
 import 'package:flutter/material.dart';
 
@@ -276,7 +285,44 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const AboutUs(),
         );
-      
+
+      case (RouteNames.heightScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const HeightScreen(),
+        );
+
+      case (RouteNames.weightScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const WeightScreen(),
+        );
+      case (RouteNames.fitnessGoalScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const FitnessGoalScreen(),
+        );
+      case (RouteNames.activityLevelScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const ActivityLevelScreen(),
+        );
+      case (RouteNames.currentBfpScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const CurrentBfpScreen(),
+        );
+      case (RouteNames.targetBfpScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const TargetBfpScreen(),
+        );
+        case (RouteNames.worksOutDaysScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const WorksOutDaysScreen(),
+        );
+        case (RouteNames.workoutModeScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const WorkoutModeScreen(),
+        );
+        case (RouteNames.dietTypeScreen):
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const DietTypeScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

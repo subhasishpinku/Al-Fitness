@@ -2,37 +2,65 @@ import 'dart:convert';
 
 import 'package:aifitness/models/UpdateDetailsRequest.dart';
 import 'package:aifitness/models/UserProfile.dart';
-import 'package:aifitness/models/ai_details_model.dart';
 import 'package:aifitness/repository/UpdateDetailsRepository.dart';
-import 'package:aifitness/repository/ai_details_repository.dart';
-import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aifitness/utils/routes/routes_names.dart';
 
-class TargetChangeDetailsViewModel extends ChangeNotifier {
-  // Example Variables
-  String height = "150 CM";
-  String weight = "60 KG";
+class WorksOutDaysViewModel extends ChangeNotifier {
+  int _selectedIndex = -1;
+  int get selectedIndex => _selectedIndex;
 
-  void updateHeight(String val) {
-    height = val;
-    notifyListeners();
+  final List<String> options = [
+    "1 Day / Week (6 days rest)",
+    "3 Days / Week (Good balance)",
+    "6 Days / Week (Only 1 rest day)",
+  ];
+
+  final List<bool> _isVisible = [false, false, false];
+  List<bool> get isVisible => _isVisible;
+
+  WorksOutDaysViewModel() {
+    _animateButtonsSequentially();
   }
-
-  void updateWeight(String val) {
-    weight = val;
-    notifyListeners();
-  }
-
-  final AiDetailsRepository _repo = AiDetailsRepository();
-
-  bool loading = false;
-  AiDetailsResponse? aiDetails;
   final UpdateDetailsRepository repository = UpdateDetailsRepository();
   UpdateDetailsRequest? updateDetailsRequestResponse;
   String? errorMessage;
-  Future<void> updateSave(BuildContext context) async {
+
+  /// Animate button appearance one by one
+  Future<void> _animateButtonsSequentially() async {
+    for (int i = 0; i < options.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 250));
+      _isVisible[i] = true;
+      notifyListeners();
+    }
+  }
+
+  /// Handle option selection
+  Future<void> selectOption(BuildContext context, int index) async {
+    _selectedIndex = index;
+    notifyListeners();
+
     final prefs = await SharedPreferences.getInstance();
+
+    int selectedValue = 0;
+    if (index == 0) {
+      selectedValue = 1;
+    } else if (index == 1) {
+      selectedValue = 3;
+    } else if (index == 2) {
+      selectedValue = 6;
+    }
+
+    ///  Save selectedValue as int
+    await prefs.setInt('no_of_days_per_week', selectedValue);
+
+    final savedValue = prefs.getInt('no_of_days_per_week');
+    print('Saved No_of_days_per_week: $savedValue');
+
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(SnackBar(content: Text("Selected: ${options[index]}")));
     final grainsList = decodeList(prefs.getString("grains"));
     final fruitsList = decodeList(prefs.getString("fruit"));
     final carbsList = decodeList(prefs.getString("carbs"));
@@ -76,9 +104,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
     try {
       updateDetailsRequestResponse = await repository.registerUser(profile);
       errorMessage = null;
-      print(
-        "UPDATE_PROFILE = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.heightValue!}",
-      );
+
       final prefs = await SharedPreferences.getInstance();
       int? userIds = updateDetailsRequestResponse!.data!.userDetails!.id;
       await prefs.setInt('user_id', userIds!);
@@ -103,7 +129,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
           ),
         ),
       );
-      Navigator.pushNamed(context, RouteNames.dashboard);
+      // Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
 
       // Navigate or do next step
     } catch (e) {
@@ -115,24 +141,15 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchAiDetails(String deviceId, int userId) async {
-    loading = true;
-    notifyListeners();
-
-    try {
-      aiDetails = await _repo.getAiUserDetails(
-        deviceId: deviceId,
-        userId: userId,
+  /// Navigate to next screen
+  void onNextPressed(BuildContext context) {
+    if (_selectedIndex != -1) {
+      Navigator.pushNamed(context, RouteNames.targetChangeDetails);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select an option first")),
       );
-
-      print("aiDetails: ${aiDetails!.data!.userBodyMetrics!.heightValue}");
-    } catch (e) {
-      debugPrint("Error fetching AI details: $e");
-      print("Error fetching AI details: $e");
     }
-
-    loading = false;
-    notifyListeners();
   }
 
   List<String>? decodeList(String? raw) {

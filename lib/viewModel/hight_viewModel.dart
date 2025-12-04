@@ -2,37 +2,29 @@ import 'dart:convert';
 
 import 'package:aifitness/models/UpdateDetailsRequest.dart';
 import 'package:aifitness/models/UserProfile.dart';
-import 'package:aifitness/models/ai_details_model.dart';
 import 'package:aifitness/repository/UpdateDetailsRepository.dart';
-import 'package:aifitness/repository/ai_details_repository.dart';
-import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TargetChangeDetailsViewModel extends ChangeNotifier {
-  // Example Variables
-  String height = "150 CM";
-  String weight = "60 KG";
+class HightViewModel extends ChangeNotifier {
+  int _selectedHeight = 150; // default height in cm
+  final List<int> _heights = List.generate(101, (i) => 100 + i); // 100–200 cm
 
-  void updateHeight(String val) {
-    height = val;
-    notifyListeners();
-  }
-
-  void updateWeight(String val) {
-    weight = val;
-    notifyListeners();
-  }
-
-  final AiDetailsRepository _repo = AiDetailsRepository();
-
-  bool loading = false;
-  AiDetailsResponse? aiDetails;
+  int get selectedHeight => _selectedHeight;
+  List<int> get heights => _heights;
   final UpdateDetailsRepository repository = UpdateDetailsRepository();
   UpdateDetailsRequest? updateDetailsRequestResponse;
   String? errorMessage;
-  Future<void> updateSave(BuildContext context) async {
+
+  Future<void> setSelectedHeight(int height, BuildContext context) async {
+    _selectedHeight = height;
+    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('height_value', height.toString());
+
+    final savedYear = prefs.getString('height_value');
+    print('Saved height_value: $savedYear');
+
     final grainsList = decodeList(prefs.getString("grains"));
     final fruitsList = decodeList(prefs.getString("fruit"));
     final carbsList = decodeList(prefs.getString("carbs"));
@@ -103,7 +95,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
           ),
         ),
       );
-      Navigator.pushNamed(context, RouteNames.dashboard);
+      // Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
 
       // Navigate or do next step
     } catch (e) {
@@ -113,26 +105,6 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
       ).showSnackBar(SnackBar(content: Text("Error: $errorMessage")));
       print(errorMessage);
     }
-  }
-
-  Future<void> fetchAiDetails(String deviceId, int userId) async {
-    loading = true;
-    notifyListeners();
-
-    try {
-      aiDetails = await _repo.getAiUserDetails(
-        deviceId: deviceId,
-        userId: userId,
-      );
-
-      print("aiDetails: ${aiDetails!.data!.userBodyMetrics!.heightValue}");
-    } catch (e) {
-      debugPrint("Error fetching AI details: $e");
-      print("Error fetching AI details: $e");
-    }
-
-    loading = false;
-    notifyListeners();
   }
 
   List<String>? decodeList(String? raw) {

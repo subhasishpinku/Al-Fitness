@@ -128,8 +128,33 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
                             ),
                             elevation: 0,
                           ),
-
                           onPressed: () async {
+                            final weightText = viewModel.weightController.text
+                                .trim();
+
+                            // --- VALIDATION CHECK ---
+                            if (weightText.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please enter your weight"),
+                                  backgroundColor: Colors.black,
+                                ),
+                              );
+                              return;
+                            }
+
+                            if (double.tryParse(weightText) == null ||
+                                double.parse(weightText) <= 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please enter a valid number"),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+
+                            // Proceed if valid
                             final prefs = await SharedPreferences.getInstance();
                             int userId = prefs.getInt("user_id") ?? 0;
                             int week = prefs.getInt("week") ?? 0;
@@ -138,11 +163,14 @@ class _WeightTodayScreenState extends State<WeightTodayScreen> {
                             viewModel.submitWeight(
                               context,
                               userId: userId,
-                              logValue: viewModel.weightController.text.trim(),
+                              logValue: weightText,
                               week: week.toString(),
                               day: "8",
                               logType: "weight",
                             );
+
+                            // Optional: Clear input field after successfully submitting
+                            viewModel.weightController.clear();
                           },
 
                           child: const Text(

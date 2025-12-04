@@ -2,37 +2,40 @@ import 'dart:convert';
 
 import 'package:aifitness/models/UpdateDetailsRequest.dart';
 import 'package:aifitness/models/UserProfile.dart';
-import 'package:aifitness/models/ai_details_model.dart';
 import 'package:aifitness/repository/UpdateDetailsRepository.dart';
-import 'package:aifitness/repository/ai_details_repository.dart';
-import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TargetChangeDetailsViewModel extends ChangeNotifier {
-  // Example Variables
-  String height = "150 CM";
-  String weight = "60 KG";
+class CurrentBFPViewModel extends ChangeNotifier {
+  int? selectedIndex;
 
-  void updateHeight(String val) {
-    height = val;
-    notifyListeners();
-  }
-
-  void updateWeight(String val) {
-    weight = val;
-    notifyListeners();
-  }
-
-  final AiDetailsRepository _repo = AiDetailsRepository();
-
-  bool loading = false;
-  AiDetailsResponse? aiDetails;
+  final List<Map<String, dynamic>> bodyFatImages = [
+    {'image': 'assets/images/Current/40.png', 'percentage': 40},
+    {'image': 'assets/images/Current/37.png', 'percentage': 37},
+    {'image': 'assets/images/Current/33.png', 'percentage': 33},
+    {'image': 'assets/images/Current/30.png', 'percentage': 30},
+    {'image': 'assets/images/Current/27.png', 'percentage': 27},
+    {'image': 'assets/images/Current/24.png', 'percentage': 24},
+    {'image': 'assets/images/Current/21.png', 'percentage': 21},
+    {'image': 'assets/images/Current/18.png', 'percentage': 18},
+    {'image': 'assets/images/Current/15.png', 'percentage': 15},
+  ];
   final UpdateDetailsRepository repository = UpdateDetailsRepository();
   UpdateDetailsRequest? updateDetailsRequestResponse;
   String? errorMessage;
-  Future<void> updateSave(BuildContext context) async {
+
+  /// Save selected body fat percentage
+  Future<void> selectIndex(int index, BuildContext context) async {
+    selectedIndex = index;
+    notifyListeners();
+
     final prefs = await SharedPreferences.getInstance();
+    final percentage = bodyFatImages[index]['percentage'].toString();
+
+    await prefs.setString('current_bfp', percentage);
+
+    final savedBfp = prefs.getString('current_bfp');
+    print('Saved current_bfp: $savedBfp');
     final grainsList = decodeList(prefs.getString("grains"));
     final fruitsList = decodeList(prefs.getString("fruit"));
     final carbsList = decodeList(prefs.getString("carbs"));
@@ -77,7 +80,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
       updateDetailsRequestResponse = await repository.registerUser(profile);
       errorMessage = null;
       print(
-        "UPDATE_PROFILE = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.heightValue!}",
+        "current_bfp = ${updateDetailsRequestResponse!.data!.userBodyMetrics!.currentBfp!}",
       );
       final prefs = await SharedPreferences.getInstance();
       int? userIds = updateDetailsRequestResponse!.data!.userDetails!.id;
@@ -103,7 +106,7 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
           ),
         ),
       );
-      Navigator.pushNamed(context, RouteNames.dashboard);
+      // Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
 
       // Navigate or do next step
     } catch (e) {
@@ -115,26 +118,12 @@ class TargetChangeDetailsViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchAiDetails(String deviceId, int userId) async {
-    loading = true;
-    notifyListeners();
-
-    try {
-      aiDetails = await _repo.getAiUserDetails(
-        deviceId: deviceId,
-        userId: userId,
-      );
-
-      print("aiDetails: ${aiDetails!.data!.userBodyMetrics!.heightValue}");
-    } catch (e) {
-      debugPrint("Error fetching AI details: $e");
-      print("Error fetching AI details: $e");
-    }
-
-    loading = false;
-    notifyListeners();
+  /// Placeholder for manual input feature
+  void enterManually(BuildContext context) {
+    // ScaffoldMessenger.of(
+    //   context,
+    // ).showSnackBar(const SnackBar(content: Text("Manual input coming soon")));
   }
-
   List<String>? decodeList(String? raw) {
     if (raw == null || raw.isEmpty) return null;
     try {

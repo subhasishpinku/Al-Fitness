@@ -16,17 +16,22 @@ import 'package:aifitness/viewModel/AddExerciseTrackerViewModel.dart';
 import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
 import 'package:aifitness/viewModel/account_delete_ViewModel.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
+import 'package:aifitness/viewModel/activity_level_viewModel.dart';
 import 'package:aifitness/viewModel/body_fat_viewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
 import 'package:aifitness/viewModel/body_water_view_model.dart';
 import 'package:aifitness/viewModel/change_details_viewModel.dart';
 import 'package:aifitness/viewModel/contact_us_viewModel.dart';
+import 'package:aifitness/viewModel/current_bfp_ViewModel.dart';
 import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
+import 'package:aifitness/viewModel/diet_type_ViewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_details_viewModel.dart';
 import 'package:aifitness/viewModel/exercise_list_viewModel.dart';
 import 'package:aifitness/viewModel/exercise_tracker_viewmodel.dart';
 import 'package:aifitness/viewModel/extra_food_intake_viewModel.dart';
 import 'package:aifitness/viewModel/fit_network_viewModel.dart';
+import 'package:aifitness/viewModel/fitness_goal_viewModel.dart';
+import 'package:aifitness/viewModel/hight_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_final_viewModel.dart';
 import 'package:aifitness/viewModel/i_am_ready_viewModel.dart';
 import 'package:aifitness/viewModel/login_viewModel.dart';
@@ -60,12 +65,16 @@ import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:aifitness/viewModel/skeletal_muscle_viewmodel.dart';
 import 'package:aifitness/viewModel/subcutaneous_fat_viewmodel.dart';
 import 'package:aifitness/viewModel/targetChangeScreen_viewModel.dart';
+import 'package:aifitness/viewModel/target_bfp_ViewModel.dart';
 import 'package:aifitness/viewModel/target_change_details_viewModel.dart';
 import 'package:aifitness/viewModel/terms_condition_viewModel.dart';
 import 'package:aifitness/viewModel/video_viewModel.dart';
 import 'package:aifitness/viewModel/view_plan_viewModel.dart';
+import 'package:aifitness/viewModel/weight_ViewModel.dart';
 import 'package:aifitness/viewModel/weight_today_viewModel.dart';
+import 'package:aifitness/viewModel/workout_mode_ViewModel.dart';
 import 'package:aifitness/viewModel/workout_view_model.dart';
+import 'package:aifitness/viewModel/works_out_days_viewModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -144,8 +153,16 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => TermsConditionViewModel()),
         ChangeNotifierProvider(create: (_) => TermsConditionViewModel()),
         ChangeNotifierProvider(create: (_) => AccountDeleteViewModel()),
-
-        
+        ChangeNotifierProvider(create: (_) => HightViewModel()),
+        ChangeNotifierProvider(create: (_) => WeightViewModel()),
+        ChangeNotifierProvider(create: (_) => FitnessGoalSelectionViewModel()),
+        ChangeNotifierProvider(create: (_) => ActivityLevelViewModel()),
+        ChangeNotifierProvider(create: (_) => CurrentBFPViewModel()),
+        ChangeNotifierProvider(create: (_) => TargetBFPViewModel()),
+        ChangeNotifierProvider(create: (_) => WorksOutDaysViewModel()),
+        ChangeNotifierProvider(create: (_) => WorkoutModeViewModel()),
+        ChangeNotifierProvider(create: (_) => DietTypeViewModel()),
+        ChangeNotifierProvider(create: (_) => BodyFatViewModel()),
       ],
       child: const MyApp(),
     ),

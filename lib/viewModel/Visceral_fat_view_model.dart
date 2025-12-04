@@ -3,6 +3,7 @@ import 'package:aifitness/repository/WeightHistoryRepository.dart';
 import 'package:aifitness/repository/WeightRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class VisceralFatViewModel extends ChangeNotifier {
   final WeightRepository _repo = WeightRepository();
   final WeightHistoryRepository _repo1 = WeightHistoryRepository();
@@ -101,9 +102,12 @@ class VisceralFatViewModel extends ChangeNotifier {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: const Text(
-            "Success 🎉",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Directionality(
+            textDirection: TextDirection.ltr,
+            child: const Text(
+              "Success",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           content: Text("$message"),
           actions: [

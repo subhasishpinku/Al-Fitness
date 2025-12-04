@@ -19,6 +19,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
   String? name = "";
   String? email = "";
   String? imageFullUrl = "";
+  int dayAgo = 0;
   @override
   void initState() {
     super.initState();
@@ -34,6 +35,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
       name = prefs.getString("name");
       email = prefs.getString("email");
       imageFullUrl = prefs.getString("image_full_url");
+      dayAgo = prefs.getInt("day_ago")!;
     });
 
     print(
@@ -140,7 +142,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                             ),
                           ),
                           Text(
-                            vm.joined,
+                            "${dayAgo} days ago",
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -235,7 +237,7 @@ class _AccountSettingScreenState extends State<AccountSettingScreen> {
                 ),
                 _buildMenuItem(
                   context,
-                  title: "About Us",
+                  title: "About Me",
                   onTap: () {
                     Navigator.pushNamed(context, RouteNames.aboutsUs);
                   },

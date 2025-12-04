@@ -1,4 +1,4 @@
-import 'package:aifitness/viewModel/weight_today_viewModel.dart';
+import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +22,7 @@ class _VisceralFatScreenState extends State<VisceralFatScreen> {
       int week = prefs.getInt("week") ?? 0;
       String day = prefs.getString("day") ?? "8";
 
-      Provider.of<WeightTodayViewModel>(context, listen: false).fetchWeightLogs(
+      Provider.of<VisceralFatViewModel>(context, listen: false).fetchWeightLogs(
         userId: userId,
         week: week.toString(),
         day: "8",
@@ -33,7 +33,7 @@ class _VisceralFatScreenState extends State<VisceralFatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<WeightTodayViewModel>();
+    final viewModel = context.watch<VisceralFatViewModel>();
 
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -128,8 +128,33 @@ class _VisceralFatScreenState extends State<VisceralFatScreen> {
                             ),
                             elevation: 0,
                           ),
-
                           onPressed: () async {
+                            final weightText = viewModel.weightController.text
+                                .trim();
+
+                            // --- VALIDATION CHECK ---
+                            if (weightText.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please enter your weight"),
+                                  backgroundColor: Colors.black,
+                                ),
+                              );
+                              return;
+                            }
+
+                            if (double.tryParse(weightText) == null ||
+                                double.parse(weightText) <= 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please enter a valid number"),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+
+                            // Proceed if valid
                             final prefs = await SharedPreferences.getInstance();
                             int userId = prefs.getInt("user_id") ?? 0;
                             int week = prefs.getInt("week") ?? 0;
@@ -138,13 +163,31 @@ class _VisceralFatScreenState extends State<VisceralFatScreen> {
                             viewModel.submitWeight(
                               context,
                               userId: userId,
-                              logValue: viewModel.weightController.text.trim(),
+                              logValue: weightText,
                               week: week.toString(),
                               day: "8",
                               logType: "visceral_fat_level",
                             );
+
+                            // Optional: Clear input field after successfully submitting
+                            viewModel.weightController.clear();
                           },
 
+                          // onPressed: () async {
+                          //   final prefs = await SharedPreferences.getInstance();
+                          //   int userId = prefs.getInt("user_id") ?? 0;
+                          //   int week = prefs.getInt("week") ?? 0;
+                          //   String day = prefs.getString("day") ?? "1";
+
+                          //   viewModel.submitWeight(
+                          //     context,
+                          //     userId: userId,
+                          //     logValue: viewModel.weightController.text.trim(),
+                          //     week: week.toString(),
+                          //     day: "8",
+                          //     logType: "visceral_fat_level",
+                          //   );
+                          // },
                           child: const Text(
                             "Submit",
                             style: TextStyle(
