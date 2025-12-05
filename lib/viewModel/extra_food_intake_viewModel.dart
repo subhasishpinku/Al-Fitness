@@ -96,6 +96,7 @@ class ExtraFoodIntakeViewModel extends ChangeNotifier {
   @override
   void dispose() {
     intakeController.dispose();
+    intakeController.clear();
     super.dispose();
   }
 }

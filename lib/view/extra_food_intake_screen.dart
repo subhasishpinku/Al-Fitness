@@ -12,6 +12,8 @@ class ExtraFoodIntakeScreen extends StatefulWidget {
 }
 
 class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -67,17 +69,29 @@ class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
               ),
               const SizedBox(height: 8),
 
-              /// ---------------- INPUT FIELD ----------------
-              TextField(
-                controller: viewModel.intakeController,
-                maxLines: 6,
-                decoration: InputDecoration(
-                  hintText: "Describe extra food or calories consumed...",
-                  contentPadding: const EdgeInsets.all(12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.grey),
+              /// ---------------- INPUT FIELD WITH VALIDATION ----------------
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: viewModel.intakeController,
+                  maxLines: 6,
+                  decoration: InputDecoration(
+                    hintText: "Describe extra food or calories consumed...",
+                    contentPadding: const EdgeInsets.all(12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.grey),
+                    ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Please enter what extra food you consumed.";
+                    }
+                    if (value.length < 3) {
+                      return "Description must be at least 5 characters.";
+                    }
+                    return null;
+                  },
                 ),
               ),
               const SizedBox(height: 20),
@@ -98,15 +112,26 @@ class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
                       elevation: 0,
                     ),
                     onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      int userId = prefs.getInt("user_id") ?? 0;
-                      int week = prefs.getInt("week") ?? 0;
+                      if (_formKey.currentState!.validate()) {
+                        final prefs = await SharedPreferences.getInstance();
+                        int userId = prefs.getInt("user_id") ?? 0;
+                        int week = prefs.getInt("week") ?? 0;
 
-                      viewModel.submitWrongDiet(
-                        userId: userId,
-                        week: week.toString(),
-                        day: "8",
-                      );
+                        await viewModel.submitWrongDiet(
+                          userId: userId,
+                          week: week.toString(),
+                          day: "8",
+                        );
+
+                        viewModel.intakeController.clear();
+                        _loadData();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Entry added successfully!"),
+                            backgroundColor: Colors.black,
+                          ),
+                        );
+                      }
                     },
                     child: const Text(
                       "Submit",
@@ -169,7 +194,7 @@ class _ExtraFoodIntakeScreenState extends State<ExtraFoodIntakeScreen> {
                       separatorBuilder: (_, __) => const Divider(
                         height: 20,
                         thickness: 1,
-                        color: Colors.black26, // light grey underline
+                        color: Colors.black26,
                       ),
                       itemBuilder: (context, index) {
                         final item = vm.intakeHistory[index];
