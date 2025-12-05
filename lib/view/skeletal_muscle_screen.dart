@@ -156,7 +156,19 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
                               );
                               return;
                             }
-
+                            if (!RegExp(
+                              r'^\d{1,2}(\.\d{1,2})?$',
+                            ).hasMatch(weightText)) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Enter weight in valid format (e.g., 50, 50.5, 50.25)",
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
                             // Proceed if valid
                             final prefs = await SharedPreferences.getInstance();
                             int userId = prefs.getInt("user_id") ?? 0;
@@ -230,7 +242,9 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
 
               // ------------------ HISTORY LIST ------------------
               Expanded(
-                child: viewModel.history.isEmpty
+                child: viewModel.loading
+                    ? const Center(child: CircularProgressIndicator())
+                    : viewModel.history.isEmpty
                     ? const Center(
                         child: Text(
                           "No track record found.\nAdd your first weight entry.",
@@ -279,7 +293,6 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
                                     ),
                                   ],
                                 ),
-
                                 const SizedBox(height: 6),
 
                                 /// WEIGHT DETAILS
@@ -294,7 +307,6 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-
                                     IconButton(
                                       onPressed: () =>
                                           viewModel.deleteWeight(index),
@@ -311,6 +323,88 @@ class _SkeletalMuscleScreenState extends State<SkeletalMuscleScreen> {
                         },
                       ),
               ),
+              // Expanded(
+              //   child: viewModel.history.isEmpty
+              //       ? const Center(
+              //           child: Text(
+              //             "No track record found.\nAdd your first weight entry.",
+              //             style: TextStyle(color: Colors.grey, fontSize: 13),
+              //             textAlign: TextAlign.center,
+              //           ),
+              //         )
+              //       : ListView.builder(
+              //           itemCount: viewModel.history.length,
+              //           padding: const EdgeInsets.only(bottom: 16),
+              //           itemBuilder: (context, index) {
+              //             final entry = viewModel.history[index];
+
+              //             return Container(
+              //               margin: const EdgeInsets.only(bottom: 12),
+              //               padding: const EdgeInsets.symmetric(
+              //                 horizontal: 14,
+              //                 vertical: 12,
+              //               ),
+              //               decoration: BoxDecoration(
+              //                 color: Colors.grey.shade200,
+              //                 borderRadius: BorderRadius.circular(8),
+              //                 border: Border.all(color: Colors.grey.shade300),
+              //               ),
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   /// HEADER ROW
+              //                   Row(
+              //                     mainAxisAlignment:
+              //                         MainAxisAlignment.spaceBetween,
+              //                     children: [
+              //                       Text(
+              //                         "Track ${viewModel.history.length - index}",
+              //                         style: const TextStyle(
+              //                           fontWeight: FontWeight.bold,
+              //                           fontSize: 15,
+              //                         ),
+              //                       ),
+              //                       Text(
+              //                         timeago.format(entry.time),
+              //                         style: const TextStyle(
+              //                           color: Colors.grey,
+              //                           fontSize: 12,
+              //                         ),
+              //                       ),
+              //                     ],
+              //                   ),
+
+              //                   const SizedBox(height: 6),
+
+              //                   /// WEIGHT DETAILS
+              //                   Row(
+              //                     mainAxisAlignment:
+              //                         MainAxisAlignment.spaceBetween,
+              //                     children: [
+              //                       Text(
+              //                         "Weight: ${entry.weight} Kg",
+              //                         style: const TextStyle(
+              //                           fontSize: 13.5,
+              //                           fontWeight: FontWeight.bold,
+              //                         ),
+              //                       ),
+
+              //                       IconButton(
+              //                         onPressed: () =>
+              //                             viewModel.deleteWeight(index),
+              //                         icon: const Icon(
+              //                           Icons.delete_outline,
+              //                           color: Colors.redAccent,
+              //                         ),
+              //                       ),
+              //                     ],
+              //                   ),
+              //                 ],
+              //               ),
+              //             );
+              //           },
+              //         ),
+              // ),
             ],
           ),
         ),

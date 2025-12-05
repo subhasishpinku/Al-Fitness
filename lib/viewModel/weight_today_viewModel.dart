@@ -106,9 +106,12 @@ class WeightTodayViewModel extends ChangeNotifier {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: const Text(
-            "Success",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Directionality(
+            textDirection: TextDirection.ltr,
+            child: const Text(
+              "Success",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           content: Text(message),
           actions: [
