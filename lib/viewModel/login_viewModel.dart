@@ -117,6 +117,7 @@ class LoginViewModel extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       String? device = prefs.getString("device_id");
       String deviceId = device!; // Replace with real deviceId
+      await prefs.setString('password', passwordController.text.trim());
       final response = await Dio().post(
         "https://aipoweredfitness.com/api/login",
         data: {

@@ -1,7 +1,9 @@
 import 'package:aifitness/models/WeightLogModel.dart';
 import 'package:aifitness/repository/WeightHistoryRepository.dart';
 import 'package:aifitness/repository/WeightRepository.dart';
+import 'package:aifitness/viewModel/dashboardBody_viewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BodyFatViewModel extends ChangeNotifier {
@@ -94,6 +96,7 @@ class BodyFatViewModel extends ChangeNotifier {
       }
 
       notifyListeners();
+      final dashboardVM = context.read<DashboardBodyViewModel>();
 
       // ---------------- SUCCESS DIALOG ----------------
       showDialog(
@@ -112,7 +115,10 @@ class BodyFatViewModel extends ChangeNotifier {
           content: Text("$message"),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () async => {
+                await dashboardVM.loadDashboard(),
+                Navigator.pop(context),
+              },
               child: const Text("OK"),
             ),
           ],

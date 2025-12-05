@@ -17,6 +17,7 @@ import 'package:aifitness/viewModel/Visceral_fat_view_model.dart';
 import 'package:aifitness/viewModel/account_delete_ViewModel.dart';
 import 'package:aifitness/viewModel/account_setting_viewModel.dart';
 import 'package:aifitness/viewModel/activity_level_viewModel.dart';
+import 'package:aifitness/viewModel/begin_your_viewModel.dart';
 import 'package:aifitness/viewModel/body_fat_viewModel.dart';
 import 'package:aifitness/viewModel/body_image_progress_viewModel.dart';
 import 'package:aifitness/viewModel/body_water_view_model.dart';
@@ -63,6 +64,7 @@ import 'package:aifitness/viewModel/signin_twentyone_viewModel.dart';
 import 'package:aifitness/viewModel/signin_twentythree_viewModel.dart';
 import 'package:aifitness/viewModel/signin_viewmodel.dart';
 import 'package:aifitness/viewModel/skeletal_muscle_viewmodel.dart';
+import 'package:aifitness/viewModel/splash_screen_viewModel.dart';
 import 'package:aifitness/viewModel/subcutaneous_fat_viewmodel.dart';
 import 'package:aifitness/viewModel/targetChangeScreen_viewModel.dart';
 import 'package:aifitness/viewModel/target_bfp_ViewModel.dart';
@@ -163,6 +165,11 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => WorkoutModeViewModel()),
         ChangeNotifierProvider(create: (_) => DietTypeViewModel()),
         ChangeNotifierProvider(create: (_) => BodyFatViewModel()),
+        ChangeNotifierProvider(create: (_) => BeginYourViewModel()),
+        ChangeNotifierProvider(create: (_) => SplashScreenViewModel()),
+
+
+        
       ],
       child: const MyApp(),
     ),

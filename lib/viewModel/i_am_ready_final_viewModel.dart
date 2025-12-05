@@ -36,17 +36,32 @@ class IamReadyFinalViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onTrackPressed(BuildContext context, WorkoutExerciseModel exercise, int userId) {
+  onTrackPressed(
+    BuildContext context,
+    WorkoutExerciseModel exercise,
+    int userId,
+  ) {
     showDialog(
       context: context,
       builder: (_) => ExerciseTrackerDialog(
-        exerciseName: exercise.name ?? "",
-        exerciseID: exercise.id ?? 0,
-        userId: userId ?? 0,
-
+        exerciseName: exercise.name,
+        exerciseID: exercise.id,
+        userId: userId,
       ),
     );
   }
+
+  // void onTrackPressed(BuildContext context, WorkoutExerciseModel exercise, int userId) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => ExerciseTrackerDialog(
+  //       exerciseName: exercise.name ?? "",
+  //       exerciseID: exercise.id ?? 0,
+  //       userId: userId ?? 0,
+
+  //     ),
+  //   );
+  // }
 
   Future fetchExerciseTracker(int userId, int exerciseId) async {
     loading = true;
@@ -63,7 +78,11 @@ class IamReadyFinalViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onHistoryPressed(BuildContext context, WorkoutExerciseModel exercise, int userId) {
+  void onHistoryPressed(
+    BuildContext context,
+    WorkoutExerciseModel exercise,
+    int userId,
+  ) {
     showDialog(
       context: context,
       builder: (_) => ExerciseHistoryDialog(

@@ -97,6 +97,7 @@ class RegisterViewModel extends ChangeNotifier {
     final fibersList = decodeList(prefs.getString("fibers"));
     final woDaysList = decodeList(prefs.getString("wo_days"));
     final focusMuscleList = decodeList(prefs.getString("focus_muscle"));
+    await prefs.setString('password', password);
 
     // RegisterRequest model = RegisterRequest(
     //   name: name,
@@ -257,7 +258,7 @@ class RegisterViewModel extends ChangeNotifier {
     print("""
       ===== FINAL REQUEST JSON =====
 
-       name: ${name},
+      name: ${name},
       email: ${email},
       password: ${password},
       gender: ${prefs.getString("gender") ?? ""},
@@ -323,6 +324,7 @@ class RegisterViewModel extends ChangeNotifier {
       await prefs.setString('name', name!);
 
       await prefs.setString('email', email!);
+
       await prefs.setString('image_full_url', imageFullUrl!);
       print("ResponseAllIds ${userIds}  ${deviceIdS}");
       // Show success snackbar

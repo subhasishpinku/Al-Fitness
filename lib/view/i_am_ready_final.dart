@@ -2,6 +2,7 @@ import 'package:aifitness/models/workout_exercise_model.dart';
 import 'package:aifitness/repository/IamReadyFinalRepository.dart';
 import 'package:aifitness/res/widgets/SigninExerciseAppBar.dart';
 import 'package:aifitness/res/widgets/UniversalMediaWidget.dart';
+import 'package:aifitness/res/widgets/VimeoPlayerScreen.dart';
 import 'package:aifitness/res/widgets/signin_fourth_appBar.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/viewModel/i_am_ready_final_viewModel.dart';
@@ -56,7 +57,7 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
 
   Widget _buildBody(IamReadyFinalViewModel vm) {
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +103,7 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
     final mediaUrl = mediaUri.startsWith("http")
         ? mediaUri
         : "${IamReadyFinalRepository.BASE_URL}/$mediaUri";
-
+    print("mediaUrl ${mediaUrl}");
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.all(14),
@@ -126,20 +127,21 @@ class _IamReadyFinalState extends State<IamReadyFinal> {
           ),
           const SizedBox(height: 10),
 
-          // 🔥 UNIVERSAL MEDIA
+          //  UNIVERSAL MEDIA
           Container(
-            height: 250,
+            height: 200,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: Colors.black54),
             ),
-            child: UniversalMediaWidget(
-              mediaUri: mediaUri,
-              mediaUrl: mediaUrl,
-              height: 240,
-            ),
+            // child: UniversalMediaWidget(
+            //   mediaUri: mediaUri,
+            //   mediaUrl: mediaUrl,
+            //   height: 240,
+            // ),
+            child: VimeoPlayerScreen(videoUrl: mediaUri),
           ),
 
           const SizedBox(height: 16),
