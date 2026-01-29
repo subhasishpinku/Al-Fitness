@@ -20,7 +20,7 @@ class _BeginYourScreenState extends State<BeginYourScreen> {
     // _controller = VideoPlayerController.asset("assets/videos/lose_weight.mp4")
     _controller =
         VideoPlayerController.asset(
-            "assets/videos/lose_weight.mp4",
+            "assets/videos/fitamplify.mov",
             videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
           )
           ..initialize().then((_) {

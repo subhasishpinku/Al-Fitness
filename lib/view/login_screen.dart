@@ -17,18 +17,18 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    networking();
+    // networking();
   }
 
-  networking() {
-    NetworkService().startListener((isConnected) {
-      setState(() {
-        status = isConnected ? 1 : 0;
-      });
+  // networking() {
+  //   NetworkService().startListener((isConnected) {
+  //     setState(() {
+  //       status = isConnected ? 1 : 0;
+  //     });
 
-      print(isConnected ? "Connected" : "No Internet");
-    });
-  }
+  //     print(isConnected ? "Connected" : "No Internet");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -164,8 +164,24 @@ class _LoginBody extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: provider.isLoading
                           ? null
-                          : () {
-                              if (status == 0) {
+                          : ()
+                            // {
+                            //     if (status == 0) {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         const SnackBar(
+                            //           content: Text("No Internet Connection"),
+                            //           duration: Duration(seconds: 2),
+                            //         ),
+                            //       );
+                            //       return;
+                            //     }
+                            //     provider.login(context);
+                            //   },
+                            async {
+                              bool isConnected = await NetworkService()
+                                  .hasInternet();
+
+                              if (!isConnected) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text("No Internet Connection"),
@@ -174,8 +190,10 @@ class _LoginBody extends StatelessWidget {
                                 );
                                 return;
                               }
+
                               provider.login(context);
                             },
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.primaryColor,

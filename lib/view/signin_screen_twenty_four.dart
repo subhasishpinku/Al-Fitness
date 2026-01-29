@@ -27,7 +27,7 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
   void initState() {
     super.initState();
     initDeviceId();
-    networking();
+    // networking();
   }
 
   Future<void> initDeviceId() async {
@@ -54,15 +54,15 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
     });
   }
 
-  networking() {
-    NetworkService().startListener((isConnected) {
-      setState(() {
-        status = isConnected ? 1 : 0;
-      });
+  // networking() {
+  //   NetworkService().startListener((isConnected) {
+  //     setState(() {
+  //       status = isConnected ? 1 : 0;
+  //     });
 
-      print(isConnected ? "Connected" : "No Internet");
-    });
-  }
+  //     print(isConnected ? "Connected" : "No Internet");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -326,9 +326,24 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
                             elevation: 0,
                           ),
 
-                          onPressed: () {
-                            // ---- INTERNET CHECK ----
-                            if (status == 0) {
+                          // onPressed: () {
+                          //   if (status == 0) {
+                          //     ScaffoldMessenger.of(context).showSnackBar(
+                          //       const SnackBar(
+                          //         content: Text("No Internet Connection"),
+                          //         duration: Duration(seconds: 2),
+                          //       ),
+                          //     );
+                          //     return;
+                          //   }
+
+                          //   viewModel.onNextPressed(context);
+                          // },
+                          onPressed: () async {
+                            bool isConnected = await NetworkService()
+                                .hasInternet();
+
+                            if (!isConnected) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("No Internet Connection"),
@@ -338,10 +353,8 @@ class _SigninScreenTwentyFourState extends State<SigninScreenTwentyFour> {
                               return;
                             }
 
-                            // ---- Continue to next step ----
                             viewModel.onNextPressed(context);
                           },
-
                           child: Text(
                             "Next",
                             style: TextStyle(

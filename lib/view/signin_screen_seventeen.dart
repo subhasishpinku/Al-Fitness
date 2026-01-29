@@ -47,8 +47,8 @@ class SigninScreenSeventeen extends StatelessWidget {
                   ),
                   onPressed: () {},
                   child: const Text(
-                    "Pick Your Whole Grains",
-                    textAlign: TextAlign.right,
+                    "Select the items from Carbohydrate (Whole Grain) that you'd like to include in your meal plan.",
+                    textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -189,30 +189,65 @@ class SigninScreenSeventeen extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: 120,
-                  height: 45,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: AppColors.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: AppColors.bolderColor),
-                      ),
-                      elevation: 0,
-                    ),
-                    onPressed: provider.canProceed
-                        ? () => provider.onNextPressed(context)
-                        : null,
-                    child: const Text(
-                      "NEXT",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.2,
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: SizedBox(
+              //     width: 120,
+              //     height: 45,
+              //     child: ElevatedButton(
+              //       style: ElevatedButton.styleFrom(
+              //         backgroundColor: Colors.white,
+              //         foregroundColor: AppColors.primaryColor,
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(8),
+              //           side: BorderSide(color: AppColors.bolderColor),
+              //         ),
+              //         elevation: 0,
+              //       ),
+              //       onPressed: provider.canProceed
+              //           ? () => provider.onNextPressed(context)
+              //           : null,
+              //       child: const Text(
+              //         "NEXT",
+              //         style: TextStyle(
+              //           fontSize: 16,
+              //           fontWeight: FontWeight.w600,
+              //           letterSpacing: 1.2,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: 120,
+                      height: 45,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: AppColors.primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: AppColors.bolderColor),
+                          ),
+                          elevation: 0,
+                        ),
+                        onPressed: provider.canProceed
+                            ? () => provider.onNextPressed(context)
+                            : null,
+                        child: const Text(
+                          "NEXT",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
                       ),
                     ),
                   ),

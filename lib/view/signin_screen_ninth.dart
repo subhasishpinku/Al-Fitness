@@ -1,3 +1,4 @@
+import 'package:aifitness/res/widgets/HipMeasurementAppBars.dart';
 import 'package:aifitness/res/widgets/signin_second_appbars.dart';
 import 'package:aifitness/utils/app_colors.dart';
 import 'package:aifitness/utils/routes/routes_names.dart';
@@ -30,7 +31,7 @@ class _SigninScreenNinthBody extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: const SigninSecondAppBars(),
+        appBar: const HipMeasurementAppBars(),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

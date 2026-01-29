@@ -1,4 +1,5 @@
 import 'package:aifitness/utils/app_colors.dart';
+import 'package:aifitness/utils/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class SigninSecondAppBars extends StatelessWidget
@@ -42,14 +43,19 @@ class SigninSecondAppBars extends StatelessWidget
                 ),
               ),
               const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Text(
-                  "Skip >>",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.signinScreenEleventh);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Text(
+                    "Skip >>",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 ),
               ),

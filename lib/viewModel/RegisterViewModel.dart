@@ -308,40 +308,77 @@ class RegisterViewModel extends ChangeNotifier {
       """);
     print("FINAL REQUEST JSON = ${jsonEncode(model.toJson())}");
 
+    // try {
+    //   registerResponse = await repository.registerUser(model);
+    //   errorMessage = null;
+    //   print("FINAL REQUEST JSON = ${registerResponse!.data!.userDetails!.id}");
+    //   final prefs = await SharedPreferences.getInstance();
+    //   int? userIds = registerResponse!.data!.userDetails!.id;
+    //   await prefs.setInt('user_id', userIds!);
+    //   String? deviceIdS = registerResponse!.data!.userDetails!.deviceId;
+    //   String? name = registerResponse!.data!.userDetails!.name;
+    //   String? email = registerResponse!.data!.userDetails!.email;
+    //   String? imageFullUrl = registerResponse!.data!.userDetails!.image;
+
+    //   await prefs.setString('device_id', deviceIdS!);
+    //   await prefs.setString('name', name!);
+
+    //   await prefs.setString('email', email!);
+
+    //   await prefs.setString('image_full_url', imageFullUrl!);
+    //   print("ResponseAllIds ${userIds}  ${deviceIdS}");
+    //   // Show success snackbar
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text(registerResponse?.message ?? "Registration successful"),
+    //     ),
+    //   );
+    //   Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
+
+    //   // Navigate or do next step
+    // } catch (e) {
+    //   errorMessage = e.toString();
+    //   ScaffoldMessenger.of(
+    //     context,
+    //   ).showSnackBar(SnackBar(content: Text("Error: $errorMessage")));
+    //   print(errorMessage);
+    // }
     try {
       registerResponse = await repository.registerUser(model);
-      errorMessage = null;
-      print("FINAL REQUEST JSON = ${registerResponse!.data!.userDetails!.id}");
-      final prefs = await SharedPreferences.getInstance();
-      int? userIds = registerResponse!.data!.userDetails!.id;
-      await prefs.setInt('user_id', userIds!);
-      String? deviceIdS = registerResponse!.data!.userDetails!.deviceId;
-      String? name = registerResponse!.data!.userDetails!.name;
-      String? email = registerResponse!.data!.userDetails!.email;
-      String? imageFullUrl = registerResponse!.data!.userDetails!.image;
 
-      await prefs.setString('device_id', deviceIdS!);
-      await prefs.setString('name', name!);
+      /// 🔴 FAILURE CASE (email already exists etc.)
+      if (registerResponse?.success != true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(registerResponse?.message ?? "Registration failed"),
+          ),
+        );
+        loading = false;
+        notifyListeners();
+        return;
+      }
 
-      await prefs.setString('email', email!);
+      /// 🟢 SUCCESS CASE
+      final user = registerResponse?.data?.userDetails;
+      if (user == null) {
+        throw Exception("Invalid server response");
+      }
 
-      await prefs.setString('image_full_url', imageFullUrl!);
-      print("ResponseAllIds ${userIds}  ${deviceIdS}");
-      // Show success snackbar
+      await prefs.setInt('user_id', user.id ?? 0);
+      await prefs.setString('device_id', user.deviceId ?? '');
+      await prefs.setString('name', user.name ?? '');
+      await prefs.setString('email', user.email ?? '');
+      await prefs.setString('image_full_url', user.image ?? '');
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(registerResponse?.message ?? "Registration successful"),
-        ),
+        SnackBar(content: Text(registerResponse!.message ?? "Success")),
       );
-      Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
 
-      // Navigate or do next step
+      Navigator.pushNamed(context, RouteNames.signinScreenTwentyFive);
     } catch (e) {
-      errorMessage = e.toString();
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Error: $errorMessage")));
-      print(errorMessage);
+      ).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
     }
 
     loading = false;

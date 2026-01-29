@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+2
+version: 1.0.0+4
 
 environment:
   sdk: ^3.8.1
@@ -112,6 +112,7 @@ flutter:
     - assets/images/logo3.png
     - assets/images/new1024.png
     - assets/videos/lose_weight.mp4
+    - assets/videos/fitamplify.mov
 
 
     - assets/images/Desired/9.png
@@ -124,6 +125,17 @@ flutter:
     - assets/images/Desired/23.png
     - assets/images/Desired/25.png
 
+    - assets/images/Desired/9t.png
+    - assets/images/Desired/11t.png
+    - assets/images/Desired/13t.png
+    - assets/images/Desired/15t.png
+    - assets/images/Desired/17t.png
+    - assets/images/Desired/19t.png
+    - assets/images/Desired/21t.png
+    - assets/images/Desired/23t.png
+    - assets/images/Desired/25t.png
+
+
 
     
     - assets/images/Current/15.png
@@ -135,6 +147,16 @@ flutter:
     - assets/images/Current/33.png
     - assets/images/Current/37.png
     - assets/images/Current/40.png
+
+    - assets/images/Current/15c.png
+    - assets/images/Current/18c.png
+    - assets/images/Current/21c.png
+    - assets/images/Current/24c.png
+    - assets/images/Current/27c.png
+    - assets/images/Current/30c.png
+    - assets/images/Current/33c.png
+    - assets/images/Current/37c.png
+    - assets/images/Current/40c.png
     - assets/images/profile_image.png
 
 

@@ -33,7 +33,7 @@ class SigninScreenEighteen extends StatelessWidget {
 
               /// TITLE
               const Text(
-                "Select the carb items you'd like to include in your meal plan",
+                "Select the items from Carbohydrate (Other) that you'd like to include in your meal plan.",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 18,
